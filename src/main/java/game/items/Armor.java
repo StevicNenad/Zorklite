@@ -10,5 +10,4 @@ public class Armor extends Item {
     protected double evasion;
     protected int intBonus;
     protected int stealthBonus;
-    protected int
 }

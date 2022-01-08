@@ -1,14 +1,25 @@
 package game.characters.monsters;
 
-import game.characters.Monster;
+import game.Attributes;
+import game.Character;
 
-public class Bat extends Monster {
+public class Bat extends Character {
 
-    public Bat() {
-        this.accuracy = 1.0;
-        this.armor = 100;
-        this.health = 200;
-        this.speed = 13;
-        this.monsterName = "Hellbat";
+    public Bat(int level) {
+        attributes = new Attributes(12, 5, 6, 8, level, 0, 1, 0);
+
+        health = attributes.calculateHealth();
+        armorPoints = attributes.calculateArmor();
+        mana = attributes.calculateMana();
+    }
+
+    @Override
+    public int getHealth() {
+        return super.getHealth();
+    }
+
+    @Override
+    public String getType() {
+        return super.getType();
     }
 }

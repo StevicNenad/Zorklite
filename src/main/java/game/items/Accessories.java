@@ -8,5 +8,5 @@ public class Accessories extends Item {
                     bonusAttackRate,
                     bonusHealth,
                     bonusStrength,
-                    bonus
+                    bonus;
 }

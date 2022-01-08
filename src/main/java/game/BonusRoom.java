@@ -1,7 +1,5 @@
 package game;
 
-public class BonusRoom extends Room {
-    private Item loot;
+public class BonusRoom extends Room{
     private Room exit;
-    private Attribute requirement;
 }
