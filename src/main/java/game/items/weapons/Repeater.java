@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Repeater extends Weapon {
@@ -10,10 +11,10 @@ public class Repeater extends Weapon {
         this.aoeDamage = 0;
         this.accuracy = 0.80;
         this.attacks = 3;
-        this.armorPenetration = 0.05;
-        this.ranged = true;
+        this.weaponType = WeaponType.PROJECTILE;
+        this.attackRange = AttackRange.RANGED;
         this.type = "Weapon";
         this.name = "Repeating Pistol";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }

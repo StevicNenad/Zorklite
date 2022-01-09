@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Bow extends Weapon {
@@ -10,10 +11,10 @@ public class Bow extends Weapon {
         this.aoeDamage = 0;
         this.accuracy = 0.95;
         this.attacks = 1;
-        this.armorPenetration = 0;
-        this.ranged = true;
+        this.weaponType = WeaponType.PROJECTILE;
+        this.attackRange = AttackRange.RANGED;
         this.type = "Weapon";
         this.name = "Shortbow";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }

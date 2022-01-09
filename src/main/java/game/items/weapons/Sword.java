@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Sword extends Weapon {
@@ -10,10 +11,10 @@ public class Sword extends Weapon {
         this.aoeDamage = 0;
         this.accuracy = 0.9;
         this.attacks = 1;
-        this.armorPenetration = 0;
-        this.ranged = false;
+        this.weaponType = WeaponType.MELEE;
+        this.attackRange = AttackRange.MELEE;
         this.type = "Weapon";
         this.name = "Broadsword";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }

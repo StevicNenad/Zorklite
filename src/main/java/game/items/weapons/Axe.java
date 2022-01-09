@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Axe extends Weapon {
@@ -10,10 +11,10 @@ public class Axe extends Weapon {
         this.aoeDamage = 0.10;
         this.accuracy = 0.8;
         this.attacks = 1;
-        this.armorPenetration = 0.10;
-        this.ranged = false;
+        this.weaponType = WeaponType.MELEE;
+        this.attackRange = AttackRange.MELEE;
         this.type = "Weapon";
         this.name = "Battleaxe";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }

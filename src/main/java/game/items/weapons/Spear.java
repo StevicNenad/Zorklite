@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Spear extends Weapon {
@@ -10,10 +11,10 @@ public class Spear extends Weapon {
         this.aoeDamage = 0;
         this.accuracy = 0.9;
         this.attacks = 1;
-        this.armorPenetration = 0.30;
-        this.ranged = false;
+        this.weaponType = WeaponType.MELEE;
+        this.attackRange = AttackRange.RANGED;
         this.type = "Weapon";
         this.name = "Pike";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }

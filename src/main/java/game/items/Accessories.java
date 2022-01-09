@@ -7,6 +7,18 @@ public class Accessories extends Item {
                     bonusEvasion,
                     bonusAttackRate,
                     bonusHealth,
+                    bonusMana,
+                    bonusArmor,
                     bonusStrength,
                     bonus;
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public String getType() {
+        return super.getType();
+    }
 }

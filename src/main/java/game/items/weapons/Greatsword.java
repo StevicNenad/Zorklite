@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Greatsword extends Weapon {
@@ -10,10 +11,10 @@ public class Greatsword extends Weapon {
         this.aoeDamage = 0.30;
         this.accuracy = 0.65;
         this.attacks = 1;
-        this.armorPenetration = 0.20;
-        this.ranged = false;
+        this.weaponType = WeaponType.MELEE;
+        this.attackRange = AttackRange.MELEE;
         this.type = "Weapon";
         this.name = "Greatsword";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }

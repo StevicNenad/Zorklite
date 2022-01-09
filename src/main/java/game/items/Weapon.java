@@ -1,14 +1,26 @@
 package game.items;
 
+import game.DamageType;
 import game.Item;
 
 public class Weapon extends Item {
-    protected int attacks;
-    protected int level;
-    protected double damage;
-    protected double accuracy;
-    protected double aoeDamage;
-    protected double armorPenetration;
-    protected boolean ranged;
-    protected boolean physicalDamage;
+    protected enum AttackRange {
+        MELEE,
+        RANGED
+    }
+    protected enum WeaponType {
+        MELEE,
+        PROJECTILE
+    }
+
+    protected int           damage,
+                            attacks,
+                            level;
+
+    protected double        accuracy,
+                            aoeDamage;//Area of Effect/Cleave/Spill damage
+
+    protected DamageType    damageType;
+    protected AttackRange   attackRange;
+    protected WeaponType    weaponType;
 }

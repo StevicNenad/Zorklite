@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Game {
     private int roomNumber;
@@ -13,5 +14,17 @@ public class Game {
         currentRoom = new StartRoom();
     }
 
+    public void welcome() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print(   "************************\n" +
+                            "******* Zorklite *******\n" +
+                            "************************\n\n" +
+                            "Press any key to begin...");
 
+        sc.nextLine();
+    }
+
+    public void launch() {
+        
+    }
 }

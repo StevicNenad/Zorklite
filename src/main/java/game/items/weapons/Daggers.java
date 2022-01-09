@@ -1,5 +1,6 @@
 package game.items.weapons;
 
+import game.DamageType;
 import game.items.Weapon;
 
 public class Daggers extends Weapon {
@@ -10,10 +11,10 @@ public class Daggers extends Weapon {
         this.aoeDamage = 0;
         this.accuracy = 1.0;
         this.attacks = 2;
-        this.armorPenetration = 0.20;
-        this.ranged = false;
+        this.weaponType = WeaponType.MELEE;
+        this.attackRange = AttackRange.MELEE;
         this.type = "Weapon";
         this.name = "Daggers";
-        this.physicalDamage = true;
+        this.damageType = DamageType.PHYSICAL;
     }
 }
