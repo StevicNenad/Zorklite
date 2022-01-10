@@ -13,8 +13,13 @@ public class Repeater extends Weapon {
         this.attacks = 3;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Repeating Pistol";
         this.damageType = DamageType.PHYSICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

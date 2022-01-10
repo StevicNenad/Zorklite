@@ -13,8 +13,13 @@ public class Sword extends Weapon {
         this.attacks = 1;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Broadsword";
         this.damageType = DamageType.PHYSICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

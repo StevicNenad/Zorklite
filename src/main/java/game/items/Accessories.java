@@ -18,7 +18,7 @@ public class Accessories extends Item {
     }
 
     @Override
-    public String getType() {
-        return super.getType();
+    public ItemType getitemType() {
+        return super.getitemType();
     }
 }

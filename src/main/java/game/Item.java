@@ -1,14 +1,20 @@
 package game;
 
 public class Item {
-    protected String type;
+    protected enum ItemType {
+        ACCESSORY,
+        ARMOR,
+        GEM,
+        WEAPON
+    }
+    protected ItemType itemType;
     protected String name;
 
     public String getName() {
         return name;
     }
 
-    public String getType() {
-        return type;
+    public ItemType getitemType() {
+        return itemType;
     }
 }

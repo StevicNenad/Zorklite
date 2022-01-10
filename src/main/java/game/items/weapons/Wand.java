@@ -13,8 +13,13 @@ public class Wand extends Weapon {
         this.attacks = 1;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Magic Wand";
         this.damageType = DamageType.MAGICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

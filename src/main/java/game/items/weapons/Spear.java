@@ -13,8 +13,13 @@ public class Spear extends Weapon {
         this.attacks = 1;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.RANGED;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Pike";
         this.damageType = DamageType.PHYSICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

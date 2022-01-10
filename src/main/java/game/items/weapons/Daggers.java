@@ -13,8 +13,13 @@ public class Daggers extends Weapon {
         this.attacks = 2;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Daggers";
         this.damageType = DamageType.PHYSICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

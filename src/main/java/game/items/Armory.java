@@ -14,7 +14,7 @@ public class Armory {
         weaponList = new ArrayList<Weapon>();
         armorList = new ArrayList<Armor>();
 
-        //Generate one of every Weapon
+        //Generate one of every Weapon and add to ArrayList
         Axe axe = new Axe();
         weaponList.add(axe);
 
@@ -46,7 +46,7 @@ public class Armory {
         weaponList.add(wand);
 
 
-        //Generate one of every Armor
+        //Generate one of every Armor and add to ArrayList
         LightArmor lightArmor = new LightArmor();
         armorList.add(lightArmor);
 
@@ -55,8 +55,30 @@ public class Armory {
 
         MagicRobe magicRobe = new MagicRobe();
         armorList.add(magicRobe);
+
+        ChaosForm chaosForm = new ChaosForm();
+        armorList.add(chaosForm);
+
+        DivineCuirrass divineCuirrass = new DivineCuirrass();
+        armorList.add(divineCuirrass);
+
+        PlateArmor plateArmor = new PlateArmor();
+        armorList.add(plateArmor);
+
+        ScaleArmor scaleArmor = new ScaleArmor();
+        armorList.add(scaleArmor);
+
+        ShadowChainmail shadowChainmail = new ShadowChainmail();
+        armorList.add(shadowChainmail);
+
+        TigerHide tigerHide = new TigerHide();
+        armorList.add(tigerHide);
+
+        WyvernRobe wyvernRobe = new WyvernRobe();
+        armorList.add(wyvernRobe);
     }
 
+    //Picks a random weapon from ArrayList and returns it
     public Weapon getRandomWeapon() {
         Random rn = new Random();
         int index = rn.nextInt(weaponList.size());
@@ -64,6 +86,7 @@ public class Armory {
         return weaponList.get(index);
     }
 
+    //Picks a random armor from ArrayList and returns it
     public Armor getRandomArmor() {
         Random rn = new Random();
         int index = rn.nextInt(armorList.size());

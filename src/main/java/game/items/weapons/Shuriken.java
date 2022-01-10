@@ -13,8 +13,13 @@ public class Shuriken extends Weapon {
         this.attacks = 4;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Shurikens";
         this.damageType = DamageType.PHYSICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

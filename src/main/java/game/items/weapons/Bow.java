@@ -13,8 +13,13 @@ public class Bow extends Weapon {
         this.attacks = 1;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Shortbow";
         this.damageType = DamageType.PHYSICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }

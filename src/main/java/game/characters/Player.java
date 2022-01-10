@@ -65,14 +65,6 @@ public class Player extends Character {
         }
     }
 
-    public void setFirstAcc(Accessories firstAcc) {
-        this.firstAcc = firstAcc;
-    }
-
-    public void setSecondAcc(Accessories secondAcc) {
-        this.secondAcc = secondAcc;
-    }
-
     @Override
     public int getHealth() {
         return super.getHealth();

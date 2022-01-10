@@ -13,8 +13,13 @@ public class Katana extends Weapon {
         this.attacks = 1;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;
-        this.type = "Weapon";
+        this.itemType = ItemType.WEAPON;
         this.name = "Dark Katana";
         this.damageType = DamageType.MAGICAL;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
     }
 }
