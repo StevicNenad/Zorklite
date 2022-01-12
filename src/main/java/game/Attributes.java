@@ -40,4 +40,39 @@ public class Attributes {
         return 10 * intelligence;//10 Mana per intelligence point
     }
 
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public void setAgility(int agility) {
+        this.agility = agility;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public void setLvlUpExperience(int lvlUpExperience) {
+        this.lvlUpExperience = lvlUpExperience;
+    }
+
+    public void setAccuracy(double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public void setEvasion(double evasion) {
+        this.evasion = evasion;
+    }
 }

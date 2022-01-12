@@ -23,7 +23,7 @@ public class Battle {
     }
 
     public void turn(Character current) {
-        if(current.getType() == "Enemy"){
+        if(current.getType() == Character.CharacterType.MONSTER){
 
         }
     }

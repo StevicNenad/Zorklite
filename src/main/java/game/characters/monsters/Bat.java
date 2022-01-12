@@ -2,11 +2,12 @@ package game.characters.monsters;
 
 import game.Attributes;
 import game.Character;
+import game.characters.Monster;
 
-public class Bat extends Character {
+public class Bat extends Monster {
 
-    public Bat(int level) {
-        attributes = new Attributes(12, 5, 6, 8, level, 0, 1, 0);
+    public Bat() {
+        attributes = new Attributes(12, 5, 6, 8, 1, 0, 1, 0);
 
         health = attributes.calculateHealth();
         armorPoints = attributes.calculateArmor();
@@ -19,7 +20,7 @@ public class Bat extends Character {
     }
 
     @Override
-    public String getType() {
+    public CharacterType getType() {
         return super.getType();
     }
 }

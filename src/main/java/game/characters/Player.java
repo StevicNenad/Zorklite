@@ -71,7 +71,7 @@ public class Player extends Character {
     }
 
     @Override
-    public String getType() {
+    public CharacterType getType() {
         return super.getType();
     }
 }

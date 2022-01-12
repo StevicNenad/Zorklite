@@ -2,9 +2,15 @@ package game;
 
 
 public class Character {
+    protected enum CharacterType {
+        BOSS,
+        MONSTER,
+        PLAYER
+    }
 
-    protected String        type,
-                            name;
+    protected CharacterType characterType;
+
+    protected String        name;
 
     protected int           health,
                             mana,
@@ -18,7 +24,11 @@ public class Character {
         return health;
     }
 
-    public String getType() {
-        return type;
+    public CharacterType getType() {
+        return characterType;
+    }
+
+    public Attributes getAttributes() {
+        return attributes;
     }
 }

@@ -32,9 +32,9 @@ public class Game {
     }
 
     public void launch() {
+        welcome();
         StartRoom sr = (StartRoom) currentRoom;
-        System.out.println(currentRoom.getDescription());//Print StartRoom description
-
+        roomNumber = 0;
         chooseLoadout(sr);
     }
 
@@ -44,6 +44,7 @@ public class Game {
         Scanner sc = new Scanner(System.in);
 
         do{
+            System.out.print(sr.getDescription());//Print StartRoom description
             user_pick = sc.nextLine();
 
             try{
@@ -54,43 +55,61 @@ public class Game {
                 switch(number) {
                     case 1:
                         wpn = (Weapon) sr.getSetOne().get(0);
-                        player.setWeapon(wpn);
                         arm = (Armor) sr.getSetOne().get(1);
-                        player.setArmor(arm);
 
-                        confirmLoadout(wpn, arm);
+                        if(confirmLoadout(wpn, arm)) return;
 
-                        return;
+                        break;
                     case 2:
                         wpn = (Weapon) sr.getSetTwo().get(0);
-                        player.setWeapon(wpn);
                         arm = (Armor) sr.getSetTwo().get(1);
-                        player.setArmor(arm);
 
-                        confirmLoadout(wpn, arm);
+                        if(confirmLoadout(wpn, arm)) return;
 
-                        return;
+                        break;
                     case 3:
                         wpn = (Weapon) sr.getSetThree().get(0);
-                        player.setWeapon(wpn);
                         arm = (Armor) sr.getSetThree().get(1);
-                        player.setArmor(arm);
 
-                        confirmLoadout(wpn, arm);
+                        if(confirmLoadout(wpn, arm)) return;
 
-                        return;
+                        break;
                     default:
-                        System.out.println("Please use only numbers between 1 and 3");
+                        System.out.println("Please use only numbers between 1 and 3. Press enter to continue...");
+                        sc.nextLine();
                 }
             }
             catch (NumberFormatException ex){
-                System.out.print("Please use only valid inputs (numbers)");
+                System.out.println("Please use only valid inputs (numbers). Press enter to continue...");
+                sc.nextLine();
             }
         }while(true);
     }
 
     //Function that confirms user Loadout
-    public void confirmLoadout(Weapon weapon, Armor armor) {
-        System.out.println("You have chosen the " + weapon.getName() + " with a " + armor.getName());
+    public boolean confirmLoadout(Weapon weapon, Armor armor) {
+        player.setWeapon(weapon);
+        player.setArmor(armor);
+
+        Scanner sc = new Scanner(System.in);
+        String user_confirm;
+        System.out.println( "You have chosen the " + weapon.getName() + " with a " + armor.getName() +"\n" +
+                            "Are you ready to start your journey? Y/N: ");
+
+        user_confirm = sc.nextLine();
+
+        return (user_confirm.toLowerCase().equals("y")) ? true : false;
+    }
+
+    public void mainGame() {
+        while(true) {
+            RoomGenerator rg = new RoomGenerator();
+            roomNumber++;
+            rooms.add(currentRoom);
+
+            if(roomNumber % 10 != 0) {
+                currentRoom = rg.generateMonsterRoom(roomNumber);
+            }
+        }
     }
 }
