@@ -6,6 +6,7 @@ import game.characters.Monster;
 public class Banshee extends Monster {
 
     public Banshee() {
+        name = "Banshee";
         attributes = new Attributes(12, 5, 6, 8, 1, 0, 1, 0);
 
         health = attributes.calculateHealth();

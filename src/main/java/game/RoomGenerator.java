@@ -1,7 +1,12 @@
 package game;
 
+import game.characters.Boss;
 import game.characters.Monster;
 import game.characters.MonsterGenerator;
+import game.characters.bosses.FalseGod;
+import game.characters.bosses.Nephilim;
+import game.characters.bosses.Underlord;
+import game.rooms.BossRoom;
 import game.rooms.MonsterRoom;
 
 import java.util.Random;
@@ -27,6 +32,29 @@ public class RoomGenerator {
             generatedRoom.addMonster(monster);
         }
 
+        generatedRoom.rollBonusRoom();
+        generatedRoom.generateExits(roomNumber, generatedRoom);
+        generatedRoom.generateDescription();
+        return generatedRoom;
+    }
+
+    public Room generateBossRoom(int roomNumber) {
+        generatedRoom = new BossRoom();
+        Boss boss;
+
+        if(roomNumber == 10) {
+            boss = new Nephilim();
+        }
+        else if(roomNumber == 20) {
+            boss = new Underlord();
+        }
+        else {
+            boss = new FalseGod();
+        }
+
+        generatedRoom.setBoss(boss);
+        generatedRoom.generateExits(roomNumber,generatedRoom);
+        generatedRoom.generateDescription();
         return generatedRoom;
     }
 }

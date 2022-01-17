@@ -27,11 +27,11 @@ public class StartRoom extends Room {
         setThree.add(armory.getRandomWeapon());
         setThree.add(armory.getRandomArmor());
 
-        this.description = generateDescription();
+        generateDescription();
     }
 
     @Override
-    public String generateDescription() {
+    public void generateDescription() {
         String description =    "You are in a dark dungeon. You have no idea how you came to this place,\n" +
                                 "but you feel the only way to get out is to push forward. In front of you\n" +
                                 "there are three chests. You have to choose one. Inside of them you find:\n\n" +
@@ -45,7 +45,7 @@ public class StartRoom extends Room {
                                 setOne.get(1).getName() + "\t\t\t\t" + setTwo.get(1).getName() + "\t\t\t\t" +
                                 setThree.get(1).getName() + "\n\nChoose (1-3): ";
 
-        return description;
+        this.description = description;
     }
 
     public ArrayList<Item> getSetOne() {

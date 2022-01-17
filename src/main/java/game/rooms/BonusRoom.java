@@ -14,9 +14,8 @@ public class BonusRoom extends Room {
     }
 
     @Override
-    public String generateDescription() {
+    public void generateDescription() {
         String description = "In this room there is ";
-        return description;
     }
 
     public void generateLoot() {

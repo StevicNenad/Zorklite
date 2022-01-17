@@ -1,5 +1,6 @@
 package game;
 
+import game.characters.Boss;
 import game.characters.Monster;
 import game.rooms.BonusRoom;
 
@@ -16,18 +17,29 @@ public class Room {
     }
 
     protected String description;
+    protected Boss boss;
     protected ArrayList<Character> monsters;
     protected ArrayList<Item> loot;
     protected HashMap<String, Room> exits;
     //private Effect enviromental_effect;
     protected RoomType roomType;
+    protected boolean bonus;
 
-    public String generateDescription(){
-        return null;
+    public void generateDescription(){
+    }
+
+    public void rollBonusRoom(){
+    }
+
+    public void generateExits(int roomNumber, Room currentRoom){
     }
 
     public void addMonster(Monster monster){
         monsters.add(monster);
+    }
+
+    public void printDescription() {
+        System.out.print(description);
     }
 
     public String getDescription() {
@@ -54,15 +66,15 @@ public class Room {
         this.description = description;
     }
 
-    public void setMonsters(ArrayList<Character> monsters) {
-        this.monsters = monsters;
-    }
-
     public void setLoot(ArrayList<Item> loot) {
         this.loot = loot;
     }
 
     public void setExits(HashMap<String, Room> exits) {
         this.exits = exits;
+    }
+
+    public void setBoss(Boss boss) {
+        this.boss = boss;
     }
 }

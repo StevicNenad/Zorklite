@@ -3,6 +3,7 @@ package game;
 import game.characters.Player;
 import game.items.Armor;
 import game.items.Weapon;
+import game.rooms.BossRoom;
 import game.rooms.StartRoom;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class Game {
     private Player player;
     private int roomNumber;
     private Room currentRoom;
-    private ArrayList<Room> rooms;
+    private ArrayList<Room> rooms; // Stores all generated rooms into an arraylist. This helps to keep track of the players progress.
 
     public Game() {
         roomNumber = 1;
@@ -36,6 +37,7 @@ public class Game {
         StartRoom sr = (StartRoom) currentRoom;
         roomNumber = 0;
         chooseLoadout(sr);
+        mainGame();
     }
 
     //Function that makes player choose loadout for the round
@@ -44,7 +46,7 @@ public class Game {
         Scanner sc = new Scanner(System.in);
 
         do{
-            System.out.print(sr.getDescription());//Print StartRoom description
+            sr.printDescription();
             user_pick = sc.nextLine();
 
             try{
@@ -102,14 +104,20 @@ public class Game {
     }
 
     public void mainGame() {
-        while(true) {
+        while(roomNumber < 30) {
             RoomGenerator rg = new RoomGenerator();
-            roomNumber++;
             rooms.add(currentRoom);
+            roomNumber++;
 
+            //Rooms 10, 20 and 30 are boss rooms, the others normal monster rooms.
             if(roomNumber % 10 != 0) {
                 currentRoom = rg.generateMonsterRoom(roomNumber);
             }
+            else{
+                currentRoom = rg.generateBossRoom(roomNumber);
+            }
+
+            currentRoom.printDescription();
         }
     }
 }

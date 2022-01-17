@@ -6,6 +6,7 @@ import game.characters.Monster;
 public class Pangolin extends Monster {
 
     public Pangolin() {
+        name = "Pangolin Warrior";
         attributes = new Attributes(12, 5, 6, 8, 1, 0, 1, 0);
 
         health = attributes.calculateHealth();

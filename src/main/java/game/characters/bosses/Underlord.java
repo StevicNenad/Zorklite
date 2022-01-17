@@ -1,12 +1,12 @@
-package game.characters.monsters;
+package game.characters.bosses;
 
 import game.Attributes;
-import game.characters.Monster;
+import game.characters.Boss;
 
-public class Imp extends Monster {
+public class Underlord extends Boss {
 
-    public Imp() {
-        name = "Fiendish Imp";
+    public Underlord() {
+        name = "The demon lord, Reth'tirath";
         attributes = new Attributes(12, 5, 6, 8, 1, 0, 1, 0);
 
         health = attributes.calculateHealth();

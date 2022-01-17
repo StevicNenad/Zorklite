@@ -31,4 +31,8 @@ public class Character {
     public Attributes getAttributes() {
         return attributes;
     }
+
+    public String getName() {
+        return name;
+    }
 }
