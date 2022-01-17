@@ -36,7 +36,7 @@ public class BossRoom extends Room {
             for(String direction : exits.keySet()) {
                 String location = direction;
                 String type = exits.get(direction).getRoomType().toString();
-                stringBuilder.append("a " + type + " room in the " + location + "\n\nWhat do you wanna do?\n");
+                stringBuilder.append("a " + type + " room in the " + location + "\n\nWhat do you wanna do?(type help for commands)\n");
             }
         }
         else {

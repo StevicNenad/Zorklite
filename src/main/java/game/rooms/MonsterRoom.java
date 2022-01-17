@@ -77,7 +77,7 @@ public class MonsterRoom extends Room {
             stringBuilder.append("a " + type + " room in the " + location + "\n");
         }
 
-        stringBuilder.append("\nWhat do you wanna do?\n");
+        stringBuilder.append("\nWhat do you wanna do?(type help for commands)\n");
 
         description = stringBuilder.toString();
 

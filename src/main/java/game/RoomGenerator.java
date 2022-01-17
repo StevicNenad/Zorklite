@@ -23,9 +23,24 @@ public class RoomGenerator {
         generatedRoom = new MonsterRoom();
         Random rn = new Random();
         MonsterGenerator mongen = new MonsterGenerator();
+        int numberEnemies = 0;
+        double spawnChance = rn.nextDouble();
+
+        if(spawnChance <= 0.10) {
+            numberEnemies = 0;
+        }
+        else if(spawnChance <= 0.25){
+            numberEnemies = 3;
+        }
+        else if (spawnChance <= 0.55) {
+            numberEnemies = 2;
+        }
+        else {
+            numberEnemies = 1;
+        }
 
         //Loop that adds 1-3 Monsters to the room
-        for(int i = 0;  i < rn.nextInt(3) + 1; i++) {
+        for(int i = 0;  i < numberEnemies; i++) {
             int monsterLevel = rn.nextInt(3) + roomNumber;
             Monster monster = mongen.getRandomMonster();
             monster.getAttributes().setLevel(monsterLevel);

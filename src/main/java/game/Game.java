@@ -3,9 +3,11 @@ package game;
 import game.characters.Player;
 import game.items.Armor;
 import game.items.Weapon;
-import game.rooms.BossRoom;
 import game.rooms.StartRoom;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,19 +36,19 @@ public class Game {
 
     public void launch() {
         welcome();
-        StartRoom sr = (StartRoom) currentRoom;
+        currentRoom = new StartRoom();
         roomNumber = 0;
-        chooseLoadout(sr);
+        chooseLoadout((StartRoom)currentRoom);
         mainGame();
     }
 
     //Function that makes player choose loadout for the round
-    public void chooseLoadout(StartRoom sr) {
+    public void chooseLoadout(StartRoom currentRoom) {
         String user_pick = "0";
         Scanner sc = new Scanner(System.in);
 
         do{
-            sr.printDescription();
+            currentRoom.printDescription();
             user_pick = sc.nextLine();
 
             try{
@@ -56,22 +58,22 @@ public class Game {
 
                 switch(number) {
                     case 1:
-                        wpn = (Weapon) sr.getSetOne().get(0);
-                        arm = (Armor) sr.getSetOne().get(1);
+                        wpn = (Weapon) currentRoom.getSetOne().get(0);
+                        arm = (Armor) currentRoom.getSetOne().get(1);
 
                         if(confirmLoadout(wpn, arm)) return;
 
                         break;
                     case 2:
-                        wpn = (Weapon) sr.getSetTwo().get(0);
-                        arm = (Armor) sr.getSetTwo().get(1);
+                        wpn = (Weapon) currentRoom.getSetTwo().get(0);
+                        arm = (Armor) currentRoom.getSetTwo().get(1);
 
                         if(confirmLoadout(wpn, arm)) return;
 
                         break;
                     case 3:
-                        wpn = (Weapon) sr.getSetThree().get(0);
-                        arm = (Armor) sr.getSetThree().get(1);
+                        wpn = (Weapon) currentRoom.getSetThree().get(0);
+                        arm = (Armor) currentRoom.getSetThree().get(1);
 
                         if(confirmLoadout(wpn, arm)) return;
 
@@ -104,6 +106,9 @@ public class Game {
     }
 
     public void mainGame() {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String command;
+
         while(roomNumber < 30) {
             RoomGenerator rg = new RoomGenerator();
             rooms.add(currentRoom);
@@ -113,11 +118,20 @@ public class Game {
             if(roomNumber % 10 != 0) {
                 currentRoom = rg.generateMonsterRoom(roomNumber);
             }
-            else{
+            else {
                 currentRoom = rg.generateBossRoom(roomNumber);
             }
 
             currentRoom.printDescription();
+
+            do {
+                try {
+                    command = br.readLine();
+
+                } catch (IOException x) {
+                    System.out.println("There was an error reading the input");
+                }
+            }while(true);
         }
     }
 }
