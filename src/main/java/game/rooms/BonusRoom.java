@@ -3,14 +3,16 @@ package game.rooms;
 import game.Room;
 import game.items.ItemFactory;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class BonusRoom extends Room {
-    private Room exit;//The room you were previously
 
-    public BonusRoom(Room exit){
+
+    public BonusRoom(){
+        explored = true;
         this.roomType = RoomType.BONUS;
-        this.exit = exit;
+        exits = new HashMap<String, Room>();
     }
 
     @Override
@@ -36,5 +38,10 @@ public class BonusRoom extends Room {
     @Override
     public String getDescription() {
         return super.getDescription();
+    }
+
+    @Override
+    public void setExit(String direction, Room room) {
+        super.setExit(direction, room);
     }
 }

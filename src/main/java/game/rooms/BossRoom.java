@@ -20,6 +20,7 @@ public class BossRoom extends Room {
     private TreasureRoom treasureRoom;
 
     public BossRoom(){
+        explored = true;
         this.roomType = RoomType.BOSS;
         exits = new HashMap<String, Room>();
     }
@@ -52,5 +53,15 @@ public class BossRoom extends Room {
     @Override
     public void setBoss(Boss boss) {
         super.setBoss(boss);
+    }
+
+    @Override
+    public Room getExit(String direction) {
+        return super.getExit(direction);
+    }
+
+    @Override
+    public void setExit(String direction, Room room) {
+        super.setExit(direction, room);
     }
 }

@@ -14,9 +14,11 @@ import java.util.Random;
 public class MonsterRoom extends Room {
 
     public MonsterRoom() {
-        this.roomType = RoomType.MONSTER;
+        explored = false;
+        roomType = RoomType.MONSTER;
         monsters = new ArrayList<Character>();
         exits = new HashMap<String, Room>();
+        rollBonusRoom();
     }
 
     @Override
@@ -32,11 +34,6 @@ public class MonsterRoom extends Room {
     @Override
     public String getDescription() {
         return super.getDescription();
-    }
-
-    @Override
-    public HashMap<String, Room> getExits() {
-        return super.getExits();
     }
 
     @Override
@@ -97,27 +94,29 @@ public class MonsterRoom extends Room {
         }
     }
 
-    @Override
-    public void generateExits(int roomNumber, Room currentRoom) {
-        RoomGenerator rg = new RoomGenerator();
-
-        if(roomNumber % 10 != 9) {
-            MonsterRoom monsterRoom = new MonsterRoom();
-            exits.put("east", monsterRoom);
-        }
-        else {
-            BossRoom bossRoom = new BossRoom();
-            exits.put("east", bossRoom);
-        }
-
-        if(this.bonus) {
-            BonusRoom bonusRoom = new BonusRoom(currentRoom);
-            exits.put("north", bonusRoom);
-        }
-    }
 
     @Override
     public void printDescription() {
         super.printDescription();
+    }
+
+    @Override
+    public boolean hasBonus() {
+        return super.hasBonus();
+    }
+
+    @Override
+    public boolean isExplored() {
+        return super.isExplored();
+    }
+
+    @Override
+    public Room getExit(String direction) {
+        return super.getExit(direction);
+    }
+
+    @Override
+    public void setExit(String direction, Room room) {
+        super.setExit(direction, room);
     }
 }

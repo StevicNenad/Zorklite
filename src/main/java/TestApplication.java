@@ -6,6 +6,6 @@ public class TestApplication {
 
         Game game = new Game();
 
-        game.launch();
+        game.mainGame();
     }
 }

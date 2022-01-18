@@ -5,6 +5,7 @@ import game.Room;
 import game.items.Armory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StartRoom extends Room {
     private ArrayList<Item> setOne;
@@ -12,11 +13,20 @@ public class StartRoom extends Room {
     private ArrayList<Item> setThree;
 
     public StartRoom(){
+        this.roomType = RoomType.START;
+        this.bonus = false;
+        this.treasury = false;
+        this.exits = new HashMap<String, Room>();
+        this.explored = true;
+
+        this.boss = null;
+        this.loot = null;
+        this.monsters = null;
+
         setOne = new ArrayList<Item>();
         setTwo = new ArrayList<Item>();
         setThree = new ArrayList<Item>();
 
-        this.roomType = RoomType.START;
         Armory armory = new Armory();
         setOne.add(armory.getRandomWeapon());
         setOne.add(armory.getRandomArmor());

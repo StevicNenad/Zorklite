@@ -23,13 +23,15 @@ public class Room {
     protected HashMap<String, Room> exits;
     //private Effect enviromental_effect;
     protected RoomType roomType;
-    protected boolean bonus;
+    protected boolean bonus, treasury;
+    protected boolean explored;
 
     public void generateDescription(){
     }
 
     public void rollBonusRoom(){
     }
+
 
     public void generateExits(int roomNumber, Room currentRoom){
     }
@@ -54,8 +56,12 @@ public class Room {
         return loot;
     }
 
-    public HashMap<String, Room> getExits() {
-        return exits;
+    public Room getExit(String direction) {
+        return exits.get(direction);
+    }
+
+    public void setExit(String direction, Room room) {
+        exits.put(direction, room);
     }
 
     public RoomType getRoomType() {
@@ -76,5 +82,17 @@ public class Room {
 
     public void setBoss(Boss boss) {
         this.boss = boss;
+    }
+
+    public boolean isExplored() {
+        return explored;
+    }
+
+    public boolean hasBonus() {
+        return bonus;
+    }
+
+    public void setExplored(boolean explored) {
+        this.explored = explored;
     }
 }
