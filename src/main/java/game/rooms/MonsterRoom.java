@@ -57,24 +57,41 @@ public class MonsterRoom extends Room {
         String description;
 
         if(monsters.isEmpty()) {
-            stringBuilder.append("You feel no more threats in this room ");
+            stringBuilder.append("There seem to be no monsters left in this room... ");
         }
         else {
             stringBuilder.append("You feel a threatening presence in this room. You are able to spot enemies:\n");
 
             for(Character monster: monsters) {
-                stringBuilder.append("a " + monster.getName() + "\n");
+                stringBuilder.append("a " + monster.getName() + ", lvl. " + monster.getAttributes().getLevel() + "\n");
             }
         }
 
         stringBuilder.append("You can see " + exits.size() + " exit(s):\n");
         for(String direction : exits.keySet()) {
             String location = direction;
-            String type = exits.get(direction).getRoomType().toString();
-            stringBuilder.append("a " + type + " room in the " + location + "\n");
+            RoomType type = exits.get(direction).getRoomType();
+            String doorDescription = "null";
+
+            switch(type) {
+                case MONSTER:
+                    doorDescription = "a large fire red door";
+                    break;
+                case BOSS:
+                    doorDescription = "a huge obsidian black gate";
+                    break;
+                case BONUS:
+                    doorDescription = "an antique wooden door";
+                    break;
+                case TREASURY:
+                    doorDescription = "a shiny golden door";
+                    break;
+            }
+
+            stringBuilder.append(doorDescription + " in the " + location + "\n");
         }
 
-        stringBuilder.append("\nWhat do you wanna do?(type help for commands)\n");
+        stringBuilder.append("\nWhat do you wanna do?\n");
 
         description = stringBuilder.toString();
 

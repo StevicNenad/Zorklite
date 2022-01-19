@@ -2,6 +2,7 @@ package game;
 
 import game.characters.Boss;
 import game.characters.Monster;
+import game.characters.Player;
 import game.rooms.BonusRoom;
 
 import java.util.ArrayList;
@@ -94,5 +95,9 @@ public class Room {
 
     public void setExplored(boolean explored) {
         this.explored = explored;
+    }
+
+    //Used in StartRoom
+    public void chooseLoadout(Player player){
     }
 }

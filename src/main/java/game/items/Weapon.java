@@ -18,6 +18,7 @@ public class Weapon extends Item {
                             level;
 
     protected double        accuracy,
+                            critChance,
                             aoeDamage;//Area of Effect/Cleave/Spill damage
 
     protected DamageType    damageType;

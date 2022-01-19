@@ -2,14 +2,16 @@ package game;
 
 import game.characters.Player;
 
+import java.util.ArrayList;
+
 public class Battle {
     private Character pc;
-    private Character enemy;
+    private ArrayList<Character> enemy;
     private boolean battle_over;
 
-    public Battle(Player pc, Character enemy) {
+    public Battle(Player pc, ArrayList<Character> foes) {
         this.pc = pc;
-        this.enemy = enemy;
+        this.enemy = foes;
         battle_over = false;
     }
 

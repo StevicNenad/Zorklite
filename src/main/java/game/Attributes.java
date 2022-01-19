@@ -5,6 +5,7 @@ public class Attributes {
                 intelligence,
                 agility,
                 speed,
+                perception,
                 level,
                 experience,
                 lvlUpExperience;//Experience required for level up.
@@ -12,13 +13,14 @@ public class Attributes {
     private double  accuracy,
                     evasion;
 
-    public Attributes(int strength, int intelligence, int agility, int speed, int level, int experience, double accuracy, double evasion) {
+    public Attributes(int strength, int intelligence, int agility, int speed, int perception, int level,  double accuracy, double evasion) {
         double levelModifier = (level - 1) / 10 + 1;//Automatically increases stats based on Level
 
         this.strength = (int) (strength * levelModifier);
         this.intelligence = (int) (intelligence * levelModifier);
         this.agility = (int) (agility * levelModifier);
         this.speed = (int) (speed * levelModifier);
+        this.perception = (int) (perception * levelModifier);
 
         this.level = level;
         this.experience = 0;
@@ -74,5 +76,9 @@ public class Attributes {
 
     public void setEvasion(double evasion) {
         this.evasion = evasion;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
