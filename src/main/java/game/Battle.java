@@ -16,11 +16,11 @@ public class Battle {
     }
 
     public void encounter(Character attacker) {
-        int playerHealth = pc.getHealth();
+        int playerHealth = pc.getCurrenthealth();
 
         if(attacker.getType() == Character.CharacterType.PLAYER) {
             for(Character enemy : enemies) {
-                enemy.updateHealth((int) (pc.getWeapon().getDamage() * pc.getWeapon().getCritPercentage()));
+                enemy.updateHealth((int) (pc.getWeapon().getAttributes().getDamage() * pc.getWeapon().getAttributes().getCritPercentage()));
             }
         }
         else {

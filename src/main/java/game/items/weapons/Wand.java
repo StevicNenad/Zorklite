@@ -1,22 +1,36 @@
 package game.items.weapons;
 
+import game.AttackRange;
+import game.Attributes;
 import game.DamageType;
 import game.items.Weapon;
 
 public class Wand extends Weapon {
 
     public Wand() {
-        this.level = 1;
-        this.damage = 8;
-        this.aoeDamage = 0;
-        this.accuracy = 0.8;
-        this.critChance = 1.00;
-        this.critPercentage = 1.00;
-        this.attacks = 1;
+        this.name = "Magic Wand";
+
+        attributes = new Attributes(
+                8,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.80,
+                0,
+                2.00,
+                0.00,
+                0,
+                0
+        );
+
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;
         this.itemType = ItemType.WEAPON;
-        this.name = "Magic Wand";
         this.damageType = DamageType.MAGICAL;
     }
 

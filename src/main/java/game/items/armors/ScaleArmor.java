@@ -1,17 +1,34 @@
 package game.items.armors;
 
+import game.Attributes;
 import game.items.Armor;
 
 public class ScaleArmor extends Armor {
 
     public ScaleArmor() {
-        this.itemType = ItemType.ARMOR;
-        this.level = 1;
-        this.armorPoints = 45;
-        this.damageReduction = 0.25;
-        this.evasion = 0.05;
-        this.speedModifier = 0.9;
         this.name = "Scale Armor";
+
+        attributes = new Attributes(
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0.25,
+                0.05
+        );
+
+        this.itemType = ItemType.ARMOR;
+        this.armorPoints = 45;
+        this.speedModifier = 0.9;
     }
 
     @Override

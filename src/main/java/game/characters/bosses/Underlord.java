@@ -7,16 +7,33 @@ public class Underlord extends Boss {
 
     public Underlord() {
         name = "The demon lord, Reth'tirath";
-        attributes = new Attributes(12, 5, 6, 8, 1, 0, 1, 0);
 
-        health = attributes.calculateHealth();
+        attributes = new Attributes(
+                20,
+                1,
+                0,
+                12,
+                5,
+                6,
+                8,
+                10,
+                1,
+                1,
+                0.10,
+                1.80,
+                0,
+                0.10,
+                0
+        );
+
+        maxHealth = attributes.calculateHealth();
         armorPoints = attributes.calculateArmor();
-        mana = attributes.calculateMana();
+        maxMana = attributes.calculateMana();
     }
 
     @Override
-    public int getHealth() {
-        return super.getHealth();
+    public int getMaxHealth() {
+        return super.getMaxHealth();
     }
 
     @Override

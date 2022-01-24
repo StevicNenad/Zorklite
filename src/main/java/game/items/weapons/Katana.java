@@ -1,22 +1,36 @@
 package game.items.weapons;
 
+import game.AttackRange;
+import game.Attributes;
 import game.DamageType;
 import game.items.Weapon;
 
 public class Katana extends Weapon {
 
     public Katana() {
-        this.level = 1;
-        this.damage = 18;
-        this.aoeDamage = 0;
-        this.accuracy = 0.9;
-        this.critChance = 1.25;
-        this.critPercentage = 2.00;
-        this.attacks = 1;
+        this.name = "Dark Katana";
+
+        attributes = new Attributes(
+                18,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.90,
+                0.25,
+                2.00,
+                0.00,
+                0,
+                0
+        );
+
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;
         this.itemType = ItemType.WEAPON;
-        this.name = "Dark Katana";
         this.damageType = DamageType.MAGICAL;
     }
 

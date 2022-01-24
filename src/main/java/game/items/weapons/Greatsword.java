@@ -1,22 +1,36 @@
 package game.items.weapons;
 
+import game.AttackRange;
+import game.Attributes;
 import game.DamageType;
 import game.items.Weapon;
 
 public class Greatsword extends Weapon {
 
     public Greatsword() {
-        this.level = 1;
-        this.damage = 45;
-        this.aoeDamage = 0.30;
-        this.accuracy = 0.65;
-        this.critChance = 1.05;
-        this.critPercentage = 2.20;
-        this.attacks = 1;
+        this.name = "Greatsword";
+
+        attributes = new Attributes(
+                45,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.65,
+                0,
+                2.20,
+                0.50,
+                0,
+                0
+        );
+
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;
         this.itemType = ItemType.WEAPON;
-        this.name = "Greatsword";
         this.damageType = DamageType.PHYSICAL;
     }
 

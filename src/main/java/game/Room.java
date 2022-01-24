@@ -66,7 +66,7 @@ public class Room {
         }
         else {
             for (Item item : loot) {
-                System.out.println(item.getName() + ", lvl " + item.getLevel());
+                System.out.println(item.getName() + ", lvl " + item.getAttributes().getLevel());
             }
         }
         System.out.println("\nExits:");

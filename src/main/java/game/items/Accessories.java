@@ -3,14 +3,6 @@ package game.items;
 import game.Item;
 
 public class Accessories extends Item {
-    private double  bonusDamage,
-                    bonusEvasion,
-                    bonusAttackRate,
-                    bonusHealth,
-                    bonusMana,
-                    bonusArmor,
-                    bonusStrength,
-                    bonus;
 
     @Override
     public String getName() {
@@ -18,12 +10,8 @@ public class Accessories extends Item {
     }
 
     @Override
-    public int getLevel() {
-        return super.getLevel();
-    }
-
-    @Override
     public ItemType getitemType() {
         return super.getitemType();
     }
+
 }

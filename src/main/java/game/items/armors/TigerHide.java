@@ -1,17 +1,34 @@
 package game.items.armors;
 
+import game.Attributes;
 import game.items.Armor;
 
 public class TigerHide extends Armor {
 
     public TigerHide() {
-        this.itemType = ItemType.ARMOR;
-        this.level = 1;
-        this.armorPoints = 10;
-        this.damageReduction = 0.15;
-        this.evasion = 0.20;
-        this.speedModifier = 1.2;
         this.name = "Tiger Hide";
+
+        attributes = new Attributes(
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0.15,
+                0.2
+        );
+
+        this.itemType = ItemType.ARMOR;
+        this.armorPoints = 10;
+        this.speedModifier = 1.2;
     }
 
     @Override

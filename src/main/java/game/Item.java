@@ -1,5 +1,7 @@
 package game;
 
+import game.characters.Player;
+
 public class Item {
     protected enum ItemType {
         ACCESSORY,
@@ -7,19 +9,30 @@ public class Item {
         GEM,
         WEAPON
     }
-    protected ItemType itemType;
-    protected String name;
-    protected int level;
+
+    protected String        name;
+
+    protected double        speedModifier,
+                            experienceModifier;
+
+    protected ItemType      itemType;
+    protected Attributes    attributes;
 
     public String getName() {
         return name;
     }
 
-    public int getLevel() {
-        return level;
+    public Attributes getAttributes() {
+        return attributes;
     }
 
     public ItemType getitemType() {
         return itemType;
+    }
+
+    public void addStats(Attributes attributes) {
+    }
+
+    public void removeStats(Attributes attributes) {
     }
 }

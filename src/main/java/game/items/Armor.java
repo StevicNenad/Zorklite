@@ -4,20 +4,7 @@ import game.Item;
 
 public class Armor extends Item {
     protected int       armorPoints,
-                        strBonus,
-                        agiBonus,
-                        intBonus,
-                        stealthBonus;
-
-    protected double    damageReduction,
-                        speedModifier,
-                        evasion,
-                        experienceModifier;
-
-    @Override
-    public int getLevel() {
-        return super.getLevel();
-    }
+                        shieldPoints;
 
     @Override
     public String getName() {

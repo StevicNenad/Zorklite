@@ -17,10 +17,29 @@ public class Player extends Character {
     private ArrayList<ItemKey> keys;*/
 
     public Player() {
-        attributes = new Attributes(4, 2, 2, 10, 1, 0, 0, 0);
-        health = attributes.calculateHealth();
-        armorPoints = attributes.calculateArmor();
-        mana = attributes.calculateMana();
+
+        attributes = new Attributes(
+                5,
+                0,
+                0,
+                4,
+                2,
+                2,
+                6,
+                5,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
+
+        maxHealth = attributes.calculateHealth();
+        armorPoints = 0;
+        ShieldPoints = 0;
+        maxMana = attributes.calculateMana();
 
         weapon = null;
         armor = null;
@@ -30,6 +49,7 @@ public class Player extends Character {
 
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
+        weapon.addStats(attributes);
     }
 
     public void setArmor(Armor armor) {
@@ -67,11 +87,6 @@ public class Player extends Character {
 
     public Weapon getWeapon() {
         return weapon;
-    }
-
-    @Override
-    public int getHealth() {
-        return super.getHealth();
     }
 
     @Override

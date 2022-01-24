@@ -1,22 +1,36 @@
 package game.items.weapons;
 
+import game.AttackRange;
+import game.Attributes;
 import game.DamageType;
 import game.items.Weapon;
 
 public class Sword extends Weapon {
 
     public Sword() {
-        this.level = 1;
-        this.damage = 25;
-        this.aoeDamage = 0;
-        this.accuracy = 0.9;
-        this.critChance = 1.1;
-        this.critPercentage = 2.00;
-        this.attacks = 1;
+        this.name = "Broadsword";
+
+        attributes = new Attributes(
+                25,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.90,
+                0.1,
+                2.00,
+                0.00,
+                0,
+                0
+        );
+
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;
         this.itemType = ItemType.WEAPON;
-        this.name = "Broadsword";
         this.damageType = DamageType.PHYSICAL;
     }
 

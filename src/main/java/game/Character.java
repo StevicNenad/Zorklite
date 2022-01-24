@@ -12,20 +12,29 @@ public class Character {
 
     protected String        name;
 
-    protected int           health,
-                            mana,
-                            armorPoints;
+    protected int           maxHealth,
+                            currentHealth,
+                            maxMana,
+                            currentMana,
+                            armorPoints,
+                            ShieldPoints,
+                            experience,
+                            lvlUpExperience;    //amount of experience required for level up.
 
     protected Attributes    attributes;
-    protected Ability       ability;
+    //protected Ability       ability;
 
 
-    public int getHealth() {
-        return health;
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getCurrenthealth(){
+        return currentHealth;
     }
 
     public void updateHealth(int healthPoints) {
-        health = health + healthPoints;
+        currentHealth = currentHealth + healthPoints;
     }
 
     public CharacterType getType() {
@@ -39,4 +48,5 @@ public class Character {
     public String getName() {
         return name;
     }
+
 }

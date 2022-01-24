@@ -1,22 +1,36 @@
 package game.items.weapons;
 
+import game.AttackRange;
+import game.Attributes;
 import game.DamageType;
 import game.items.Weapon;
 
 public class Bow extends Weapon {
 
     public Bow() {
-        this.level = 1;
-        this.damage = 15;
-        this.aoeDamage = 0;
-        this.accuracy = 0.95;
-        this.critChance = 1.20;
-        this.critPercentage = 1.85;
-        this.attacks = 1;
+        this.name = "Shortbow";
+
+        attributes = new Attributes(
+                15,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.95,
+                0.20,
+                1.85,
+                0,
+                0,
+                0
+        );
+
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;
         this.itemType = ItemType.WEAPON;
-        this.name = "Shortbow";
         this.damageType = DamageType.PHYSICAL;
     }
 
