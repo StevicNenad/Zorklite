@@ -33,7 +33,6 @@ public class Room {
     public void rollBonusRoom(){
     }
 
-
     public void generateExits(int roomNumber, Room currentRoom){
     }
 
@@ -43,6 +42,38 @@ public class Room {
 
     public void printDescription() {
         System.out.print(description);
+    }
+
+    public void printMap() {
+
+        if(!explored) {
+            System.out.println("You haven't \"explored\" this room yet...");
+            return;
+        }
+
+        System.out.println("Monsters:");
+        if(monsters.isEmpty()) {
+            System.out.println("none");
+        }
+        else {
+            for(Character monster : monsters) {
+                System.out.println(monster.getName() + ", lvl " + monster.getAttributes().getLevel());
+            }
+        }
+        System.out.println("\nItems:");
+        if(loot.isEmpty()) {
+            System.out.println("none");
+        }
+        else {
+            for (Item item : loot) {
+                System.out.println(item.getName() + ", lvl " + item.getLevel());
+            }
+        }
+        System.out.println("\nExits:");
+        for(String exit : exits.keySet()) {
+            RoomType type = exits.get(exit).getRoomType();
+            System.out.println(exit + ", " + type.toString().toLowerCase() + " room door");
+        }
     }
 
     public String getDescription() {

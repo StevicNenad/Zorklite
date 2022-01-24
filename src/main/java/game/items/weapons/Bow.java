@@ -10,6 +10,8 @@ public class Bow extends Weapon {
         this.damage = 15;
         this.aoeDamage = 0;
         this.accuracy = 0.95;
+        this.critChance = 1.20;
+        this.critPercentage = 1.85;
         this.attacks = 1;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;

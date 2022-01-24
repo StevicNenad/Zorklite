@@ -10,6 +10,8 @@ public class Repeater extends Weapon {
         this.damage = 6;
         this.aoeDamage = 0;
         this.accuracy = 0.80;
+        this.critChance = 1.35;
+        this.critPercentage = 1.50;
         this.attacks = 3;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;

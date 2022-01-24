@@ -5,21 +5,28 @@ import game.characters.Player;
 import java.util.ArrayList;
 
 public class Battle {
-    private Character pc;
-    private ArrayList<Character> enemy;
+    private Player pc;
+    private ArrayList<Character> enemies;
     private boolean battle_over;
 
     public Battle(Player pc, ArrayList<Character> foes) {
         this.pc = pc;
-        this.enemy = foes;
+        this.enemies = foes;
         battle_over = false;
     }
 
-    public void encounter() {
+    public void encounter(Character attacker) {
         int playerHealth = pc.getHealth();
-        int enemyHealth = enemy.getHealth();
 
-        while(playerHealth != 0 && enemyHealth != 0) {
+        if(attacker.getType() == Character.CharacterType.PLAYER) {
+            for(Character enemy : enemies) {
+                enemy.updateHealth((int) (pc.getWeapon().getDamage() * pc.getWeapon().getCritPercentage()));
+            }
+        }
+        else {
+
+        }
+        while(playerHealth != 0 && !enemies.isEmpty()) {
 
         }
     }

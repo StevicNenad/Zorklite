@@ -10,6 +10,8 @@ public class Wand extends Weapon {
         this.damage = 8;
         this.aoeDamage = 0;
         this.accuracy = 0.8;
+        this.critChance = 1.00;
+        this.critPercentage = 1.00;
         this.attacks = 1;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;

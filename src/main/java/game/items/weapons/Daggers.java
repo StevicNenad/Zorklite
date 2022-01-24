@@ -10,6 +10,8 @@ public class Daggers extends Weapon {
         this.damage = 8;
         this.aoeDamage = 0;
         this.accuracy = 1.0;
+        this.critChance = 1.30;
+        this.critPercentage = 2.50;
         this.attacks = 2;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;

@@ -10,6 +10,8 @@ public class Greatsword extends Weapon {
         this.damage = 45;
         this.aoeDamage = 0.30;
         this.accuracy = 0.65;
+        this.critChance = 1.05;
+        this.critPercentage = 2.20;
         this.attacks = 1;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;

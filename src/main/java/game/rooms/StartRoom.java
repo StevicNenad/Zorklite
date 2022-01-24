@@ -19,14 +19,16 @@ public class StartRoom extends Room {
 
     public StartRoom(){
         this.roomType = RoomType.START;
+
         this.bonus = false;
         this.treasury = false;
-        this.exits = new HashMap<String, Room>();
         this.explored = true;
 
-        this.boss = null;
-        this.loot = null;
+        this.exits = new HashMap<String, Room>();
+        this.loot = new ArrayList<Item>();
         this.monsters = new ArrayList<Character>();
+
+        this.boss = null;
 
         setOne = new ArrayList<Item>();
         setTwo = new ArrayList<Item>();
@@ -140,6 +142,11 @@ public class StartRoom extends Room {
                                 "that is the only way forward... What is your next move? (type help or tutorial)\n";
 
         this.description = description;
+    }
+
+    @Override
+    public void printMap() {
+        super.printMap();
     }
 
     public ArrayList<Item> getSetOne() {

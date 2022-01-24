@@ -24,6 +24,10 @@ public class Character {
         return health;
     }
 
+    public void updateHealth(int healthPoints) {
+        health = health + healthPoints;
+    }
+
     public CharacterType getType() {
         return characterType;
     }

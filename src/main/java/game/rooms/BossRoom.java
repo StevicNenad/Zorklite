@@ -1,12 +1,14 @@
 package game.rooms;
 
 import game.Character;
+import game.Item;
 import game.Room;
 import game.characters.Boss;
 import game.characters.bosses.FalseGod;
 import game.characters.bosses.Nephilim;
 import game.characters.bosses.Underlord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BossRoom extends Room {
@@ -23,6 +25,7 @@ public class BossRoom extends Room {
         explored = true;
         this.roomType = RoomType.BOSS;
         exits = new HashMap<String, Room>();
+        loot = new ArrayList<Item>();
     }
 
     @Override

@@ -10,6 +10,8 @@ public class Sword extends Weapon {
         this.damage = 25;
         this.aoeDamage = 0;
         this.accuracy = 0.9;
+        this.critChance = 1.1;
+        this.critPercentage = 2.00;
         this.attacks = 1;
         this.weaponType = WeaponType.MELEE;
         this.attackRange = AttackRange.MELEE;

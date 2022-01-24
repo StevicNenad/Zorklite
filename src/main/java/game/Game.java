@@ -36,22 +36,18 @@ public class Game {
                 processCommand(command);
             }
 
-            //Print stats, progress and goodbye message
+            //Print stats, progress and goodbye message HERE
             System.out.println("Pussy");
         }
 
-        /*
-        System.out.println("You enter a strange, dark dungeon. The air is thick, you feel uneasy.
-        You pick up a torch nearby and plan your next move... (type help for commands)");
-        */
     }
 
     public void welcome() {
         Scanner sc = new Scanner(System.in);
-        System.out.print(   "************************\n" +
-                            "******* Zorklite *******\n" +
-                            "************************\n\n" +
-                            "Press enter to begin or \"q\" to quit\n");
+        System.out.print(   "************************************\n" +
+                            "************* Zorklite *************\n" +
+                            "************************************\n\n" +
+                            "Press enter to begin or \"q\" to exit\n");
 
         String userInput = sc.nextLine();
 
@@ -74,6 +70,9 @@ public class Game {
         else if(commandWord.equals("explore")) {
             currentRoom.printDescription();
             currentRoom.setExplored(true);
+        }
+        else if(commandWord.equals("map")) {
+            currentRoom.printMap();
         }
         else if(commandWord.equals("go")) {
             goRoom(command);
@@ -121,6 +120,9 @@ public class Game {
                 System.out.println( "With \"go\" you can enter doors and progress further through the game. If there are Monsters nearby\n" +
                                     "you will not be able to use the command.");
                 break;
+            case "map":
+                System.out.println( "With \"map\" you can view the currently explored room, and what's inside it. It's shorter than the \"explore\" command\n" +
+                                    "and you can't get into surprise encounters when using it.");
             case "sneak":
                 System.out.println( "With the command \"sneak\" you are able to do two things: 1 - You can try to sneak past monsters and exit\n" +
                                     "a room without clearing it or 2 - you can sneak attack a target, which allows you to cause damage to it before\n" +
@@ -130,15 +132,16 @@ public class Game {
             case "explore":
                 System.out.println( "Every Room except Boss Rooms need to be explored first before you know what lies within them. Depending on your\n" +
                                     "\"perception\" attribute, you are able to spot additional secrets. Exploring a room has a chance of monsters\n" +
-                                    "ambushing you and starting a battle encounter.");
+                                    "ambushing you and starting a battle encounter (even when the room has been cleared). Exploring a room also has a rare\n" +
+                                    "chance for finding secret loot every time you use the command.");
                 break;
             case "quit":
                 System.out.println( "This command ends your current Run and you can start over again.");
                 break;
             case "game":
-                System.out.println( "The goal of the game is to make it as far as you can until you reach the final boss. The weapons, Monsters, Loot and\n" +
-                                    "Environments are all randomly generated. Every playthrough is different and some are unlucky from the start\n" +
-                                    "so feel free to start a new run whenever. With every Monster slain, you increase your experience and attributes\n" +
+                System.out.println( "The goal of the game is to make it as far east as you can until you reach the final boss. The weapons, Monsters, Loot and\n" +
+                                    "Environments are all randomly generated. Every playthrough is different and some are unlucky from the start,\n" +
+                                    "so feel free to restart a run whenever. With every Monster slain, you increase your experience and attributes\n" +
                                     "which are permanent and stay with every new run. So the game gets easier the longer you stick with it.");
                 break;
             default:
@@ -147,8 +150,14 @@ public class Game {
                                     "\"go\"\n" +
                                     "\"sneak\"\n" +
                                     "\"explore\"\n" +
+                                    "\"map\"\n" +
                                     "\"quit\"\n" +
-                                    "\"game\"");
+                                    "\"game\"\n\n" +
+                                    "To view type \"tutorial\" + any of the words above");
+        }
+
+        if(command.hasSecondWord()) {
+            System.out.print("\nNext command:\n");
         }
     }
 

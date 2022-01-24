@@ -1,8 +1,10 @@
 package game.rooms;
 
+import game.Item;
 import game.Room;
 import game.items.ItemFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -12,6 +14,7 @@ public class BonusRoom extends Room {
     public BonusRoom(){
         explored = true;
         this.roomType = RoomType.BONUS;
+        loot = new ArrayList<Item>();
         exits = new HashMap<String, Room>();
     }
 
@@ -38,6 +41,11 @@ public class BonusRoom extends Room {
     @Override
     public String getDescription() {
         return super.getDescription();
+    }
+
+    @Override
+    public void printMap() {
+        super.printMap();
     }
 
     @Override

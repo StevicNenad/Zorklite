@@ -10,6 +10,8 @@ public class Shuriken extends Weapon {
         this.damage = 4;
         this.aoeDamage = 0;
         this.accuracy = 0.80;
+        this.critChance = 1.50;
+        this.critPercentage = 1.80;
         this.attacks = 4;
         this.weaponType = WeaponType.PROJECTILE;
         this.attackRange = AttackRange.RANGED;

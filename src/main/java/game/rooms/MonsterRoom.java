@@ -16,6 +16,7 @@ public class MonsterRoom extends Room {
     public MonsterRoom() {
         explored = false;
         roomType = RoomType.MONSTER;
+        loot = new ArrayList<Item>();
         monsters = new ArrayList<Character>();
         exits = new HashMap<String, Room>();
         rollBonusRoom();
@@ -96,6 +97,11 @@ public class MonsterRoom extends Room {
         description = stringBuilder.toString();
 
         this.description = description;
+    }
+
+    @Override
+    public void printMap() {
+        super.printMap();
     }
 
     @Override

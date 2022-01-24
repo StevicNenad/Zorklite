@@ -9,9 +9,14 @@ public class Item {
     }
     protected ItemType itemType;
     protected String name;
+    protected int level;
 
     public String getName() {
         return name;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public ItemType getitemType() {

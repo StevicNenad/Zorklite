@@ -18,6 +18,11 @@ public class Accessories extends Item {
     }
 
     @Override
+    public int getLevel() {
+        return super.getLevel();
+    }
+
+    @Override
     public ItemType getitemType() {
         return super.getitemType();
     }

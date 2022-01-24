@@ -65,6 +65,10 @@ public class Player extends Character {
         }
     }
 
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
     @Override
     public int getHealth() {
         return super.getHealth();
