@@ -1,6 +1,8 @@
 package game;
 
 
+import game.abilities.basic.Attack;
+
 public class Character {
     protected enum CharacterType {
         BOSS,
@@ -17,11 +19,12 @@ public class Character {
                             maxMana,
                             currentMana,
                             armorPoints,
-                            ShieldPoints,
+                            shieldPoints,
                             experience,
                             lvlUpExperience;    //amount of experience required for level up.
 
     protected Attributes    attributes;
+    protected Attack        attack;
     //protected Ability       ability;
 
 

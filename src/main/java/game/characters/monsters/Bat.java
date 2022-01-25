@@ -16,7 +16,7 @@ public class Bat extends Monster {
                 12,
                 5,
                 6,
-                8,
+                4,
                 10,
                 1,
                 1,
@@ -28,8 +28,11 @@ public class Bat extends Monster {
         );
 
         maxHealth = attributes.calculateHealth();
+        currentHealth = maxHealth;
+        shieldPoints = attributes.calculateShield();
         armorPoints = attributes.calculateArmor();
         maxMana = attributes.calculateMana();
+        currentMana = maxMana;
     }
 
     @Override

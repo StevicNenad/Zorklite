@@ -27,8 +27,11 @@ public class Spectre extends Monster {
         );
 
         maxHealth = attributes.calculateHealth();
+        currentHealth = maxHealth;
+        shieldPoints = attributes.calculateShield();
         armorPoints = attributes.calculateArmor();
         maxMana = attributes.calculateMana();
+        currentMana = maxMana;
     }
 
     @Override

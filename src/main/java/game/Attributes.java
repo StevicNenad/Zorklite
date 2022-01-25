@@ -99,4 +99,8 @@ public class Attributes {
     public double getCritPercentage() {
         return critPercentage;
     }
+
+    public int getSpeed() {
+        return speed;
+    }
 }

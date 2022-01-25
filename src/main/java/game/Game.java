@@ -60,7 +60,8 @@ public class Game {
             return;
         }
 
-        String commandWord = command.getCommandWord();
+        String commandWord = command.getCommandWord().toLowerCase();
+
         if (commandWord.equals("help")) {
             printHelp();
         }
@@ -68,8 +69,15 @@ public class Game {
             printTutorial(command);
         }
         else if(commandWord.equals("explore")) {
+            if(currentRoom.isExplored()) {
+                System.out.println("You have already explored this room...");
+                return;
+            }
             currentRoom.printDescription();
             currentRoom.setExplored(true);
+        }
+        else if(commandWord.equals("attack")) {
+            startEncounter();
         }
         else if(commandWord.equals("map")) {
             currentRoom.printMap();
@@ -127,7 +135,7 @@ public class Game {
                 System.out.println( "With the command \"sneak\" you are able to do two things: 1 - You can try to sneak past monsters and exit\n" +
                                     "a room without clearing it or 2 - you can sneak attack a target, which allows you to cause damage to it before\n" +
                                     "the battle even begins. The success of both of those actions depends on your \"stealth\" attribute. If you\n" +
-                                    "fail a sneak action, you are immediately thrown into battle with the opposing monster having two turns in a row.");
+                                    "fail a sneak action, you are immediately thrown into battle with 25% of your MAX hp removed. (You can die from this)");
                 break;
             case "explore":
                 System.out.println( "Every Room except Boss Rooms need to be explored first before you know what lies within them. Depending on your\n" +
@@ -185,11 +193,18 @@ public class Game {
                     System.out.println("There is no way through here...");
                 }
             }
+            else if(currentRoom.isExplored() && !currentRoom.getMonsters().isEmpty()) {
+                System.out.println("You can't do that, there are monsters nearby...");
+            }
+            else {
+                System.out.println("You need to \"explore\" the room first.");
+            }
         }
     }
 
     private void startEncounter() {
-        Battle battle = new Battle(player, currentRoom.getMonsters());
+        Battle battle = new Battle();
+        battle.startEncounter(player, currentRoom.getMonsters());
     }
 
     }

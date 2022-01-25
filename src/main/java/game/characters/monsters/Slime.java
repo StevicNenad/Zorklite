@@ -15,7 +15,7 @@ public class Slime extends Monster {
                 12,
                 5,
                 6,
-                8,
+                3,
                 10,
                 1,
                 1,
@@ -27,8 +27,11 @@ public class Slime extends Monster {
         );
 
         maxHealth = attributes.calculateHealth();
+        currentHealth = maxHealth;
+        shieldPoints = attributes.calculateShield();
         armorPoints = attributes.calculateArmor();
         maxMana = attributes.calculateMana();
+        currentMana = maxMana;
     }
 
     @Override

@@ -52,13 +52,13 @@ public class RoomGenerator {
                     int numberEnemies = 0;
                     double spawnChance = rn.nextDouble();
 
-                    if(spawnChance <= 0.10) {
+                    if(spawnChance <= 0.05) {
                         numberEnemies = 0;
                     }
                     else if(spawnChance <= 0.25){
                         numberEnemies = 3;
                     }
-                    else if (spawnChance <= 0.55) {
+                    else if (spawnChance <= 0.60) {
                         numberEnemies = 2;
                     }
                     else {
@@ -69,6 +69,7 @@ public class RoomGenerator {
                         int monsterLevel = rn.nextInt(3) + (index - 1);
                         Monster monster = mgen.getRandomMonster();
                         monster.getAttributes().setLevel(monsterLevel);
+
                         room.addMonster(monster);
                     }
 

@@ -17,6 +17,7 @@ public class Player extends Character {
     private ArrayList<ItemKey> keys;*/
 
     public Player() {
+        name = "Player";
 
         attributes = new Attributes(
                 5,
@@ -25,7 +26,7 @@ public class Player extends Character {
                 4,
                 2,
                 2,
-                6,
+                10,
                 5,
                 1,
                 0,
@@ -36,10 +37,13 @@ public class Player extends Character {
                 0
         );
 
+        characterType = CharacterType.PLAYER;
         maxHealth = attributes.calculateHealth();
+        currentHealth = maxHealth;
         armorPoints = 0;
-        ShieldPoints = 0;
+        shieldPoints = 0;
         maxMana = attributes.calculateMana();
+        currentMana = maxMana;
 
         weapon = null;
         armor = null;
