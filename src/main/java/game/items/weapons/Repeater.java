@@ -11,7 +11,7 @@ public class Repeater extends Weapon {
         this.name = "Repeating Pistol";
 
         attributes = new Attributes(
-                6,
+                15,
                 3,
                 1,
                 0,
@@ -24,7 +24,6 @@ public class Repeater extends Weapon {
                 0.35,
                 1.50,
                 0.00,
-                0,
                 0
         );
 

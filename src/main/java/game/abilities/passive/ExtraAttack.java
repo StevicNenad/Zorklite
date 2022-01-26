@@ -2,6 +2,7 @@ package game.abilities.passive;
 
 import game.Ability;
 
+//every two turns, gain additional attack
 public class ExtraAttack extends Ability {
 
     public ExtraAttack() {

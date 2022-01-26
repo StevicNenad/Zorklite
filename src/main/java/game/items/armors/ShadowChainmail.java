@@ -22,7 +22,6 @@ public class ShadowChainmail extends Armor {
                 0,
                 0,
                 0,
-                0.33,
                 -0.2
         );
 

@@ -22,7 +22,6 @@ public class ScaleArmor extends Armor {
                 0,
                 0,
                 0,
-                0.25,
                 0.05
         );
 

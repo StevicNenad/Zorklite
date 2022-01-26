@@ -38,6 +38,8 @@ public class Game {
 
             //Print stats, progress and goodbye message HERE
             System.out.println("Pussy");
+            player.resetCharacter();
+            gameover = false;
         }
 
     }
@@ -204,7 +206,7 @@ public class Game {
 
     private void startEncounter() {
         Battle battle = new Battle();
-        battle.startEncounter(player, currentRoom.getMonsters());
+        gameover = battle.startEncounter(player, currentRoom.getMonsters());
     }
 
     }

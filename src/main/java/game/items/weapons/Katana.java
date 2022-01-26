@@ -11,7 +11,7 @@ public class Katana extends Weapon {
         this.name = "Dark Katana";
 
         attributes = new Attributes(
-                18,
+                40,
                 1,
                 0,
                 0,
@@ -24,7 +24,6 @@ public class Katana extends Weapon {
                 0.25,
                 2.00,
                 0.00,
-                0,
                 0
         );
 

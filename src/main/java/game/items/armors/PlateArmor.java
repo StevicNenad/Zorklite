@@ -22,7 +22,6 @@ public class PlateArmor extends Armor {
                 0,
                 0,
                 0,
-                0.30,
                 0
         );
 

@@ -6,7 +6,7 @@ import game.DamageType;
 import game.Item;
 
 public class Weapon extends Item {
-    protected enum WeaponType {
+    public enum WeaponType {
         MELEE,
         PROJECTILE
     }
@@ -18,5 +18,13 @@ public class Weapon extends Item {
     @Override
     public String getName() {
         return super.getName();
+    }
+
+    public DamageType getDamageType() {
+        return damageType;
+    }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
     }
 }

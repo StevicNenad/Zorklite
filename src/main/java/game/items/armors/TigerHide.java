@@ -22,7 +22,6 @@ public class TigerHide extends Armor {
                 0,
                 0,
                 0,
-                0.15,
                 0.2
         );
 

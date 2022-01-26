@@ -2,7 +2,7 @@ package game.abilities.passive;
 
 import game.Ability;
 
-//Takes more dmg/higher miss chance but big attack bonus. Or increase in attack count, i've yet to decide
+//Takes more dmg/higher miss chance but big attack bonus.
 public class BlindRage extends Ability {
 
     public BlindRage() {

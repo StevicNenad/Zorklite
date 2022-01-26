@@ -11,4 +11,8 @@ public class Monster extends Character {
     public Monster() {
         characterType = CharacterType.MONSTER;
     }
+
+    public DamageType getDamageType() {
+        return damageType;
+    }
 }

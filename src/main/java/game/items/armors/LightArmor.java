@@ -22,7 +22,6 @@ public class LightArmor extends Armor {
                 0,
                 0,
                 0,
-                0.10,
                 0.10
         );
 

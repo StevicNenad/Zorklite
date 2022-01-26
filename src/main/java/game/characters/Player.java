@@ -1,5 +1,6 @@
 package game.characters;
 
+import game.Ability;
 import game.Attributes;
 import game.Character;
 import game.items.Accessories;
@@ -13,6 +14,8 @@ public class Player extends Character {
     private Weapon weapon;
     private Armor armor;
     private Accessories firstAcc, secondAcc;
+    private ArrayList<Ability> active;
+    private ArrayList<Ability> passive;
     /*private Ability first, second, third;
     private ArrayList<ItemKey> keys;*/
 
@@ -33,7 +36,6 @@ public class Player extends Character {
                 0,
                 0,
                 0,
-                0,
                 0
         );
 
@@ -42,8 +44,12 @@ public class Player extends Character {
         currentHealth = maxHealth;
         armorPoints = 0;
         shieldPoints = 0;
+        currentShield = shieldPoints;
+        currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        calculateResistances();
 
         weapon = null;
         armor = null;
@@ -53,11 +59,32 @@ public class Player extends Character {
 
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
-        weapon.addStats(attributes);
+        attributes.addStats(weapon.getAttributes());
     }
 
     public void setArmor(Armor armor) {
         this.armor = armor;
+        attributes.addStats(armor.getAttributes());
+    }
+
+    public void resetCharacter() {
+        attributes.removeStats(weapon.getAttributes());
+        weapon = null;
+
+        attributes.removeStats(armor.getAttributes());
+        armor = null;
+
+        if(firstAcc != null) {
+            attributes.removeStats(firstAcc.getAttributes());
+        }
+        if(secondAcc != null) {
+            attributes.removeStats(secondAcc.getAttributes());
+        }
+
+        currentMana = maxMana;
+        currentHealth = maxHealth;
+        currentArmor = armorPoints;
+        currentShield = shieldPoints;
     }
 
     public void setAccessory(Accessories accessory) {

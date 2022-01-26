@@ -22,13 +22,14 @@ public class Underlord extends Boss {
                 0.10,
                 1.80,
                 0,
-                0.10,
                 0
         );
 
         maxHealth = attributes.calculateHealth();
         armorPoints = attributes.calculateArmor();
         maxMana = attributes.calculateMana();
+
+        calculateResistances();
     }
 
     @Override

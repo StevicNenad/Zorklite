@@ -22,7 +22,6 @@ public class WyvernRobe extends Armor {
                 0,
                 0,
                 0,
-                -0.10,
                 0
         );
 

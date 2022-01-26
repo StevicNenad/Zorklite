@@ -19,14 +19,19 @@ public class Character {
                             maxMana,
                             currentMana,
                             armorPoints,
+                            currentArmor,
                             shieldPoints,
+                            currentShield,
                             experience,
                             lvlUpExperience;    //amount of experience required for level up.
 
     protected Attributes    attributes;
-    protected Attack        attack;
     //protected Ability       ability;
 
+    public void calculateResistances() {
+        attributes.setDamageReduction(currentArmor / 200);
+        attributes.setMagicResistance(currentShield / 200);
+    }
 
     public int getMaxHealth() {
         return maxHealth;
@@ -36,8 +41,46 @@ public class Character {
         return currentHealth;
     }
 
+    public int getArmorPoints() {
+        return armorPoints;
+    }
+
+    public int getShieldPoints() {
+        return shieldPoints;
+    }
+
+    public int getCurrentArmor() {
+        return currentArmor;
+    }
+
+    public int getCurrentShield() {
+        return currentShield;
+    }
+
     public void updateHealth(int healthPoints) {
         currentHealth = currentHealth + healthPoints;
+    }
+
+    public void updateArmor(int armor) {
+        currentArmor = currentArmor + armor;
+
+        if(currentArmor <= 0) {
+            attributes.setDamageReduction(0);
+        }
+        else {
+            attributes.setDamageReduction(currentArmor / 200);
+        }
+    }
+
+    public void updateShield(int shield) {
+        currentShield = currentShield + shield;
+
+        if(currentShield <= 0) {
+            attributes.setMagicResistance(0);
+        }
+        else {
+            attributes.setMagicResistance(currentShield / 200);
+        }
     }
 
     public CharacterType getType() {

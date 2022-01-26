@@ -30,9 +30,4 @@ public class Item {
         return itemType;
     }
 
-    public void addStats(Attributes attributes) {
-    }
-
-    public void removeStats(Attributes attributes) {
-    }
 }

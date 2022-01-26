@@ -11,7 +11,7 @@ public class Shuriken extends Weapon {
         this.name = "Shurikens";
 
         attributes = new Attributes(
-                6,
+                12,
                 1,
                 3,
                 0,
@@ -24,7 +24,6 @@ public class Shuriken extends Weapon {
                 0.50,
                 1.80,
                 0.00,
-                0,
                 0
         );
 
