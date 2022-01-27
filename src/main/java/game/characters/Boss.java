@@ -11,4 +11,12 @@ public class Boss extends Character {
     public Boss() {
         characterType = CharacterType.BOSS;
     }
+
+    public DamageType getDamageType() {
+        return damageType;
+    }
+
+    public AttackRange getAttackRange() {
+        return attackRange;
+    }
 }

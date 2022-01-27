@@ -1,5 +1,6 @@
 package game;
 
+import game.characters.Boss;
 import game.characters.Monster;
 import game.characters.Player;
 import game.items.Weapon;
@@ -85,6 +86,8 @@ public class Battle {
     }
 
     private void displayBattle(ArrayList<Character> queue) {
+
+        //For loop that prints the players HP, Armor and Shield values to the terminal
         for (Character findPlayer : queue) {
             if(findPlayer.getType() == Character.CharacterType.PLAYER) {
                 System.out.print("YOU: " + findPlayer.getCurrenthealth() + "/" + findPlayer.getMaxHealth() + " HP");
@@ -98,6 +101,7 @@ public class Battle {
             }
         }
 
+        //For loop that prints all the monsters HP, Armor and Shield values to the terminal
         for (Character findMonster : queue) {
             if(findMonster.getType() == Character.CharacterType.MONSTER) {
                 System.out.println(findMonster.getName());
@@ -117,6 +121,8 @@ public class Battle {
                 }
             }
         }
+
+        //For loop that prints the turn order (who goes first, who second, who third etc... So player can plan his next attack
     }
 
     private void processTurn(Character attacker, ArrayList<Character> foes, Player pc) {
@@ -150,7 +156,7 @@ public class Battle {
                                 System.out.println("Target does not exist...");
                             }
                             else {
-                                processAttack((Player) attacker, foes, target);
+                                processAttack(attacker, foes, pc, target);
                                 turnSuccessful = true;
                             }
                         }
@@ -169,75 +175,42 @@ public class Battle {
     //Every Move can have multiple attacks, those are iterated first
     //And every attack can have multiple projectiles, those are iterated second
     //While attacks hit the same target consecutively, projectiles spread to multiple targets
-    private void processAttack(Player attacker, ArrayList<Character> foes, int index) {
-        Random rn = new Random();
-        double hitChance;
-        double critProbability;
+    private void processAttack(Character attacker, ArrayList<Character> foes, Player pc, int index) {
 
-        //Checks how many attacks player can perform, repeats attack sequence accordingly
+        //Checks how many attacks current attacker can perform. Repeats attack sequence accordingly
         for(int attacks = 0; attacks < attacker.getAttributes().getAttacks(); attacks++) {
 
-            int     temporaryIndex = index, //needed for iteration of projectiles
-                    repeatLoop;
+            //For-loop that iterates through every projectile. If weapon is Melee, just performs loop once
+            int     repeatLoop = calculateProjectileRepeat(attacker);   //calculates how many projectiles to shoot
+            int     temporaryIndex = index;                             //needed for iteration of projectiles
 
-            //Determines if Weapon is ranged or melee for projectile for-loop
-            if(attacker.getWeapon().getWeaponType() == Weapon.WeaponType.PROJECTILE) {
-                repeatLoop = attacker.getAttributes().getProjectiles();
-            }
-            else {
-                repeatLoop = 1;
-            }
-
-            //For-loop that iterates through every projectile
             for(int projectiles = 0; projectiles < repeatLoop; projectiles++) {
 
-            //Checks if player is accurate enough (accuracy attribute) if not, attack fails
-            hitChance = rn.nextDouble();
-            if (hitChance > attacker.getAttributes().getAccuracy()) {
-                System.out.println("Attack Missed!");
-                continue;
-            }
-
-            //Checks if target can evade attack (evasion attribute) if so, attack fails
-            hitChance = rn.nextDouble();
-            if (hitChance <= foes.get(index).getAttributes().getEvasion()) {
-                System.out.println(foes.get(index).getName() + " has evaded your attack!");
-                continue;
-            }
-
-            int     damage,                 //Stores full damage amount
-                    totalDamageReduction,   //calculates the targets total damage reduction
-                    netDamage;              //calculates the net damage that the target will receive
-
-                //Checks if attack is critical or not
-                critProbability = rn.nextDouble();
-                if (critProbability <= attacker.getAttributes().getCritChance()) {
-                    damage = (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getCritPercentage());
-                    System.out.print("Critical hit! ");
-                } else {
-                    damage = attacker.getAttributes().getDamage();
+                //Checks if attacker is accurate enough to hit the target. If not, attack fails
+                if(attacker.getType() == Character.CharacterType.PLAYER) {
+                    if(didAttackMiss(attacker, foes.get(index))) {
+                        continue;
+                    }
+                }
+                else {
+                    if (didAttackMiss(attacker, pc)) {
+                        continue;
+                    }
                 }
 
-                //Checks what damage type the attack is, calculates the damage accordingly
-                DamageType attackerDamageType = attacker.getWeapon().getDamageType();
+                int     damage = calculateCriticalHitChance(attacker),  //calculates if attack is critical or regular
+                        netDamage;                                      //variable to store the net damage (with damageReductions etc.)
 
-                switch (attackerDamageType) {
-                    case PHYSICAL:
-                        totalDamageReduction = (int) (damage * foes.get(temporaryIndex).getAttributes().getDamageReduction());
-                        break;
-                    case MAGICAL:
-                        totalDamageReduction = (int) (damage * foes.get(temporaryIndex).getAttributes().getMagicResistance());
-                        break;
-                    case UNIVERSAL:
-                        totalDamageReduction = (int) (damage * foes.get(temporaryIndex).getAttributes().getMagicResistance() *
-                                                               foes.get(temporaryIndex).getAttributes().getDamageReduction());
-                        break;
-                    default:
-                        totalDamageReduction = 0;
+
+                //Checks if attacker is Player or Computer to calculate netDamage
+                if(attacker.getType() == Character.CharacterType.PLAYER) {
+                    netDamage = calculateNetDamage(attacker, foes.get(index), damage);
                 }
-                netDamage = damage - totalDamageReduction;
+                else {
+                    netDamage = calculateNetDamage(attacker, pc, damage);
+                }
 
-                executeAttack(attacker, netDamage, foes, temporaryIndex, attackerDamageType);
+                executeAttack(attacker, netDamage, foes, temporaryIndex);
 
                 if(battle_over) {
                     return;
@@ -260,9 +233,106 @@ public class Battle {
         }
     }
 
-    private void executeAttack(Player attacker, int netDamage, ArrayList<Character> foes, int index, DamageType damageType) {
+    //Checks if attack is critical or not
+    private int calculateCriticalHitChance(Character attacker) {
+        Random rn = new Random();
+        double critProbability = rn.nextDouble();
+
+        if (critProbability <= attacker.getAttributes().getCritChance()) {
+            System.out.print("Critical hit! ");
+
+            return (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getCritPercentage());
+        }
+        else {
+            return attacker.getAttributes().getDamage();
+        }
+    }
+
+    private boolean didAttackMiss(Character attacker, Character target) {
+        Random rn = new Random();
+        double hitChance = rn.nextDouble();
+        if(hitChance > attacker.getAttributes().getAccuracy()) {
+            System.out.println("Attack missed!");
+            return true;
+        }
+
+        hitChance = rn.nextDouble();
+        if(hitChance <= target.getAttributes().getEvasion()) {
+            System.out.println(target.getName() + " evaded the attack from " + attacker.getName());
+            return true;
+        }
+
+        return false;
+    }
+
+    private int calculateNetDamage(Character attacker, Character target, int damage) {
+        int         totalDamageReduction,
+                    netDamage;
+
+        DamageType  damageType;
+
+        if(attacker.getType() == Character.CharacterType.PLAYER) {
+            damageType = ((Player) attacker).getWeapon().getDamageType();
+        }
+        else if(attacker.getType() == Character.CharacterType.MONSTER){
+            damageType = ((Monster)attacker).getDamageType();
+        }
+        else {
+            damageType = ((Boss)attacker).getDamageType();
+        }
+
+        switch(damageType) {
+            case PHYSICAL:
+                totalDamageReduction = (int) (damage * target.getAttributes().getDamageReduction());
+                break;
+            case MAGICAL:
+                totalDamageReduction = (int) (damage * target.getAttributes().getMagicResistance());
+                break;
+            case UNIVERSAL:
+                totalDamageReduction = (int) (damage * target.getAttributes().getDamageReduction() * target.getAttributes().getMagicResistance());
+                break;
+            default:
+                totalDamageReduction = 0;
+        }
+
+        netDamage = damage - totalDamageReduction;
+
+        return netDamage;
+    }
+
+    private int calculateProjectileRepeat(Character attacker) {
+        if(attacker.getType() == Character.CharacterType.PLAYER) {
+            if(((Player)attacker).getWeapon().getWeaponType() == Weapon.WeaponType.PROJECTILE) {
+                return attacker.getAttributes().getProjectiles();
+            }
+        }
+        else if(attacker.getType() == Character.CharacterType.MONSTER) {
+            if(((Monster)attacker).getAttackRange() == AttackRange.RANGED) {
+                return attacker.getAttributes().getProjectiles();
+            }
+        }
+        else {
+            if(((Boss)attacker).getAttackRange() == AttackRange.RANGED) {
+                return attacker.getAttributes().getProjectiles();
+            }
+        }
+        return 1;
+    }
+
+    private void executeAttack(Character attacker, int netDamage, ArrayList<Character> foes, int index) {
         int aoeDamage = (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getAoeDamage());//calculates aoeDamage based on Damage
         int aoeIndex = 0;
+        DamageType damageType;
+
+        if(attacker.getType() == Character.CharacterType.PLAYER) {
+            damageType = ((Player)attacker).getWeapon().getDamageType();
+        }
+        else if(attacker.getType() == Character.CharacterType.MONSTER) {
+            damageType = ((Monster)attacker).getDamageType();
+        }
+        else {
+            damageType = ((Boss)attacker).getDamageType();
+        }
 
         //This block exectues Attack on primary Target
         switch (damageType) {
@@ -403,6 +473,87 @@ public class Battle {
                         System.out.println("You have hit " + foes.get(aoeIndex).getName() + "s health with cleave for " + netDamage + " damage!");
                     }
                 }
+            }
+        }
+    }
+
+    private void inflictDamage(Character attacker, Character target, int netDamage, boolean cleave) {
+        DamageType damageType;
+
+        if(attacker.getType() == Character.CharacterType.PLAYER) {
+            damageType = ((Player)attacker).getWeapon().getDamageType();
+        }
+        else if(attacker.getType() == Character.CharacterType.MONSTER) {
+            damageType = ((Monster)attacker).getDamageType();
+        }
+        else {
+            damageType = ((Boss)attacker).getDamageType();
+        }
+
+        //This block exectues Attack on primary Target
+        switch (damageType) {
+
+            case PHYSICAL:
+
+                if (target.getCurrentArmor() < netDamage && target.getCurrentArmor() > 0) {
+                    netDamage = netDamage - target.getCurrentArmor();
+                    System.out.println(attacker.getName() + " has destroyed " + target.getName() + "s armor (" + target.getCurrentArmor() + " damage)");
+                    target.updateArmor(-target.getCurrentArmor());
+                } else if (target.getCurrentArmor() > netDamage) {
+                    target.updateArmor(-netDamage);
+                    System.out.println(attacker.getName() + " has hit " + target.getName() + "s armor for " + netDamage + " damage!");
+                    netDamage = 0;
+                }
+
+                break;
+
+            case MAGICAL:
+
+                if (foes.get(index).getCurrentShield() < netDamage && foes.get(index).getCurrentShield() > 0) {
+                    netDamage = netDamage - foes.get(index).getCurrentShield();
+                    System.out.println("You have destroyed " + foes.get(index).getName() + "s magic shield (" + foes.get(index).getCurrentArmor() + " damage)");
+                    foes.get(index).updateShield(-foes.get(index).getCurrentShield());
+                } else if (foes.get(index).getCurrentShield() > netDamage) {
+                    foes.get(index).updateShield(-netDamage);
+                    System.out.println("You have hit " + foes.get(index).getName() + "s magic shield for " + netDamage + " damage!");
+                    netDamage = 0;
+                }
+
+                break;
+
+            case UNIVERSAL:
+
+                if (foes.get(index).getCurrentShield() < netDamage && foes.get(index).getCurrentShield() > 0) {
+                    System.out.println("You have destroyed " + foes.get(index).getName() + "s magic shield (" + foes.get(index).getCurrentArmor() + " damage)");
+                    foes.get(index).updateShield(-foes.get(index).getCurrentShield());
+                } else if (foes.get(index).getCurrentShield() > netDamage) {
+                    foes.get(index).updateShield(-netDamage);
+                    System.out.println("You have hit " + foes.get(index).getName() + "s magic shield for " + netDamage + " damage!");
+                }
+
+                if (foes.get(index).getCurrentArmor() < netDamage && foes.get(index).getCurrentArmor() > 0) {
+                    System.out.println("You have destroyed " + foes.get(index).getName() + "s armor (" + foes.get(index).getCurrentArmor() + " damage)");
+                    foes.get(index).updateArmor(-foes.get(index).getCurrentArmor());
+                } else if (foes.get(index).getCurrentArmor() > netDamage) {
+                    foes.get(index).updateArmor(-netDamage);
+                    System.out.println("You have hit " + foes.get(index).getName() + "s armor for " + netDamage + " damage!");
+
+                }
+
+                break;
+        }
+
+        if (netDamage > 0) {
+            if (foes.get(index).getCurrenthealth() <= netDamage) {
+                System.out.println("You have slain " + foes.get(index).getName() + "! (" + netDamage + " damage)");
+                foes.remove(index);
+                if(foes.isEmpty()) {
+                    battle_over = true;
+                    return;
+                }
+            } else {
+                foes.get(index).updateHealth(-netDamage);
+                System.out.println("You have hit " + foes.get(index).getName() + "s health for " + netDamage + " damage!");
             }
         }
     }

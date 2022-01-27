@@ -15,4 +15,8 @@ public class Monster extends Character {
     public DamageType getDamageType() {
         return damageType;
     }
+
+    public AttackRange getAttackRange() {
+        return attackRange;
+    }
 }
