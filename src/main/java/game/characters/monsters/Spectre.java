@@ -1,8 +1,11 @@
 package game.characters.monsters;
 
+import game.Ability;
 import game.Attributes;
 import game.DamageType;
 import game.characters.Monster;
+
+import java.util.ArrayList;
 
 public class Spectre extends Monster {
 
@@ -11,16 +14,17 @@ public class Spectre extends Monster {
         damageType = DamageType.MAGICAL;
 
         attributes = new Attributes(
-                20,
+                5,
                 1,
                 0,
-                12,
-                5,
-                6,
-                8,
+                9,
+                7,
                 10,
+                10,
+                12,
+                0,
                 1,
-                1,
+                0.85,
                 0.10,
                 1.80,
                 0,
@@ -35,6 +39,9 @@ public class Spectre extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
 
         calculateResistances();
     }

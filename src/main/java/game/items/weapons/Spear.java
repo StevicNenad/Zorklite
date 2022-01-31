@@ -11,8 +11,9 @@ public class Spear extends Weapon {
         this.name = "Pike";
 
         attributes = new Attributes(
-                35,
+                77,
                 1,
+                0,
                 0,
                 0,
                 0,

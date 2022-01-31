@@ -9,8 +9,4 @@ public class EmberInfusion extends Ability {
         this.abilityType = AbilityType.PASSIVE;
         this.abilityName = "Split shot";
     }
-
-    public void ExtraAttack() {
-
-    }
 }

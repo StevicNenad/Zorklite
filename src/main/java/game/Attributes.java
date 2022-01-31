@@ -21,20 +21,19 @@ public class Attributes {
                     magicResistance,
                     evasion;
 
-    public Attributes(int damage, int attacks, int projectiles, int strength, int intelligence, int agility, int speed, int perception, int level,
+    public Attributes(int damage, int attacks, int projectiles, int strength, int intelligence, int agility, int speed, int perception, int stealth, int level,
                       double accuracy, double critChance, double critPercentage, double aoeDamage, double evasion) {
-        double levelModifier = (level - 1) / 10 + 1;//Automatically increases stats based on Level
 
         this.damage = damage;
         this.attacks = attacks;
         this.projectiles = projectiles;
 
-        this.strength = (int) (strength * levelModifier);
-        this.intelligence = (int) (intelligence * levelModifier);
-        this.agility = (int) (agility * levelModifier);
-        this.speed = (int) (speed * levelModifier);
-        this.perception = (int) (perception * levelModifier);
-        this.stealth = (int) (stealth * levelModifier);
+        this.strength = strength;
+        this.intelligence = intelligence;
+        this.agility = agility;
+        this.speed = speed;
+        this.perception = perception;
+        this.stealth = stealth;
 
         this.accuracy = accuracy;
         this.critChance = critChance;
@@ -47,7 +46,7 @@ public class Attributes {
     }
 
     public int calculateHealth() {
-        return 25 * strength;//25 HP per strength point
+        return 100 + (10 * strength);//25 HP per strength point
     }
 
     public int calculateArmor() {
@@ -55,7 +54,7 @@ public class Attributes {
     }
 
     public int calculateMana() {
-        return 10 * intelligence;//10 Mana per intelligence point
+        return 100 + (5 * intelligence);//10 Mana per intelligence point
     }
 
     public int calculateShield() {
@@ -96,6 +95,27 @@ public class Attributes {
         critPercentage -= attributes.getCritPercentage();
         aoeDamage -= attributes.getAoeDamage();
         evasion -= attributes.getEvasion();
+    }
+
+    public void levelScaleMonsters(int level) {
+
+        if(level == 1) {
+            return;
+        }
+
+        double scale = (double) level / 5;
+
+        this.level = level;
+        damage += (damage * scale);
+        strength += (strength * scale);
+        intelligence += (intelligence * scale);
+        agility += (agility * scale);
+        speed += (speed * scale);
+        stealth += (stealth * scale);
+        perception += (perception * scale);
+
+        damageReduction = calculateArmor() / 200;
+        magicResistance = calculateShield() / 200;
     }
 
     public void setStrength(int strength) {

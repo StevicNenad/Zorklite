@@ -1,5 +1,6 @@
 package game;
 
+import game.abilities.passive.Lifesteal;
 import game.characters.Boss;
 import game.characters.Monster;
 import game.characters.Player;
@@ -33,16 +34,27 @@ public class Battle {
             }
         }
 
-        Scanner sc = new Scanner(System.in);
         if(foes.isEmpty()) {
-            System.out.println("Threat eliminated! This room seems to be clear... What do you want to do next?");
+            System.out.println("Threat eliminated! What do you want to do next?");
             return false;
         }
         else {
             System.out.println("You fall into a pool of your own blood, your eyes slowly closing. Game over...");
-            sc.nextLine();
+
+            try {
+                Thread.sleep(2000);
+            }
+            catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
             return true;
         }
+    }
+
+    //Intro message when entering Battle.
+    public void battleIntro() {
+
     }
 
     public void preemptiveStrikeSuccess(ArrayList<Character> foes) {
@@ -107,7 +119,7 @@ public class Battle {
                 System.out.println(findMonster.getName());
 
                 if(findMonster.getCurrenthealth() <= 0) {
-                    System.out.println(" DEAD");
+                    System.out.println("DEAD\n");
                 }
                 else{
                     System.out.println(findMonster.getCurrenthealth() + "/" + findMonster.getMaxHealth() + " HP");
@@ -131,7 +143,7 @@ public class Battle {
             Scanner sc = new Scanner(System.in);
 
             while(turnSuccessful == false) {
-                System.out.print("What do you wanna do?\n\n1 - Attack\n2 - Abilities\n3 - Fortify\n4 - Heal\n>");
+                System.out.print("What do you wanna do?\n\n1 - Attack\n2 - Abilities\n3 - Items\n4 - Surrender\n>");
 
                 String menuChoice = sc.nextLine();
 
@@ -163,11 +175,14 @@ public class Battle {
                         catch (NumberFormatException ex) {
                             System.out.println("Please use only valid inputs (numbers).");
                         }
+                        break;
+                    case "2":
+                        System.out.println("");
                 }
             }
         }
         else if(attacker.getType() == Character.CharacterType.MONSTER) {
-            processBotAttack((Monster) attacker,  pc);
+            processAttack(attacker, foes, pc, 0);
         }
     }
 
@@ -179,20 +194,33 @@ public class Battle {
 
         //Checks how many attacks current attacker can perform. Repeats attack sequence accordingly
         for(int attacks = 0; attacks < attacker.getAttributes().getAttacks(); attacks++) {
+            String[] attackText = {"First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eigth", "Ninth", "Tenth"};
+
+            if(attacker.getAttributes().getAttacks() > 1) {
+                System.out.println(attackText[attacks] + " attack: ");
+            }
 
             //For-loop that iterates through every projectile. If weapon is Melee, just performs loop once
             int     repeatLoop = calculateProjectileRepeat(attacker);   //calculates how many projectiles to shoot
             int     temporaryIndex = index;                             //needed for iteration of projectiles
 
             for(int projectiles = 0; projectiles < repeatLoop; projectiles++) {
+                if(repeatLoop > 1) {
+                    System.out.print(attackText[projectiles] + " projectile: ");
+                    try {
+                        Thread.sleep(1000);
+                    }
+                    catch(InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
 
                 //Checks if attacker is accurate enough to hit the target. If not, attack fails
                 if(attacker.getType() == Character.CharacterType.PLAYER) {
                     if(didAttackMiss(attacker, foes.get(index))) {
                         continue;
                     }
-                }
-                else {
+                } else {
                     if (didAttackMiss(attacker, pc)) {
                         continue;
                     }
@@ -202,15 +230,15 @@ public class Battle {
                         netDamage;                                      //variable to store the net damage (with damageReductions etc.)
 
 
-                //Checks if attacker is Player or Computer to calculate netDamage
+                //Checks if attacker is Player or Computer to calculate netDamage and perform attack
                 if(attacker.getType() == Character.CharacterType.PLAYER) {
                     netDamage = calculateNetDamage(attacker, foes.get(index), damage);
+                    executeAttack(attacker, foes.get(index), netDamage, foes, temporaryIndex);
                 }
                 else {
                     netDamage = calculateNetDamage(attacker, pc, damage);
+                    executeAttack(attacker, pc, netDamage, foes, temporaryIndex);
                 }
-
-                executeAttack(attacker, netDamage, foes, temporaryIndex);
 
                 if(battle_over) {
                     return;
@@ -252,13 +280,17 @@ public class Battle {
         Random rn = new Random();
         double hitChance = rn.nextDouble();
         if(hitChance > attacker.getAttributes().getAccuracy()) {
-            System.out.println("Attack missed!");
+            System.out.println(attacker.getName() + "s attack missed!");
             return true;
         }
 
         hitChance = rn.nextDouble();
         if(hitChance <= target.getAttributes().getEvasion()) {
-            System.out.println(target.getName() + " evaded the attack from " + attacker.getName());
+            System.out.print(target.getName() + " evaded the attack from " + attacker.getName());
+            if(searchPassive(target, "Counter Attack")) {
+                System.out.print(" and hit back with a counter attack! (" + target.getAttributes().getDamage() + " dmg)");
+                attacker.updateHealth(-target.getAttributes().getDamage());
+            }
             return true;
         }
 
@@ -319,91 +351,20 @@ public class Battle {
         return 1;
     }
 
-    private void executeAttack(Character attacker, int netDamage, ArrayList<Character> foes, int index) {
+    private void executeAttack(Character attacker, Character target, int netDamage, ArrayList<Character> foes, int index) {
         int aoeDamage = (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getAoeDamage());//calculates aoeDamage based on Damage
         int aoeIndex = 0;
-        DamageType damageType;
 
         if(attacker.getType() == Character.CharacterType.PLAYER) {
-            damageType = ((Player)attacker).getWeapon().getDamageType();
-        }
-        else if(attacker.getType() == Character.CharacterType.MONSTER) {
-            damageType = ((Monster)attacker).getDamageType();
+            inflictDamage(attacker, foes.get(index), foes, netDamage, false);
         }
         else {
-            damageType = ((Boss)attacker).getDamageType();
-        }
-
-        //This block exectues Attack on primary Target
-        switch (damageType) {
-            case PHYSICAL:
-
-                if (foes.get(index).getCurrentArmor() < netDamage && foes.get(index).getCurrentArmor() > 0) {
-                    netDamage = netDamage - foes.get(index).getCurrentArmor();
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s armor (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateArmor(-foes.get(index).getCurrentArmor());
-                } else if (foes.get(index).getCurrentArmor() > netDamage) {
-                    foes.get(index).updateArmor(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s armor for " + netDamage + " damage!");
-                    netDamage = 0;
-                }
-
-                break;
-
-            case MAGICAL:
-
-                if (foes.get(index).getCurrentShield() < netDamage && foes.get(index).getCurrentShield() > 0) {
-                    netDamage = netDamage - foes.get(index).getCurrentShield();
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s magic shield (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateShield(-foes.get(index).getCurrentShield());
-                } else if (foes.get(index).getCurrentShield() > netDamage) {
-                    foes.get(index).updateShield(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s magic shield for " + netDamage + " damage!");
-                    netDamage = 0;
-                }
-
-                break;
-
-            case UNIVERSAL:
-
-                if (foes.get(index).getCurrentShield() < netDamage && foes.get(index).getCurrentShield() > 0) {
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s magic shield (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateShield(-foes.get(index).getCurrentShield());
-                } else if (foes.get(index).getCurrentShield() > netDamage) {
-                    foes.get(index).updateShield(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s magic shield for " + netDamage + " damage!");
-                }
-
-                if (foes.get(index).getCurrentArmor() < netDamage && foes.get(index).getCurrentArmor() > 0) {
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s armor (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateArmor(-foes.get(index).getCurrentArmor());
-                } else if (foes.get(index).getCurrentArmor() > netDamage) {
-                    foes.get(index).updateArmor(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s armor for " + netDamage + " damage!");
-
-                }
-
-                break;
-        }
-
-        if (netDamage > 0) {
-            if (foes.get(index).getCurrenthealth() <= netDamage) {
-                System.out.println("You have slain " + foes.get(index).getName() + "! (" + netDamage + " damage)");
-                foes.remove(index);
-                if(foes.isEmpty()) {
-                    battle_over = true;
-                    return;
-                }
-            } else {
-                foes.get(index).updateHealth(-netDamage);
-                System.out.println("You have hit " + foes.get(index).getName() + "s health for " + netDamage + " damage!");
-            }
+            inflictDamage(attacker, target, foes, netDamage, false);
         }
 
         //This block executes Cleave damage(Area of Effect or "aoe") on all enemies if the attribute is present (above 0.0)
-        if(attacker.getAttributes().getAoeDamage() > 0) {
+        if(attacker.getAttributes().getAoeDamage() > 0 && foes.size() > 1) {
             for (int i = 0; i < foes.size() - 1; i++) {
-                netDamage = aoeDamage;
 
                 //if statement that makes sure the primary target does not get hit with cleave damage
                 if(aoeIndex == index) {
@@ -415,70 +376,21 @@ public class Battle {
                     }
                 }
 
-                //copy of the above code (absolute catastrophe)
-                switch (damageType) {
-                    case PHYSICAL:
-
-                        if (foes.get(aoeIndex).getCurrentArmor() < netDamage && foes.get(aoeIndex).getCurrentArmor() > 0) {
-                            netDamage = netDamage - foes.get(aoeIndex).getCurrentArmor();
-                            System.out.println("You have destroyed " + foes.get(aoeIndex).getName() + "s armor with cleave damage (" + foes.get(aoeIndex).getCurrentArmor() + " damage)");
-                            foes.get(aoeIndex).updateArmor(-foes.get(aoeIndex).getCurrentArmor());
-                        } else if (foes.get(aoeIndex).getCurrentArmor() > netDamage) {
-                            foes.get(aoeIndex).updateArmor(-netDamage);
-                            System.out.println("You have hit " + foes.get(aoeIndex).getName() + "s armor with cleave for " + netDamage + " damage!");
-                            netDamage = 0;
-                        }
-
-                        break;
-
-                    case MAGICAL:
-
-                        if (foes.get(aoeIndex).getCurrentShield() < netDamage && foes.get(aoeIndex).getCurrentShield() > 0) {
-                            netDamage = netDamage - foes.get(aoeIndex).getCurrentShield();
-                            System.out.println("You have destroyed " + foes.get(aoeIndex).getName() + "s magic shield with cleave damage (" + foes.get(aoeIndex).getCurrentArmor() + " damage)");
-                            foes.get(aoeIndex).updateShield(-foes.get(aoeIndex).getCurrentShield());
-                        } else if (foes.get(aoeIndex).getCurrentShield() > netDamage) {
-                            foes.get(aoeIndex).updateShield(-netDamage);
-                            System.out.println("You have hit " + foes.get(aoeIndex).getName() + "s magic shield with cleave for " + netDamage + " damage!");
-                            netDamage = 0;
-                        }
-
-                        break;
-
-                    case UNIVERSAL:
-
-                        if (foes.get(aoeIndex).getCurrentArmor() < netDamage && foes.get(aoeIndex).getCurrentArmor() > 0) {
-                            System.out.println("You have destroyed " + foes.get(aoeIndex).getName() + "s armor with cleave damage (" + foes.get(aoeIndex).getCurrentArmor() + " damage)");
-                            foes.get(aoeIndex).updateArmor(-foes.get(aoeIndex).getCurrentArmor());
-                        } else if (foes.get(aoeIndex).getCurrentArmor() > netDamage) {
-                            foes.get(aoeIndex).updateArmor(-netDamage);
-                            System.out.println("You have hit " + foes.get(aoeIndex).getName() + "s armor with cleave for " + netDamage + " damage!");
-                        }
-
-                        if (foes.get(aoeIndex).getCurrentShield() < netDamage && foes.get(aoeIndex).getCurrentShield() > 0) {
-                            System.out.println("You have destroyed " + foes.get(aoeIndex).getName() + "s magic shield with cleave damage (" + foes.get(aoeIndex).getCurrentArmor() + " damage)");
-                            foes.get(aoeIndex).updateShield(-foes.get(aoeIndex).getCurrentShield());
-                        } else if (foes.get(aoeIndex).getCurrentShield() > netDamage) {
-                            foes.get(aoeIndex).updateShield(-netDamage);
-                            System.out.println("You have hit " + foes.get(aoeIndex).getName() + "s magic shield with cleave for " + netDamage + " damage!");
-                        }
+                if(attacker.getType() == Character.CharacterType.PLAYER) {
+                    inflictDamage(attacker, foes.get(aoeIndex), foes, aoeDamage, true);
+                }
+                else {
+                    inflictDamage(attacker, target, foes, aoeDamage, true);
                 }
 
-                if (netDamage > 0) {
-                    if (foes.get(aoeIndex).getCurrenthealth() <= netDamage) {
-                        System.out.println("You have slain " + foes.get(aoeIndex).getName() + " with cleave damage! (" + netDamage + " damage)");
-                        foes.get(aoeIndex).updateHealth(foes.get(aoeIndex).getCurrenthealth());
-                    } else {
-                        foes.get(aoeIndex).updateHealth(-netDamage);
-                        System.out.println("You have hit " + foes.get(aoeIndex).getName() + "s health with cleave for " + netDamage + " damage!");
-                    }
-                }
+                aoeIndex++;
             }
         }
     }
 
-    private void inflictDamage(Character attacker, Character target, int netDamage, boolean cleave) {
+    private void inflictDamage(Character attacker, Character target, ArrayList<Character> foes, int netDamage, boolean cleave) {
         DamageType damageType;
+        int totalDMG = netDamage;
 
         if(attacker.getType() == Character.CharacterType.PLAYER) {
             damageType = ((Player)attacker).getWeapon().getDamageType();
@@ -497,11 +409,9 @@ public class Battle {
 
                 if (target.getCurrentArmor() < netDamage && target.getCurrentArmor() > 0) {
                     netDamage = netDamage - target.getCurrentArmor();
-                    System.out.println(attacker.getName() + " has destroyed " + target.getName() + "s armor (" + target.getCurrentArmor() + " damage)");
                     target.updateArmor(-target.getCurrentArmor());
                 } else if (target.getCurrentArmor() > netDamage) {
                     target.updateArmor(-netDamage);
-                    System.out.println(attacker.getName() + " has hit " + target.getName() + "s armor for " + netDamage + " damage!");
                     netDamage = 0;
                 }
 
@@ -509,13 +419,11 @@ public class Battle {
 
             case MAGICAL:
 
-                if (foes.get(index).getCurrentShield() < netDamage && foes.get(index).getCurrentShield() > 0) {
-                    netDamage = netDamage - foes.get(index).getCurrentShield();
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s magic shield (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateShield(-foes.get(index).getCurrentShield());
-                } else if (foes.get(index).getCurrentShield() > netDamage) {
-                    foes.get(index).updateShield(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s magic shield for " + netDamage + " damage!");
+                if (target.getCurrentShield() < netDamage && target.getCurrentShield() > 0) {
+                    netDamage = netDamage - target.getCurrentShield();
+                    target.updateShield(-target.getCurrentShield());
+                } else if (target.getCurrentShield() > netDamage) {
+                    target.updateShield(-netDamage);
                     netDamage = 0;
                 }
 
@@ -523,168 +431,63 @@ public class Battle {
 
             case UNIVERSAL:
 
-                if (foes.get(index).getCurrentShield() < netDamage && foes.get(index).getCurrentShield() > 0) {
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s magic shield (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateShield(-foes.get(index).getCurrentShield());
-                } else if (foes.get(index).getCurrentShield() > netDamage) {
-                    foes.get(index).updateShield(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s magic shield for " + netDamage + " damage!");
+                if (target.getCurrentShield() < netDamage && target.getCurrentShield() > 0) {
+                    target.updateShield(-target.getCurrentShield());
+                } else if (target.getCurrentShield() > netDamage) {
+                    target.updateShield(-netDamage);
                 }
 
-                if (foes.get(index).getCurrentArmor() < netDamage && foes.get(index).getCurrentArmor() > 0) {
-                    System.out.println("You have destroyed " + foes.get(index).getName() + "s armor (" + foes.get(index).getCurrentArmor() + " damage)");
-                    foes.get(index).updateArmor(-foes.get(index).getCurrentArmor());
-                } else if (foes.get(index).getCurrentArmor() > netDamage) {
-                    foes.get(index).updateArmor(-netDamage);
-                    System.out.println("You have hit " + foes.get(index).getName() + "s armor for " + netDamage + " damage!");
-
+                if (target.getCurrentArmor() < netDamage && target.getCurrentArmor() > 0) {
+                    target.updateArmor(-target.getCurrentArmor());
+                } else if (target.getCurrentArmor() > netDamage) {
+                    target.updateArmor(-netDamage);
                 }
 
                 break;
         }
 
         if (netDamage > 0) {
-            if (foes.get(index).getCurrenthealth() <= netDamage) {
-                System.out.println("You have slain " + foes.get(index).getName() + "! (" + netDamage + " damage)");
-                foes.remove(index);
-                if(foes.isEmpty()) {
+            if (target.getCurrenthealth() <= netDamage) {
+                if(searchPassive(attacker, "Lifesteal")) {
+                    attacker.updateHealth((int) (target.getCurrenthealth() * 0.5));
+                }
+
+                System.out.print(attacker.getName() + " has slain " + target.getName());
+                if(cleave) System.out.print(" with cleave");
+                System.out.println("!");
+
+                if(target.getType() == Character.CharacterType.PLAYER) {
                     battle_over = true;
-                    return;
+                    target.updateHealth(-target.getCurrenthealth());
                 }
-            } else {
-                foes.get(index).updateHealth(-netDamage);
-                System.out.println("You have hit " + foes.get(index).getName() + "s health for " + netDamage + " damage!");
+                else {
+                    target.updateHealth(-target.getCurrenthealth());
+                    for(Character enemies : foes) {
+                        if(enemies.getCurrenthealth() > 0) {
+                            return;
+                        }
+                    }
+                    foes.clear();
+                    battle_over = true;
+                }
+            } else if(target.getCurrenthealth() > 0){
+                if(searchPassive(attacker, "Lifesteal")) {
+                    attacker.updateHealth((int) (netDamage * 0.5));
+                }
+                target.updateHealth(-netDamage);
+                System.out.print(attacker.getName() + " has hit " + target.getName());
+                if(cleave) System.out.print(" with cleave");
+                System.out.println(" for " + totalDMG + " damage!");
             }
         }
     }
 
-    private void processBotAttack(Monster attacker, Player player) {
-        Random rn = new Random();
-        double hitChance;
-        double critProbability;
-
-        //Checks how many attacks player can perform, repeats attack sequence accordingly
-        for (int attacks = 0; attacks < attacker.getAttributes().getAttacks(); attacks++) {
-
-            //Checks if player is accurate enough (accuracy attribute) if not, attack fails
-            hitChance = rn.nextDouble();
-            if (hitChance > attacker.getAttributes().getAccuracy()) {
-                System.out.println(attacker.getName() + " attack has missed!");
-                return;
-            }
-
-            //Checks if target can evade attack (evasion attribute) if so, attack fails
-            hitChance = rn.nextDouble();
-            if (hitChance <= player.getAttributes().getEvasion()) {
-                System.out.println("You have evaded " + attacker.getName() + "s attack!");
-                return;
-            }
-
-
-            int     damage,
-                    totalDamageReduction,
-                    netDamage;
-
-            critProbability = rn.nextDouble();
-            if (critProbability <= attacker.getAttributes().getCritChance()) {
-                damage = (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getCritPercentage());
-                System.out.print("Critical hit! ");
-            } else {
-                damage = attacker.getAttributes().getDamage();
-            }
-
-            //Checks what damage type the attack is, calculates the damage accordingly
-            DamageType attackerDamageType = attacker.getDamageType();
-
-            switch (attackerDamageType) {
-                case PHYSICAL:
-                    totalDamageReduction = (int) (damage * player.getAttributes().getDamageReduction());
-                    break;
-                case MAGICAL:
-                    totalDamageReduction = (int) (damage * player.getAttributes().getMagicResistance());
-                    break;
-                case UNIVERSAL:
-                    totalDamageReduction = (int) (damage * player.getAttributes().getMagicResistance() *
-                            player.getAttributes().getDamageReduction());
-                    break;
-                default:
-                    totalDamageReduction = 0;
-            }
-            netDamage = damage - totalDamageReduction;
-
-            executeBotAttack(attacker, netDamage, player, attackerDamageType);
-        }
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-
-    }
-
-    private void executeBotAttack(Monster attacker, int netDamage, Player player, DamageType damageType) {
-        switch (damageType) {
-            case PHYSICAL:
-
-                if (player.getCurrentArmor() < netDamage && player.getCurrentArmor() > 0) {
-                    netDamage = netDamage - player.getCurrentArmor();
-                    System.out.println(attacker.getName() + " has destroyed your armor (" + player.getCurrentArmor() + " damage)");
-                    player.updateArmor(-player.getCurrentArmor());
-                } else if (player.getCurrentArmor() > netDamage) {
-                    player.updateArmor(-netDamage);
-                    System.out.println(attacker.getName() + " has hit your armor for " + netDamage + " damage!");
-                    netDamage = 0;
-                }
-
-                break;
-
-            case MAGICAL:
-
-                if (player.getCurrentShield() < netDamage && player.getCurrentShield() > 0) {
-                    netDamage = netDamage - player.getCurrentShield();
-                    System.out.println(attacker.getName() + " has destroyed your magic shield (" + player.getCurrentArmor() + " damage)");
-                    player.updateShield(-player.getCurrentShield());
-                } else if (player.getCurrentShield() > netDamage) {
-                    player.updateShield(-netDamage);
-                    System.out.println(attacker.getName() + " has hit your magic shield for " + netDamage + " damage!");
-                    netDamage = 0;
-                }
-
-                break;
-
-            case UNIVERSAL:
-
-                if (player.getCurrentShield() < netDamage && player.getCurrentShield() > 0) {
-                    System.out.println(attacker.getName() + " has destroyed your magic shield (" + player.getCurrentArmor() + " damage)");
-                    player.updateShield(-player.getCurrentShield());
-                } else if (player.getCurrentShield() > netDamage) {
-                    player.updateShield(-netDamage);
-                    System.out.println(attacker.getName() + " has hit your magic shield for " + netDamage + " damage!");
-                }
-
-                if (player.getCurrentArmor() < netDamage && player.getCurrentArmor() > 0) {
-                    System.out.println(attacker.getName() + " has destroyed your armor (" + player.getCurrentArmor() + " damage)");
-                    player.updateArmor(-player.getCurrentArmor());
-                } else if (player.getCurrentArmor() > netDamage) {
-                    player.updateArmor(-netDamage);
-                    System.out.println(attacker.getName() + " has hit your  armor for " + netDamage + " damage!");
-
-                }
-
-                break;
-        }
-
-        if (netDamage > 0) {
-            if (player.getCurrenthealth() <= netDamage) {
-                System.out.println("You have been slain by " + attacker.getName() + "! (" + netDamage + " damage)");
-                player.updateHealth(-player.getCurrenthealth());
-                battle_over = true;
-                return;
-            } else {
-                player.updateHealth(-netDamage);
-                System.out.println(attacker.getName() + " has hit your health for " + netDamage + " damage!");
+    private boolean searchPassive(Character character, String keyword) {
+        for(Ability ability : character.getPassives()) {
+            if (ability.abilityName.equals(keyword)) {
+                return true;
             }
         }
+        return false;
     }
 }

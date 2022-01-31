@@ -17,6 +17,7 @@ public class FalseGod extends Boss {
                 6,
                 8,
                 10,
+                0,
                 1,
                 1,
                 0.10,

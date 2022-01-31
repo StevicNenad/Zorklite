@@ -9,8 +9,4 @@ public class DivineCombust extends Ability {
         this.abilityType = AbilityType.PASSIVE;
         this.abilityName = "Split shot";
     }
-
-    public void ExtraAttack() {
-
-    }
 }

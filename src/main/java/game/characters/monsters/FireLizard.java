@@ -1,8 +1,11 @@
 package game.characters.monsters;
 
+import game.Ability;
 import game.Attributes;
 import game.DamageType;
 import game.characters.Monster;
+
+import java.util.ArrayList;
 
 public class FireLizard extends Monster {
 
@@ -11,18 +14,19 @@ public class FireLizard extends Monster {
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
-                20,
+                7,
                 1,
                 0,
-                12,
-                5,
-                6,
-                6,
-                10,
+                8,
+                8,
+                8,
+                8,
+                8,
+                0,
                 1,
-                1,
+                0.8,
                 0.10,
-                1.80,
+                2.00,
                 0,
                 0
         );
@@ -35,6 +39,9 @@ public class FireLizard extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
 
         calculateResistances();
     }

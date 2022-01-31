@@ -7,10 +7,6 @@ public class HydroMorph extends Ability {
 
     public HydroMorph() {
         this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Split shot";
-    }
-
-    public void ExtraAttack() {
-
+        this.abilityName = "Hydro Touch";
     }
 }

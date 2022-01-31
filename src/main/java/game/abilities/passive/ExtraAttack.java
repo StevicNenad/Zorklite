@@ -9,8 +9,4 @@ public class ExtraAttack extends Ability {
         this.abilityType = AbilityType.PASSIVE;
         this.abilityName = "Extra Attack";
     }
-
-    public void ExtraAttack() {
-
-    }
 }

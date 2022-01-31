@@ -11,7 +11,7 @@ public class Greatsword extends Weapon {
         this.name = "Greatsword";
 
         attributes = new Attributes(
-                120,
+                150,
                 1,
                 0,
                 0,
@@ -19,6 +19,7 @@ public class Greatsword extends Weapon {
                 0,
                 0,
                 0,
+                -6,
                 1,
                 0.65,
                 0,

@@ -17,6 +17,7 @@ public class ChaosForm extends Armor {
                 0,
                 0,
                 0,
+                -5,
                 1,
                 0,
                 0,

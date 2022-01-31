@@ -1,8 +1,11 @@
 package game.characters.monsters;
 
+import game.Ability;
 import game.Attributes;
 import game.DamageType;
 import game.characters.Monster;
+
+import java.util.ArrayList;
 
 public class Slime extends Monster {
 
@@ -11,16 +14,17 @@ public class Slime extends Monster {
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
-                20,
+                11,
                 1,
                 0,
-                12,
-                5,
-                6,
-                3,
-                10,
+                15,
                 1,
                 1,
+                1,
+                4,
+                0,
+                1,
+                0.9,
                 0.10,
                 1.80,
                 0,
@@ -35,6 +39,9 @@ public class Slime extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
 
         calculateResistances();
     }

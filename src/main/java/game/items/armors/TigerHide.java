@@ -17,6 +17,7 @@ public class TigerHide extends Armor {
                 0,
                 0,
                 0,
+                20,
                 1,
                 0,
                 0,

@@ -24,14 +24,14 @@ public class Game {
     }
 
     public void mainGame() {
-        while(true) {
+        while (true) {
             welcome();
             RoomGenerator roomGen = new RoomGenerator();
             rooms = roomGen.getRooms();
             currentRoom = rooms.get(0);
             currentRoom.chooseLoadout(player);
 
-            while(!gameover) {
+            while (!gameover) {
                 Command command = parser.getCommand();
                 processCommand(command);
             }
@@ -64,58 +64,68 @@ public class Game {
 
         String commandWord = command.getCommandWord().toLowerCase();
 
-        if (commandWord.equals("help")) {
-            printHelp();
-        }
-        else if (commandWord.equals("tutorial")) {
-            printTutorial(command);
-        }
-        else if(commandWord.equals("explore")) {
-            if(currentRoom.isExplored()) {
-                System.out.println("You have already explored this room...");
-                return;
-            }
-            currentRoom.printDescription();
-            currentRoom.setExplored(true);
-        }
-        else if(commandWord.equals("attack")) {
-            startEncounter();
-        }
-        else if(commandWord.equals("map")) {
-            currentRoom.printMap();
-        }
-        else if(commandWord.equals("go")) {
-            goRoom(command);
-        }
-        else if(commandWord.equals("quit")) {
-            gameover = true;
+        switch (commandWord) {
+            case "help":
+                printHelp();
+                break;
+
+            case "tutorial":
+                printTutorial(command);
+                break;
+
+            case "explore":
+                if (currentRoom.isExplored()) {
+                    System.out.println("You have already explored this room... type \"map\"");
+                    return;
+                }
+                currentRoom.printDescription();
+                currentRoom.setExplored(true);
+                break;
+
+            case "attack":
+                Battle battle = new Battle();
+                gameover = battle.startEncounter(player, currentRoom.getMonsters());
+                break;
+
+            case "map":
+                currentRoom.printMap();
+                break;
+
+            case "go":
+                goRoom(command);
+                break;
+
+            case "sneak":
+                sneak(command);
+                break;
+
+            case "quit":
+                gameover = true;
+                break;
         }
     }
 
     public void printHelp() {
-        if(currentRoom.getRoomType() == Room.RoomType.START) {
+        if (currentRoom.getRoomType() == Room.RoomType.START) {
             System.out.println( "You picked up your equipment, there is nothing left here to do. With only the red door in the \"east\" remaining,\n" +
                                 "this is the only way you can \"go\" now.");
-        }
-        else if(currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.isExplored() == false) {
+        } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.isExplored() == false) {
             System.out.println( "The door behind you is locked tight, you can't get through. You can't make out what lies inside this dark room. \n" +
                                 "You should probably \"explore\" it to learn more.");
-        }
-        else if(currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty() == false) {
+        } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty() == false) {
             System.out.println( "There is no way back it seems... Even though you hear terrible screams ahead, the only option you have left is\n" +
                                 "to push east, but you need to find a way around these monsters... Hmm... maybe \"attack\" or \"sneak\"");
-        }
-        else if(currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty()) {
+        } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty()) {
             System.out.println( "There seem to be no more threats in this area... it's time to \"go east\"");
         }
-        System.out.println("You can use the following command words: ");
+        System.out.println(     "You can use the following command words: ");
         System.out.println(parser.showCommands());
     }
 
     public void printTutorial(Command command) {
         String tutorialSubject = "null";
 
-        if(command.hasSecondWord()){
+        if (command.hasSecondWord()) {
             tutorialSubject = command.getSecondWord().toLowerCase();
         }
 
@@ -146,7 +156,7 @@ public class Game {
                                     "chance for finding secret loot every time you use the command.");
                 break;
             case "quit":
-                System.out.println( "This command ends your current Run and you can start over again.");
+                System.out.println("This command ends your current Run and you can start over again.");
                 break;
             case "game":
                 System.out.println( "The goal of the game is to make it as far east as you can until you reach the final boss. The weapons, Monsters, Loot and\n" +
@@ -166,7 +176,7 @@ public class Game {
                                     "To view type \"tutorial\" + any of the words above");
         }
 
-        if(command.hasSecondWord()) {
+        if (command.hasSecondWord()) {
             System.out.print("\nNext command:\n");
         }
     }
@@ -178,35 +188,45 @@ public class Game {
 
             String direction = command.getSecondWord().toLowerCase();
 
-            if(currentRoom.isExplored() && currentRoom.getMonsters().isEmpty()) {
+            if (currentRoom.isExplored() && currentRoom.getMonsters().isEmpty()) {
                 Room nextRoom = currentRoom.getExit(direction);
 
-                if(nextRoom != null) {
+                if (nextRoom != null) {
                     currentRoom = nextRoom;
-                    if(currentRoom.isExplored()) {
+                    if (currentRoom.isExplored()) {
                         currentRoom.printDescription();
-                    }
-                    else{
+                    } else {
                         System.out.println( "You walk through the door and find yourself in a Room you haven't been in before... As you enter, the\n" +
-                                "door behind you slams shut. It's locked tight, there is no way back...");
+                                            "door behind you slams shut. It's locked tight, there is no way back...");
                     }
-                }
-                else {
+                } else {
                     System.out.println("There is no way through here...");
                 }
-            }
-            else if(currentRoom.isExplored() && !currentRoom.getMonsters().isEmpty()) {
+            } else if (currentRoom.isExplored() && !currentRoom.getMonsters().isEmpty()) {
                 System.out.println("You can't do that, there are monsters nearby...");
-            }
-            else {
+            } else {
                 System.out.println("You need to \"explore\" the room first.");
             }
         }
     }
 
-    private void startEncounter() {
-        Battle battle = new Battle();
-        gameover = battle.startEncounter(player, currentRoom.getMonsters());
-    }
+    private void sneak(Command command) {
+        if(!command.hasSecondWord()) {
+            System.out.println("Do what while sneaking?");
+        } else {
 
+            if(command.getSecondWord().toLowerCase().equals("attack")) {
+                Battle battle = new Battle();
+
+                 for(Character enemy : currentRoom.getMonsters()) {
+                     if(enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                         battle.preemptiveStrikeFail(player);
+                     }
+                 }
+
+                 battle.preemptiveStrikeSuccess(currentRoom.getMonsters());
+                 battle.startEncounter(player, currentRoom.getMonsters());
+            }
+        }
     }
+}

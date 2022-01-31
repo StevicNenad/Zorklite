@@ -1,8 +1,11 @@
 package game.characters.monsters;
 
+import game.Ability;
 import game.Attributes;
 import game.DamageType;
 import game.characters.Monster;
+
+import java.util.ArrayList;
 
 public class Banshee extends Monster {
 
@@ -11,18 +14,19 @@ public class Banshee extends Monster {
         damageType = DamageType.MAGICAL;
 
         attributes = new Attributes(
-                20,
+                8,
                 1,
                 0,
-                12,
+                10,
                 5,
                 6,
-                12,
+                4,
                 10,
+                0,
                 1,
-                1,
-                0.10,
-                1.80,
+                0.8,
+                0.15,
+                2.00,
                 0,
                 0
         );
@@ -35,6 +39,9 @@ public class Banshee extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
 
         calculateResistances();
     }

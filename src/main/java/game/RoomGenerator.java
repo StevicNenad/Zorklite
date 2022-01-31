@@ -68,7 +68,8 @@ public class RoomGenerator {
                     for(int i = 0;  i < numberEnemies; i++) {
                         int monsterLevel = rn.nextInt(3) + (index - 1);
                         Monster monster = mgen.getRandomMonster();
-                        monster.getAttributes().setLevel(monsterLevel);
+                        monster.getAttributes().levelScaleMonsters(monsterLevel);
+                        monster.updateHealthManaArmorShieldPoints();
 
                         room.addMonster(monster);
                     }

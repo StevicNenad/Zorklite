@@ -20,6 +20,11 @@ public class Weapon extends Item {
         return super.getName();
     }
 
+    @Override
+    public Attributes getAttributes() {
+        return super.getAttributes();
+    }
+
     public DamageType getDamageType() {
         return damageType;
     }

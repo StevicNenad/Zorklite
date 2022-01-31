@@ -1,8 +1,11 @@
 package game.characters.monsters;
 
+import game.Ability;
 import game.Attributes;
 import game.DamageType;
 import game.characters.Monster;
+
+import java.util.ArrayList;
 
 public class Imp extends Monster {
 
@@ -11,20 +14,21 @@ public class Imp extends Monster {
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
-                20,
-                1,
+                3,
+                4,
                 0,
-                12,
+                4,
                 5,
                 6,
                 16,
                 10,
-                1,
-                1,
-                0.10,
-                1.80,
                 0,
-                0
+                1,
+                1,
+                0.25,
+                2.00,
+                0,
+                0.4
         );
 
         maxHealth = attributes.calculateHealth();
@@ -35,6 +39,9 @@ public class Imp extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
 
         calculateResistances();
     }

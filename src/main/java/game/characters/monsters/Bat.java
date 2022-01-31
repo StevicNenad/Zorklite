@@ -1,9 +1,12 @@
 package game.characters.monsters;
 
+import game.Ability;
 import game.Attributes;
 import game.Character;
 import game.DamageType;
 import game.characters.Monster;
+
+import java.util.ArrayList;
 
 public class Bat extends Monster {
 
@@ -12,18 +15,19 @@ public class Bat extends Monster {
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
-                20,
-                1,
+                3,
+                2,
                 0,
-                12,
                 5,
                 6,
-                4,
                 10,
+                8,
+                10,
+                0,
                 1,
                 1,
-                0.10,
-                1.80,
+                0.15,
+                2.00,
                 0,
                 0
         );
@@ -36,6 +40,9 @@ public class Bat extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
 
         calculateResistances();
     }

@@ -31,6 +31,7 @@ public class Player extends Character {
                 2,
                 10,
                 5,
+                0,
                 1,
                 0,
                 0,
@@ -55,6 +56,8 @@ public class Player extends Character {
         armor = null;
         firstAcc = null;
         secondAcc = null;
+        passives = new ArrayList<Ability>();
+        actives = new ArrayList<Ability>();
     }
 
     public void setWeapon(Weapon weapon) {
@@ -76,9 +79,11 @@ public class Player extends Character {
 
         if(firstAcc != null) {
             attributes.removeStats(firstAcc.getAttributes());
+            firstAcc = null;
         }
         if(secondAcc != null) {
             attributes.removeStats(secondAcc.getAttributes());
+            secondAcc = null;
         }
 
         currentMana = maxMana;

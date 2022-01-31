@@ -11,9 +11,10 @@ public class Wand extends Weapon {
         this.name = "Magic Wand";
 
         attributes = new Attributes(
-                20,
+                100,
                 1,
                 1,
+                0,
                 0,
                 0,
                 0,
