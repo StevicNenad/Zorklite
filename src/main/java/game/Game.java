@@ -211,22 +211,68 @@ public class Game {
     }
 
     private void sneak(Command command) {
+        if(!currentRoom.isExplored()) {
+            System.out.println("You need to explore this room first...");
+            return;
+        }
+
+        String secondWord = command.getSecondWord().toLowerCase();
+
         if(!command.hasSecondWord()) {
             System.out.println("Do what while sneaking?");
         } else {
 
-            if(command.getSecondWord().toLowerCase().equals("attack")) {
-                Battle battle = new Battle();
+            switch(secondWord) {
+                case "attack":
+                    if(currentRoom.getMonsters().isEmpty()) {
+                        System.out.println("There is nothing to ambush in this room...");
+                        break;
+                    }
 
-                 for(Character enemy : currentRoom.getMonsters()) {
-                     if(enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
-                         battle.preemptiveStrikeFail(player);
-                     }
-                 }
+                    Battle battle = new Battle();
 
-                 battle.preemptiveStrikeSuccess(currentRoom.getMonsters());
-                 battle.startEncounter(player, currentRoom.getMonsters());
+                    for(Character enemy : currentRoom.getMonsters()) {
+                        if(enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                            battle.preemptiveStrikeFail(player);
+                        }
+                    }
+
+                    battle.preemptiveStrikeSuccess(player, currentRoom.getMonsters());
+                    battle.startEncounter(player, currentRoom.getMonsters());
+                    break;
+
+                case "east":
+                    if(!currentRoom.getMonsters().isEmpty()) {
+                        for(Character enemy : currentRoom.getMonsters()) {
+                            if(enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                                battle = new Battle();
+                                battle.preemptiveStrikeFail(player);
+                                battle.startEncounter(player, currentRoom.getMonsters());
+                                break;
+                            }
+                        }
+                        Room nextRoom = currentRoom.getExit(secondWord);
+
+                        if(nextRoom != null) {
+                            currentRoom = nextRoom;
+
+                            if(currentRoom.isExplored()) {
+                                currentRoom.printDescription();
+                            } else {
+                                System.out.println( "You managed to sneak past the enemy and find yourself in a new room in the east. You feel the gate" +
+                                                    "behind you slam shut. It's locked tight...");
+                            }
+                        } else {
+                            System.out.println(     "You snuck all the way to a dead end, there is no way through here...");
+                        }
+                    }
+                    else {
+                        System.out.println(         "Slowly you crouch-walked your way to the east in a completely empty room. Unsurprisingly, you manage " +
+                                                    "to sneak by the air undetected and open the gate. As you enter the new room, you can hear the gate bang shut." +
+                                                    "No way back...");
+                    }
             }
+
         }
     }
 }

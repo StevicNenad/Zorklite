@@ -1,6 +1,6 @@
 package game;
 
-import game.abilities.passive.Lifesteal;
+import game.abilities.passive.EscalatingViolence;
 import game.characters.Boss;
 import game.characters.Monster;
 import game.characters.Player;
@@ -9,27 +9,43 @@ import game.items.Weapon;
 import java.util.*;
 
 public class Battle {
+    private int     turns,          //tracks total number of turns in the battle
+                    playerTurns;    //tracks number of turns of player
+
     private boolean battle_over,
+                    surrender,
                     playerPreemptiveStrike,
                     monsterPreemptiveStrike;
 
     public Battle() {
+        turns = 0;
+        playerTurns = 0;
         battle_over = false;
         playerPreemptiveStrike = false;
         monsterPreemptiveStrike = false;
     }
 
     public boolean startEncounter(Player pc, ArrayList<Character> foes) {
+        battleIntro();
+
         while(pc.getCurrenthealth() != 0 && !foes.isEmpty()) {
             ArrayList<Character> queue = generateAttackOrder(pc, foes);
+            turns++;
 
-            for(Character attacker : queue) {
+            int index = 0;  //needed to display queue
+            for (Character attacker : queue) {
                 if (attacker.getCurrenthealth() > 0) {
-                    displayBattle(queue);
+                    displayBattle(queue, index);
                     processTurn(attacker, foes, pc);
                 }
-                if(battle_over) {
+                if (battle_over) {
                     break;
+                }
+                if(index + 1 == queue.size()) {
+                    index = 0;
+                }
+                else {
+                    index++;
                 }
             }
         }
@@ -39,14 +55,14 @@ public class Battle {
             return false;
         }
         else {
-            System.out.println("You fall into a pool of your own blood, your eyes slowly closing. Game over...");
+            if(surrender) {
+                System.out.println( "You drop your weapons and bend the knee, pleading for your life. Without mercy, the creatures start dragging\n" +
+                                    "you into the darkest pits of the dungeon, while the echp of your screams fill the rooms. Game over...");
+            }else {
+                System.out.println("You fall into a pool of your own blood, your eyes slowly closing. Game over...");
+            }
 
-            try {
-                Thread.sleep(2000);
-            }
-            catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            pause(2000);
 
             return true;
         }
@@ -54,17 +70,25 @@ public class Battle {
 
     //Intro message when entering Battle.
     public void battleIntro() {
-
+        System.out.println("Battle started! Deal with the threat before they deal with you.\n");
     }
 
-    public void preemptiveStrikeSuccess(ArrayList<Character> foes) {
+    public void preemptiveStrikeSuccess(Player pc, ArrayList<Character> foes) {
+        int critDamage = (int) (pc.getAttributes().getDamage() * pc.getAttributes().getCritPercentage());
+        System.out.println("Preemptive Strike! You managed to sneak up on and damage your opponent.\n");
         for(Character enemy : foes) {
-            enemy.updateHealth(-(enemy.getMaxHealth() / 10));
+            if(critDamage > enemy.maxHealth) {
+                enemy.setCurrentHealth(1);
+            }
+            else {
+                inflictDamage(pc, enemy, foes, critDamage, false);
+            }
         }
         playerPreemptiveStrike = true;
     }
 
     public void preemptiveStrikeFail(Player pc) {
+        System.out.println("Sneak failed! The enemy has spotted and attacked you before you could react.\n");
         pc.updateHealth(-(pc.getMaxHealth() / 4));
         monsterPreemptiveStrike = true;
     }
@@ -97,17 +121,17 @@ public class Battle {
         return participants;
     }
 
-    private void displayBattle(ArrayList<Character> queue) {
+    private void displayBattle(ArrayList<Character> queue, int index) {
 
         //For loop that prints the players HP, Armor and Shield values to the terminal
         for (Character findPlayer : queue) {
             if(findPlayer.getType() == Character.CharacterType.PLAYER) {
                 System.out.print("YOU: " + findPlayer.getCurrenthealth() + "/" + findPlayer.getMaxHealth() + " HP");
                 if(findPlayer.getArmorPoints() > 0) {
-                    System.out.print("\t" + findPlayer.getCurrentArmor() + "/" + findPlayer.getArmorPoints() + " Armor");
+                    System.out.print("  |  " + findPlayer.getCurrentArmor() + "/" + findPlayer.getArmorPoints() + " Armor");
                 }
                 if (findPlayer.getShieldPoints() > 0) {
-                    System.out.print("\t" + findPlayer.getCurrentShield() + "/" + findPlayer.getShieldPoints() + " Magic Shield");
+                    System.out.print("  |  " + findPlayer.getCurrentShield() + "/" + findPlayer.getShieldPoints() + " Magic Shield");
                 }
                 System.out.println("\n");
             }
@@ -122,28 +146,52 @@ public class Battle {
                     System.out.println("DEAD\n");
                 }
                 else{
-                    System.out.println(findMonster.getCurrenthealth() + "/" + findMonster.getMaxHealth() + " HP");
+                    System.out.print(findMonster.getCurrenthealth() + "/" + findMonster.getMaxHealth() + " HP");
                     if(findMonster.getArmorPoints() > 0) {
-                        System.out.println(findMonster.getCurrentArmor() + "/" + findMonster.getArmorPoints() + " Armor");
+                        System.out.print("  |  " + findMonster.getCurrentArmor() + "/" + findMonster.getArmorPoints() + " Armor");
                     }
                     if (findMonster.getShieldPoints() > 0) {
-                        System.out.println(findMonster.getCurrentShield() + "/" + findMonster.getShieldPoints() + " Magic Shield");
+                        System.out.print("  |  " + findMonster.getCurrentShield() + "/" + findMonster.getShieldPoints() + " Magic Shield");
                     }
-                    System.out.print("\n");
+                    System.out.print("\n\n");
                 }
             }
         }
 
         //For loop that prints the turn order (who goes first, who second, who third etc... So player can plan his next attack
+        int count = index;
+        System.out.println("Queue:");
+        for(int i = 0; i < queue.size(); i++) {
+            if(i > 0) System.out.print("  |  ");
+
+            if (queue.get(count).getCurrenthealth() <= 0) {
+                if(count + 1 >= queue.size()) {
+                    count = 0;
+                } else {
+                    count++;
+                }
+                continue;
+            }
+
+            System.out.print(queue.get(count).getShortName());
+
+            if(count + 1 >= queue.size()) {
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+        System.out.print("\n\n");
     }
 
     private void processTurn(Character attacker, ArrayList<Character> foes, Player pc) {
         if(attacker.getType() == Character.CharacterType.PLAYER) {
             boolean turnSuccessful = false;
             Scanner sc = new Scanner(System.in);
+            playerTurns++;
 
             while(turnSuccessful == false) {
-                System.out.print("What do you wanna do?\n\n1 - Attack\n2 - Abilities\n3 - Items\n4 - Surrender\n>");
+                System.out.print("What do you wanna do?\n\n1 - Attack\n2 - Abilities\n3 - Potion\n4 - Surrender\n>");
 
                 String menuChoice = sc.nextLine();
 
@@ -164,7 +212,7 @@ public class Battle {
                         try{
                             int target = Integer.parseInt(chooseTarget);
 
-                            if(target < 0 || target >= foes.size()) {
+                            if(target < 0 || target >= foes.size() || foes.get(target).getCurrenthealth() <= 0) {
                                 System.out.println("Target does not exist...");
                             }
                             else {
@@ -177,7 +225,57 @@ public class Battle {
                         }
                         break;
                     case "2":
-                        System.out.println("");
+                        if(attacker.getActives().isEmpty()) {
+                            System.out.println("No Abilities...");
+                            pause(1000);
+                        }else {
+                            System.out.println("Abilities:");
+
+                            index = 0;
+                            for(Ability ability : attacker.getActives()) {
+                                System.out.println(index + " - " + ability.getAbilityName());
+                                index++;
+                            }
+                            System.out.print(">");
+
+                            String chooseAbility = sc.nextLine();
+
+                            try{
+                                int ability = Integer.parseInt(chooseAbility);
+
+                                if(ability < 0 || ability >= attacker.getActives().size()) {
+                                    System.out.println("Ability does not exist...");
+                                }
+                                else {
+                                    turnSuccessful = processAbility(attacker, foes, pc, attacker.getActives().get(ability));
+
+                                }
+                            }
+                            catch (NumberFormatException ex) {
+                                System.out.println("Please use only valid inputs (numbers).");
+                            }
+                        }
+                        break;
+                    case "3":
+                        if(attacker.getPotions() == 0) {
+                            System.out.println("No Potions...");
+                            pause(1000);
+                        } else {
+                            //heal();
+                        }
+                        break;
+                    case "4":
+                        System.out.print("Do you really want to surrender? y/n\n>");
+                        menuChoice = sc.nextLine();
+                        if(menuChoice.toLowerCase().equals("y")) {
+                            battle_over = true;
+                            surrender = true;
+                            pc.setCurrentHealth(0);
+                            return;
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid input. (Only 1-4)");
                 }
             }
         }
@@ -186,16 +284,71 @@ public class Battle {
         }
     }
 
-    //So the way this mess of a method works, is that it processes any given attack by this scheme:
-    //Every Move can have multiple attacks, those are iterated first
-    //And every attack can have multiple projectiles, those are iterated second
-    //While attacks hit the same target consecutively, projectiles spread to multiple targets
+    private boolean processAbility(Character attacker, ArrayList<Character> foes, Player pc, Ability ability) {
+
+        if(ability.isSingleTarget()) {
+            Scanner sc = new Scanner(System.in);
+            int index = 0;
+
+            System.out.println("Choose Target:");
+            for(Character target : foes) {
+                if(target.getCurrenthealth() > 0) {
+                    System.out.println(index + " - " + target.getName());
+                }
+                index++;
+            }
+
+            System.out.print(">");
+            String chooseTarget = sc.nextLine();
+
+            try{
+                int target = Integer.parseInt(chooseTarget);
+
+                if(target < 0 || target >= foes.size() || foes.get(target).getCurrenthealth() <= 0) {
+                    System.out.println("Target does not exist...");
+                }
+                else {
+                    processAttack(attacker, foes, pc, target);
+                    return true;
+                }
+            }catch (NumberFormatException ex) {
+                System.out.println("Please use only valid inputs (numbers).");
+            }
+        }
+
+        switch(ability.getAbilityName()) {
+
+        }
+        return false;
+    }
+
     private void processAttack(Character attacker, ArrayList<Character> foes, Player pc, int index) {
+
+        //Processes passive "Extra Attack
+        if(searchPassive(attacker, "Extra Attack") && playerTurns != 1) {
+            if(playerTurns % 2 == 0) {
+                attacker.getAttributes().setAttacks(attacker.getAttributes().getAttacks() + 1);
+            }
+            else {
+                if(attacker.getAttributes().getAttacks() > 1) {
+                    attacker.getAttributes().setAttacks(attacker.getAttributes().getAttacks() - 1);
+                }
+                else {
+                    attacker.getAttributes().setAttacks(1);
+                }
+            }
+        }
 
         //Checks how many attacks current attacker can perform. Repeats attack sequence accordingly
         for(int attacks = 0; attacks < attacker.getAttributes().getAttacks(); attacks++) {
             String[] attackText = {"First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eigth", "Ninth", "Tenth"};
 
+            //if attacker or target has no health left the attack is aborted
+            if(attacker.getCurrenthealth() <= 0 || foes.get(index).getCurrenthealth() <= 0) {
+                return;
+            }
+
+            //Additional text that appears when attacker can hit multiple times
             if(attacker.getAttributes().getAttacks() > 1) {
                 System.out.println(attackText[attacks] + " attack: ");
             }
@@ -207,21 +360,16 @@ public class Battle {
             for(int projectiles = 0; projectiles < repeatLoop; projectiles++) {
                 if(repeatLoop > 1) {
                     System.out.print(attackText[projectiles] + " projectile: ");
-                    try {
-                        Thread.sleep(1000);
-                    }
-                    catch(InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
+                    pause(1000);
                 }
 
                 //Checks if attacker is accurate enough to hit the target. If not, attack fails
                 if(attacker.getType() == Character.CharacterType.PLAYER) {
-                    if(didAttackMiss(attacker, foes.get(index))) {
+                    if(didAttackMiss(attacker, foes.get(index), foes)) {
                         continue;
                     }
                 } else {
-                    if (didAttackMiss(attacker, pc)) {
+                    if (didAttackMiss(attacker, pc, foes)) {
                         continue;
                     }
                 }
@@ -252,12 +400,7 @@ public class Battle {
                 }
             }
 
-            try {
-                Thread.sleep(2000);
-            }
-            catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            pause(2000);
         }
     }
 
@@ -276,7 +419,7 @@ public class Battle {
         }
     }
 
-    private boolean didAttackMiss(Character attacker, Character target) {
+    private boolean didAttackMiss(Character attacker, Character target, ArrayList<Character> foes) {
         Random rn = new Random();
         double hitChance = rn.nextDouble();
         if(hitChance > attacker.getAttributes().getAccuracy()) {
@@ -287,10 +430,23 @@ public class Battle {
         hitChance = rn.nextDouble();
         if(hitChance <= target.getAttributes().getEvasion()) {
             System.out.print(target.getName() + " evaded the attack from " + attacker.getName());
+
+            //Processes the passive ability "Counter Attack"
             if(searchPassive(target, "Counter Attack")) {
-                System.out.print(" and hit back with a counter attack! (" + target.getAttributes().getDamage() + " dmg)");
-                attacker.updateHealth(-target.getAttributes().getDamage());
+                int damage = target.getAttributes().getDamage();
+
+                System.out.println(" and hit back with a counter attack");
+                damage = calculateNetDamage(target, attacker, damage);
+                inflictDamage(target, attacker, foes, damage, false);
+                for(Character enemy : foes) {
+                    if(enemy.getCurrenthealth() > 0) {
+                        return true;
+                    }
+                }
+                foes.clear();
+                battle_over = true;
             }
+            System.out.println("!");
             return true;
         }
 
@@ -299,7 +455,8 @@ public class Battle {
 
     private int calculateNetDamage(Character attacker, Character target, int damage) {
         int         totalDamageReduction,
-                    netDamage;
+                    netDamage,
+                    bonusDamage;
 
         DamageType  damageType;
 
@@ -312,6 +469,11 @@ public class Battle {
         else {
             damageType = ((Boss)attacker).getDamageType();
         }
+
+        //Processes passive ability "escalating violence"
+        bonusDamage = processEscalatingViolenceDamage(attacker, target);
+
+        damage += bonusDamage;
 
         switch(damageType) {
             case PHYSICAL:
@@ -327,7 +489,7 @@ public class Battle {
                 totalDamageReduction = 0;
         }
 
-        netDamage = damage - totalDamageReduction;
+        netDamage = damage  - totalDamageReduction;
 
         return netDamage;
     }
@@ -352,6 +514,7 @@ public class Battle {
     }
 
     private void executeAttack(Character attacker, Character target, int netDamage, ArrayList<Character> foes, int index) {
+
         int aoeDamage = (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getAoeDamage());//calculates aoeDamage based on Damage
         int aoeIndex = 0;
 
@@ -376,7 +539,7 @@ public class Battle {
                     }
                 }
 
-                if(attacker.getType() == Character.CharacterType.PLAYER) {
+                if(attacker.getType() == Character.CharacterType.PLAYER && foes.get(aoeIndex).getCurrenthealth() > 0) {
                     inflictDamage(attacker, foes.get(aoeIndex), foes, aoeDamage, true);
                 }
                 else {
@@ -401,6 +564,7 @@ public class Battle {
         else {
             damageType = ((Boss)attacker).getDamageType();
         }
+
 
         //This block exectues Attack on primary Target
         switch (damageType) {
@@ -448,6 +612,8 @@ public class Battle {
 
         if (netDamage > 0) {
             if (target.getCurrenthealth() <= netDamage) {
+
+                //Process passive ability "Lifesteal"
                 if(searchPassive(attacker, "Lifesteal")) {
                     attacker.updateHealth((int) (target.getCurrenthealth() * 0.5));
                 }
@@ -455,6 +621,9 @@ public class Battle {
                 System.out.print(attacker.getName() + " has slain " + target.getName());
                 if(cleave) System.out.print(" with cleave");
                 System.out.println("!");
+
+                //Process passive ability "Hydro Touch"
+                stealAttribute(attacker, target, "Hydro Touch", cleave);
 
                 if(target.getType() == Character.CharacterType.PLAYER) {
                     battle_over = true;
@@ -471,6 +640,7 @@ public class Battle {
                     battle_over = true;
                 }
             } else if(target.getCurrenthealth() > 0){
+                //Process passive ability "Lifesteal"
                 if(searchPassive(attacker, "Lifesteal")) {
                     attacker.updateHealth((int) (netDamage * 0.5));
                 }
@@ -478,7 +648,66 @@ public class Battle {
                 System.out.print(attacker.getName() + " has hit " + target.getName());
                 if(cleave) System.out.print(" with cleave");
                 System.out.println(" for " + totalDMG + " damage!");
+
+                //Processes passive ability "Hydro Touch"
+                stealAttribute(attacker, target, "Hydro Touch", cleave);
             }
+        }
+        else {
+            System.out.print(attacker.getName() + " has hit " + target.getName());
+            if(cleave) System.out.print(" with cleave");
+            System.out.println(" for " + totalDMG + " damage!");
+        }
+    }
+
+    private void stealAttribute(Character attacker, Character target, String keyword, boolean cleave) {
+
+        if(searchPassive(attacker, keyword) && !cleave) {
+            Random rn = new Random();
+            int rando = rn.nextInt(7);
+
+            System.out.print(attacker.getName() + " has stolen 1 ");
+
+            switch (rando) {
+                case 0:
+                    target.getAttributes().setStrength(target.getAttributes().getStrength() - 1);
+                    attacker.getAttributes().setStrength(attacker.getAttributes().getStrength() + 1);
+                    System.out.println("strength");
+                    break;
+                case 1:
+                    target.getAttributes().setAgility(target.getAttributes().getAgility() - 1);
+                    attacker.getAttributes().setAgility(attacker.getAttributes().getAgility() + 1);
+                    System.out.println("agility");
+                    break;
+                case 2:
+                    target.getAttributes().setIntelligence(target.getAttributes().getIntelligence() - 1);
+                    attacker.getAttributes().setIntelligence(attacker.getAttributes().getIntelligence() + 1);
+                    System.out.println("intelligence");
+                    break;
+                case 3:
+                    target.getAttributes().setSpeed(target.getAttributes().getSpeed() - 1);
+                    attacker.getAttributes().setSpeed(attacker.getAttributes().getSpeed() + 1);
+                    System.out.println("speed");
+                    break;
+                case 4:
+                    target.getAttributes().setPerception(target.getAttributes().getPerception() - 1);
+                    attacker.getAttributes().setPerception(attacker.getAttributes().getPerception() + 1);
+                    System.out.println("perception");
+                    break;
+                case 5:
+                    target.getAttributes().setDamage(target.getAttributes().getDamage() - 1);
+                    attacker.getAttributes().setDamage(attacker.getAttributes().getDamage() + 1);
+                    System.out.println("damage");
+                    break;
+                case 6:
+                    target.getAttributes().setStealth(target.getAttributes().getStealth() - 1);
+                    attacker.getAttributes().setStealth(attacker.getAttributes().getStealth() + 1);
+                    System.out.println("stealth");
+                    break;
+            }
+
+            target.recalculateStats();
+            attacker.recalculateStats();
         }
     }
 
@@ -489,5 +718,27 @@ public class Battle {
             }
         }
         return false;
+    }
+
+    private int processEscalatingViolenceDamage(Character attacker, Character target) {
+
+        if(searchPassive(attacker, "Escalating Violence")) {
+            for(Ability passive : attacker.getPassives()) {
+                if(passive.getAbilityName().equals("Escalating Violence")) {
+                    passive.calculateBonusDamage(target);
+                    return passive.getBonusDamage();
+                }
+            }
+        }
+        return 0;
+    }
+
+    private void pause(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        }
+        catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

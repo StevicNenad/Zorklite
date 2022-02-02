@@ -11,6 +11,7 @@ public class Arachnid extends Monster {
 
     public Arachnid() {
         name = "Cursed Spider";
+        shortName = "Spr";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Arachnid extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 35;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

@@ -3,6 +3,8 @@ package game.items.armors;
 import game.Attributes;
 import game.items.Armor;
 
+import java.util.Random;
+
 public class ChaosForm extends Armor {
 
     public ChaosForm() {
@@ -34,5 +36,29 @@ public class ChaosForm extends Armor {
     @Override
     public String getName() {
         return super.getName();
+    }
+
+    @Override
+    public void upgradeStats(int essences) {
+        Random rn = new Random();
+        double factor = rn.nextDouble();
+        attributes.setStrength((int) (essences * factor));
+
+        factor = rn.nextDouble();
+        attributes.setIntelligence((int) (essences * factor));
+
+        factor = rn.nextDouble();
+        attributes.setAgility((int) (essences * factor));
+
+        factor = rn.nextDouble();
+        attributes.setSpeed((int) (essences * factor));
+
+        factor = rn.nextDouble();
+        attributes.setStealth((int) (essences * factor));
+
+        factor = rn.nextDouble();
+        attributes.setPerception((int) (essences * factor));
+
+        attributes.setLevel(attributes.getLevel() + essences);
     }
 }

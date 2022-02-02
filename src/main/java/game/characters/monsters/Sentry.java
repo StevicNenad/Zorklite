@@ -11,6 +11,7 @@ public class Sentry extends Monster {
 
     public Sentry() {
         name = "Sentry";
+        shortName = "Sen";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Sentry extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 65;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

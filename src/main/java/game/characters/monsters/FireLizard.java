@@ -11,6 +11,7 @@ public class FireLizard extends Monster {
 
     public FireLizard() {
         name = "Fire Lizard";
+        shortName = "Liz";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class FireLizard extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 40;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

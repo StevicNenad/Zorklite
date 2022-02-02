@@ -190,10 +190,6 @@ public class Attributes {
         return agility;
     }
 
-    public int getStealth() {
-        return stealth;
-    }
-
     public int getPerception() {
         return perception;
     }
@@ -220,5 +216,41 @@ public class Attributes {
 
     public double getEvasion() {
         return evasion;
+    }
+
+    public void setStealth(int stealth) {
+        this.stealth = stealth;
+    }
+
+    public int getStealth() {
+        return stealth;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setPerception(int perception) {
+        this.perception = perception;
+    }
+
+    public void setAttacks(int attacks) {
+        this.attacks = attacks;
+    }
+
+    public void setCritChance(double critChance) {
+        this.critChance = critChance;
+    }
+
+    public void setCritPercentage(double critPercentage) {
+        this.critPercentage = critPercentage;
+    }
+
+    public void setAoeDamage(double aoeDamage) {
+        this.aoeDamage = aoeDamage;
+    }
+
+    public void setProjectiles(int projectiles) {
+        this.projectiles = projectiles;
     }
 }

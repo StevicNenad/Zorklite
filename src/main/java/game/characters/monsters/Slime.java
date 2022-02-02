@@ -11,6 +11,7 @@ public class Slime extends Monster {
 
     public Slime() {
         name = "Slime Monster";
+        shortName = "Sli";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Slime extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 50;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

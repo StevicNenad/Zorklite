@@ -30,4 +30,8 @@ public class Item {
         return itemType;
     }
 
+    public void upgradeStats(int essences) {
+
+    }
+
 }

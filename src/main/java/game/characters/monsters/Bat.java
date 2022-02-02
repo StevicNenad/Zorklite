@@ -12,6 +12,7 @@ public class Bat extends Monster {
 
     public Bat() {
         name = "Hellbat";
+        shortName = "Bat";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -40,6 +41,7 @@ public class Bat extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 30;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

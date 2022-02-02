@@ -35,4 +35,15 @@ public class HeavyArmor extends Armor {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setStrength((int) (essences * 2));
+        attributes.setIntelligence((int) (essences * 0.2));
+        attributes.setAgility((int) (essences * 0.1));
+        attributes.setSpeed((int) (essences * -0.2));
+        attributes.setPerception((int) (essences * 0.1));
+
+        attributes.setLevel(attributes.getLevel() + essences);
+    }
 }

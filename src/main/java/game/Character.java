@@ -11,7 +11,8 @@ public class Character {
 
     protected CharacterType         characterType;
 
-    protected String                name;
+    protected String                name,
+                                    shortName;
 
     protected int                   maxHealth,
                                     currentHealth,
@@ -21,8 +22,9 @@ public class Character {
                                     currentArmor,
                                     shieldPoints,
                                     currentShield,
-                                    experience,
-                                    lvlUpExperience;    //amount of experience required for level up.
+                                    potions,
+                                    attributePoints,
+                                    deathTokens;
 
     protected Attributes            attributes;
     protected ArrayList<Ability>    actives;
@@ -33,7 +35,7 @@ public class Character {
         attributes.setMagicResistance(currentShield / 200);
     }
 
-    public void updateHealthManaArmorShieldPoints() {
+    public void updateAllStatsAfterLevelup() {
         maxHealth = attributes.calculateHealth();
         currentHealth = maxHealth;
 
@@ -45,6 +47,31 @@ public class Character {
 
         shieldPoints = attributes.calculateShield();
         currentShield = shieldPoints;
+
+        deathTokens += (int) (deathTokens * attributes.getLevel() * 0.20);
+    }
+
+    public void recalculateStats() {
+        maxHealth = attributes.calculateHealth();
+        maxMana = attributes.calculateMana();
+        armorPoints = attributes.calculateArmor();
+        shieldPoints = attributes.calculateShield();
+
+        if(currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+
+        if(currentMana > maxMana) {
+            currentMana = maxMana;
+        }
+
+        if(currentArmor > armorPoints) {
+            currentArmor = armorPoints;
+        }
+
+        if(currentShield > shieldPoints) {
+            currentShield = shieldPoints;
+        }
     }
 
     public int getMaxHealth() {
@@ -69,6 +96,10 @@ public class Character {
 
     public int getCurrentShield() {
         return currentShield;
+    }
+
+    public String getShortName() {
+        return shortName;
     }
 
     public ArrayList<Ability> getPassives() {
@@ -129,4 +160,11 @@ public class Character {
         return name;
     }
 
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public int getPotions() {
+        return potions;
+    }
 }

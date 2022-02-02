@@ -38,4 +38,21 @@ public class Daggers extends Weapon {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setDamage( attributes.getDamage() + (int) (attributes.getDamage() * (0.10 * essences)));
+        attributes.setStealth(attributes.getStealth() + essences);
+        attributes.setCritChance( attributes.getCritChance() + (0.05 * essences));
+        attributes.setCritPercentage(attributes.getCritPercentage() + (0.5 * essences));
+        attributes.setEvasion( attributes.getEvasion() + (0.05 * essences));
+        attributes.setLevel(attributes.getLevel() + essences);
+
+        if(attributes.getLevel() >= 5) {
+            int scale = attributes.getLevel() / 5;
+            for(int i = 0; i < scale; i++) {
+                attributes.setAttacks(attributes.getAttacks() + essences);
+            }
+        }
+    }
 }

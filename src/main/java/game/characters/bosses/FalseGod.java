@@ -7,6 +7,7 @@ public class FalseGod extends Boss {
 
     public FalseGod() {
         name = "The Unborn";
+        shortName = "God";
 
         attributes = new Attributes(
                 20,

@@ -11,6 +11,7 @@ public class Spectre extends Monster {
 
     public Spectre() {
         name = "Spectre";
+        shortName = "Spc";
         damageType = DamageType.MAGICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Spectre extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 40;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

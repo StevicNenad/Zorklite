@@ -7,6 +7,7 @@ public class Underlord extends Boss {
 
     public Underlord() {
         name = "The demon lord, Reth'tirath";
+        shortName = "Ret";
 
         attributes = new Attributes(
                 20,

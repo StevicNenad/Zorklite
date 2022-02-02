@@ -38,4 +38,13 @@ public class Sword extends Weapon {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setDamage( attributes.getDamage() + (int) (attributes.getDamage() * (0.33 * essences)));
+        attributes.setAccuracy( attributes.getAccuracy() + (0.005 + essences));
+        attributes.setCritChance( attributes.getCritChance() + (0.025 * essences));
+        attributes.setCritPercentage(attributes.getCritPercentage() + (0.20 * essences));
+        attributes.setLevel(attributes.getLevel() + essences);
+    }
 }

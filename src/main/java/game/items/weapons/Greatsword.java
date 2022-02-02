@@ -38,4 +38,13 @@ public class Greatsword extends Weapon {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setDamage( attributes.getDamage() + (int) (attributes.getDamage() * (0.20 * essences)));
+        attributes.setAccuracy( attributes.getAccuracy() + (0.033 + essences));
+        attributes.setCritPercentage(attributes.getCritPercentage() + (0.25 * essences));
+        attributes.setLevel(attributes.getLevel() + essences);
+        attributes.setAoeDamage( attributes.getAoeDamage() + (0.05 + essences));
+    }
 }

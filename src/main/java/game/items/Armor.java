@@ -16,4 +16,9 @@ public class Armor extends Item {
     public Attributes getAttributes() {
         return super.getAttributes();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        super.upgradeStats(essences);
+    }
 }

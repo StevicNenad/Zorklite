@@ -16,11 +16,13 @@ public class Player extends Character {
     private Accessories firstAcc, secondAcc;
     private ArrayList<Ability> active;
     private ArrayList<Ability> passive;
-    /*private Ability first, second, third;
-    private ArrayList<ItemKey> keys;*/
+    private int deaths,
+                demonicEssence;
+
 
     public Player() {
         name = "Player";
+        shortName = "YOU";
 
         attributes = new Attributes(
                 5,
@@ -49,6 +51,10 @@ public class Player extends Character {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        potions = 0;
+        deathTokens = 0;
+        demonicEssence = 0;
+        attributePoints = 0;
 
         calculateResistances();
 
@@ -125,8 +131,16 @@ public class Player extends Character {
         return weapon;
     }
 
+    public int getDemonicEssence() {
+        return demonicEssence;
+    }
+
     @Override
     public CharacterType getType() {
         return super.getType();
+    }
+
+    public void setDemonicEssence(int demonicEssence) {
+        this.demonicEssence = demonicEssence;
     }
 }

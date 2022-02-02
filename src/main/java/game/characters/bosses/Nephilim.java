@@ -7,6 +7,7 @@ public class Nephilim extends Boss {
 
     public Nephilim() {
         name = "Irizael, the unmaker";
+        shortName = "Iri";
 
         attributes = new Attributes(
                 20,

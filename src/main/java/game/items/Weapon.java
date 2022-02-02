@@ -32,4 +32,9 @@ public class Weapon extends Item {
     public WeaponType getWeaponType() {
         return weaponType;
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        super.upgradeStats(essences);
+    }
 }

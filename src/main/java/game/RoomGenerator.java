@@ -48,7 +48,6 @@ public class RoomGenerator {
 
                 case MONSTER:
                     Random rn = new Random();
-                    MonsterGenerator mgen = new MonsterGenerator();
                     int numberEnemies = 0;
                     double spawnChance = rn.nextDouble();
 
@@ -66,10 +65,11 @@ public class RoomGenerator {
                     }
 
                     for(int i = 0;  i < numberEnemies; i++) {
+                        MonsterGenerator mgen = new MonsterGenerator();
                         int monsterLevel = rn.nextInt(3) + (index - 1);
                         Monster monster = mgen.getRandomMonster();
                         monster.getAttributes().levelScaleMonsters(monsterLevel);
-                        monster.updateHealthManaArmorShieldPoints();
+                        monster.updateAllStatsAfterLevelup();
 
                         room.addMonster(monster);
                     }

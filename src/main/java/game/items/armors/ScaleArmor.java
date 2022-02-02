@@ -35,4 +35,16 @@ public class ScaleArmor extends Armor {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setStrength((int) (essences * 1));
+        attributes.setIntelligence((int) (essences * 1));
+        attributes.setAgility((int) (essences * 1));
+        attributes.setSpeed((int) (essences * 1));
+        attributes.setPerception((int) (essences * 1));
+        attributes.setStealth((int) (essences * 1));
+
+        attributes.setLevel(attributes.getLevel() + essences);
+    }
 }

@@ -1,12 +1,36 @@
 package game.abilities.passive;
 
 import game.Ability;
+import game.Character;
 
-//lowers attack damage to 1, but makes every consecutive attack on a target twice as strong (damage gets doubled if the same enemy is attacked)
+//each consecutive on the same target adds 25 bonus damage
 public class EscalatingViolence extends Ability {
+
+    private Character target;
+    private int bonusDamage;
 
     public EscalatingViolence() {
         this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Extra Attack";
+        this.abilityName = "Escalating Violence";
+        target = null;
+        bonusDamage = 0;
+    }
+
+    @Override
+    public boolean calculateBonusDamage(Character target) {
+        if(this.target == target) {
+            bonusDamage += 15;
+            return true;
+        }
+        else {
+            this.target = target;
+            bonusDamage = 0;
+            return false;
+        }
+    }
+
+    @Override
+    public int getBonusDamage() {
+        return bonusDamage;
     }
 }

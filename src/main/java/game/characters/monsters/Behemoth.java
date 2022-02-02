@@ -11,6 +11,7 @@ public class Behemoth extends Monster {
 
     public Behemoth() {
         name = "Behemoth";
+        shortName = "Beh";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Behemoth extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 100;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

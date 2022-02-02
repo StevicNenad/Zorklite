@@ -36,4 +36,17 @@ public class MagicRobe extends Armor {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setStrength((int) (essences * 0.1));
+        attributes.setIntelligence((int) (essences * 2.5));
+        attributes.setAgility((int) (essences * 0.1));
+        attributes.setSpeed((int) (essences * 0.8));
+        attributes.setPerception((int) (essences * 1.5));
+        attributes.setStealth((int) (essences * 0.7));
+
+
+        attributes.setLevel(attributes.getLevel() + essences);
+    }
 }

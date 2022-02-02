@@ -11,6 +11,7 @@ public class Banshee extends Monster {
 
     public Banshee() {
         name = "Banshee";
+        shortName = "Ban";
         damageType = DamageType.MAGICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Banshee extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 45;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

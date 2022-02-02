@@ -35,4 +35,16 @@ public class WyvernRobe extends Armor {
     public String getName() {
         return super.getName();
     }
+
+    @Override
+    public void upgradeStats(int essences) {
+        attributes.setStrength((int) (essences * 0.5));
+        attributes.setIntelligence((int) (essences * 3));
+        attributes.setAgility((int) (essences * 0.5));
+        attributes.setSpeed((int) (essences * 0.5));
+        attributes.setPerception((int) (essences * 2.0));
+        attributes.setStealth((int) (essences * 1));
+
+        attributes.setLevel(attributes.getLevel() + essences);
+    }
 }

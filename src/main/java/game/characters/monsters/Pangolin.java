@@ -11,6 +11,7 @@ public class Pangolin extends Monster {
 
     public Pangolin() {
         name = "Pangolin Warrior";
+        shortName = "Pan";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Pangolin extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 60;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();

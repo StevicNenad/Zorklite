@@ -38,9 +38,11 @@ public class StartRoom extends Room {
         setOne.add(armory.getRandomWeapon());
         setOne.add(armory.getRandomArmor());
 
+        armory = new Armory();
         setTwo.add(armory.getRandomWeapon());
         setTwo.add(armory.getRandomArmor());
 
+        armory = new Armory();
         setThree.add(armory.getRandomWeapon());
         setThree.add(armory.getRandomArmor());
 
@@ -52,6 +54,24 @@ public class StartRoom extends Room {
     public void chooseLoadout(Player player) {
         String user_pick = "0";
         Scanner sc = new Scanner(System.in);
+
+        //levels starting weapons according to demonicEssences player possesses
+        if(player.getDemonicEssence() > 0) {
+            for(Item equipment : setOne) {
+                equipment.upgradeStats(player.getDemonicEssence());
+            }
+
+            for(Item equipment : setTwo) {
+                equipment.upgradeStats(player.getDemonicEssence());
+            }
+
+            for(Item equipment : setThree) {
+                equipment.upgradeStats(player.getDemonicEssence());
+            }
+
+            generateFirstDescription();
+        }
+
 
         do{
             printDescription();
@@ -123,14 +143,16 @@ public class StartRoom extends Room {
                                 "but you feel the only way to get out is to push forward. In front of you\n" +
                                 "there are three chests. You have to choose one. Inside of them you find:\n\n" +
 
-                                "1st Chest\t\t\t\t2nd Chest\t\t\t\t3rd Chest\n" +
-                                "Weapon:\t\t\t\t\tWeapon:\t\t\t\t\tWeapon:\n" +
-                                setOne.get(0).getName() + "\t\t\t\t" + setTwo.get(0).getName() + "\t\t\t\t" +
-                                setThree.get(0).getName() + "\n" +
-
-                                "Armor:\t\t\t\t\tArmor:\t\t\t\t\tArmor:\n" +
-                                setOne.get(1).getName() + "\t\t\t\t" + setTwo.get(1).getName() + "\t\t\t\t" +
-                                setThree.get(1).getName() + "\n\nChoose (1-3): ";
+                String.format("%-30s","1st Chest") + String.format("%-30s", "2nd Chest") + String.format("%-30s", "3rd Chest")  +
+                String.format("\n%-30s","Weapon") + String.format("%-30s", "Weapon") + String.format("%-30s", "Weapon")  +
+                String.format("\n%-30s", setOne.get(0).getName() + ", lvl " + setOne.get(0).getAttributes().getLevel()) +
+                String.format("%-30s", setTwo.get(0).getName() + ", lvl " + setTwo.get(0).getAttributes().getLevel())  +
+                String.format("%-30s", setThree.get(0).getName() + ", lvl " + setThree.get(0).getAttributes().getLevel())  +
+                String.format("\n%-30s","Armor") + String.format("%-30s", "Armor") + String.format("%-30s", "Armor")  +
+                String.format("\n%-30s", setOne.get(1).getName() + ", lvl " + setOne.get(1).getAttributes().getLevel())  +
+                String.format("%-30s", setTwo.get(1).getName() + " lvl " + setTwo.get(1).getAttributes().getLevel())  +
+                String.format("%-30s", setThree.get(1).getName() + " lvl " + setThree.get(1).getAttributes().getLevel()) +
+                        "\n\nChoose (1-3): ";
 
         this.description = description;
     }

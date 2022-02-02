@@ -11,6 +11,7 @@ public class Imp extends Monster {
 
     public Imp() {
         name = "Fiendish Imp";
+        shortName = "Imp";
         damageType = DamageType.PHYSICAL;
 
         attributes = new Attributes(
@@ -39,6 +40,7 @@ public class Imp extends Monster {
         currentArmor = armorPoints;
         maxMana = attributes.calculateMana();
         currentMana = maxMana;
+        deathTokens = 20;
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();
