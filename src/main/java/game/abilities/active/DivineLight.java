@@ -7,7 +7,8 @@ public class DivineLight extends Ability {
 
     public DivineLight() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Divine Light";
+        this.targetedAbility = true;
     }
 
     public void ExtraAttack() {

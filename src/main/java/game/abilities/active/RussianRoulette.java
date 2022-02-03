@@ -7,7 +7,8 @@ public class RussianRoulette extends Ability {
 
     public RussianRoulette() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Russian Roulette";
+        this.targetedAbility = false;
     }
 
     public void ExtraAttack() {

@@ -1,11 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class WolfFang extends Accessories {
-    private int     bonusAgility;
 
     public WolfFang() {
-        bonusAgility = 10;
+        attributes = new Attributes(
+                20,
+                0,
+                0,
+                5,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
     }
 }

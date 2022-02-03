@@ -1,9 +1,7 @@
 package game.characters.monsters;
 
-import game.Ability;
-import game.Attributes;
+import game.*;
 import game.Character;
-import game.DamageType;
 import game.characters.Monster;
 
 import java.util.ArrayList;
@@ -45,6 +43,7 @@ public class Bat extends Monster {
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();
+        loot = new ArrayList<Item>();
 
         calculateResistances();
     }

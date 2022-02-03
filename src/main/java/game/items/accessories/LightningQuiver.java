@@ -1,11 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class LightningQuiver extends Accessories {
-    private int     bonusIntelligence;
 
     public LightningQuiver() {
-        bonusIntelligence = 10;
+        attributes = new Attributes(
+                0,
+                0,
+                0,
+                0,
+                10,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.1,
+                0.1,
+                0,
+                0,
+                0
+        );
     }
 }

@@ -7,7 +7,8 @@ public class BostonShell extends Ability {
 
     public BostonShell() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Boston Shell";
+        this.targetedAbility = false;
     }
 
     public void ExtraAttack() {

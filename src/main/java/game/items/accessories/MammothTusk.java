@@ -1,13 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class MammothTusk extends Accessories {
-    private double      healthModifier,
-                        experienceModifier;
 
     public MammothTusk() {
-        healthModifier = 0.3;
-        experienceModifier = 2;
+        attributes = new Attributes(
+                0,
+                0,
+                0,
+                15,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.25,
+                0
+        );
     }
 }

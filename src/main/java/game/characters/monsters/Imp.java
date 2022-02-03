@@ -3,6 +3,7 @@ package game.characters.monsters;
 import game.Ability;
 import game.Attributes;
 import game.DamageType;
+import game.Item;
 import game.characters.Monster;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Imp extends Monster {
 
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();
+        loot = new ArrayList<Item>();
 
         calculateResistances();
     }

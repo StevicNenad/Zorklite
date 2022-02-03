@@ -7,6 +7,6 @@ public class DivineCombust extends Ability {
 
     public DivineCombust() {
         this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Split shot";
+        this.abilityName = "Divine Combustion";
     }
 }

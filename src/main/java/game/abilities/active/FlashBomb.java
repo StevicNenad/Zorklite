@@ -3,11 +3,12 @@ package game.abilities.active;
 import game.Ability;
 
 //Permanent reduction of target stats (accuracy, damage reduction etc)
-public class SuppressingFire extends Ability {
+public class FlashBomb extends Ability {
 
-    public SuppressingFire() {
+    public FlashBomb() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Suppressing Fire";
+        this.abilityName = "Flash Bomb";
+        this.targetedAbility = false;
     }
 
     public void ExtraAttack() {

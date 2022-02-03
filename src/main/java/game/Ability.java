@@ -5,17 +5,16 @@ public class Ability {
         ACTIVE,
         PASSIVE
     }
-    protected boolean       singleTarget;
+    protected boolean       targetedAbility;
     protected String        abilityName;
     protected AbilityType   abilityType;
-    protected DamageType    damageType;
 
     public String getAbilityName() {
         return abilityName;
     }
 
-    public boolean isSingleTarget() {
-        return singleTarget;
+    public boolean isTargetedAbility() {
+        return targetedAbility;
     }
 
     public boolean calculateBonusDamage(Character target){

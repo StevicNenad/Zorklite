@@ -1,11 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class SacredAmulet extends Accessories {
-    private int     bonusIntelligence;
 
     public SacredAmulet() {
-        bonusIntelligence = 10;
+        attributes = new Attributes(
+                15,
+                0,
+                0,
+                0,
+                25,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
     }
 }

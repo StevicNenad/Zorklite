@@ -7,7 +7,8 @@ public class HailMary extends Ability {
 
     public HailMary() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Hail Mary";
+        this.targetedAbility = true;
     }
 
     public void ExtraAttack() {

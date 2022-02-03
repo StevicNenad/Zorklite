@@ -87,6 +87,10 @@ public class Game {
                 gameover = battle.startEncounter(player, currentRoom.getMonsters());
                 break;
 
+            case "take":
+                takeItem();
+                break;
+
             case "map":
                 currentRoom.printMap();
                 break;
@@ -208,6 +212,10 @@ public class Game {
                 System.out.println("You need to \"explore\" the room first.");
             }
         }
+    }
+
+    private void takeItem() {
+
     }
 
     private void sneak(Command command) {

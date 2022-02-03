@@ -7,7 +7,8 @@ public class RecklessCharge extends Ability {
 
     public RecklessCharge() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Reckless Charge";
+        this.targetedAbility = true;
     }
 
     public void ExtraAttack() {

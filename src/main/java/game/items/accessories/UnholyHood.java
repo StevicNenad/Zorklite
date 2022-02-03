@@ -1,11 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class UnholyHood extends Accessories {
-    private int     bonusStrength;
 
     public UnholyHood() {
-        bonusStrength = 10;
+        attributes = new Attributes(
+                200,
+                0,
+                0,
+                -10,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
     }
 }

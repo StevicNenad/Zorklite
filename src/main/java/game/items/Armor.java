@@ -21,4 +21,12 @@ public class Armor extends Item {
     public void upgradeStats(int essences) {
         super.upgradeStats(essences);
     }
+
+    public int getArmorPoints() {
+        return armorPoints;
+    }
+
+    public int getShieldPoints() {
+        return shieldPoints;
+    }
 }

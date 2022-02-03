@@ -1,11 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class Necklace extends Accessories {
-    private int     bonusIntelligence;
 
     public Necklace() {
-        bonusIntelligence = 10;
+        attributes = new Attributes(
+                0,
+                0,
+                0,
+                0,
+                15,
+                0,
+                10,
+                20,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
     }
 }

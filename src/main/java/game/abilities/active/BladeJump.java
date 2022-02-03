@@ -7,7 +7,8 @@ public class BladeJump extends Ability {
 
     public BladeJump() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Blade Jump";
+        this.targetedAbility = false;
     }
 
     public void ExtraAttack() {

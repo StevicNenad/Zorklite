@@ -69,11 +69,14 @@ public class Player extends Character {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
         attributes.addStats(weapon.getAttributes());
+        recalculateStats();
     }
 
     public void setArmor(Armor armor) {
         this.armor = armor;
         attributes.addStats(armor.getAttributes());
+        this.armorPoints = armor.getArmorPoints();
+        this.shieldPoints = armor.getShieldPoints();
     }
 
     public void resetCharacter() {
@@ -101,9 +104,11 @@ public class Player extends Character {
     public void setAccessory(Accessories accessory) {
         if(firstAcc == null) {
             firstAcc = accessory;
+            attributes.addStats(firstAcc.getAttributes());
         }
         else if(secondAcc == null) {
             secondAcc = accessory;
+            attributes.addStats(secondAcc.getAttributes());
         }
         else {
             String user_choice = null;
@@ -118,10 +123,14 @@ public class Player extends Character {
 
             switch(user_choice) {
                 case "1":
+                    attributes.removeStats(firstAcc.getAttributes());
                     firstAcc = accessory;
+                    attributes.addStats(firstAcc.getAttributes());
                     break;
                 case "2":
+                    attributes.removeStats(secondAcc.getAttributes());
                     secondAcc = accessory;
+                    attributes.addStats(secondAcc.getAttributes());
                     break;
             }
         }

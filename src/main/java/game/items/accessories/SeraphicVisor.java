@@ -1,13 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class SeraphicVisor extends Accessories {
-    private double      healthModifier,
-                        experienceModifier;
 
     public SeraphicVisor() {
-        healthModifier = 0.3;
-        experienceModifier = 2;
+        attributes = new Attributes(
+                0,
+                0,
+                3,
+                0,
+                10,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
     }
 }

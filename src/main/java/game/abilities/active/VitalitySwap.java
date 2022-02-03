@@ -7,7 +7,8 @@ public class VitalitySwap extends Ability {
 
     public VitalitySwap() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Vitality Swap";
+        this.targetedAbility = true;
     }
 
     public void ExtraAttack() {

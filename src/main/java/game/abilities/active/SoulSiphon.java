@@ -7,7 +7,8 @@ public class SoulSiphon extends Ability {
 
     public SoulSiphon() {
         this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
+        this.abilityName = "Soul Siphon";
+        this.targetedAbility = true;
     }
 
     public void ExtraAttack() {

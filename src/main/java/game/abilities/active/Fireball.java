@@ -8,6 +8,7 @@ import game.Ability;
     public Fireball() {
         this.abilityType = AbilityType.ACTIVE;
         this.abilityName = "Fireball";
+        this.targetedAbility = false;
     }
 
     public void ExtraAttack() {

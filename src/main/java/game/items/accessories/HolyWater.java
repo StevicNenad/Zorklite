@@ -1,13 +1,27 @@
 package game.items.accessories;
 
+import game.Attributes;
 import game.items.Accessories;
 
 public class HolyWater extends Accessories {
-    private double      healthModifier,
-                        experienceModifier;
 
     public HolyWater() {
-        healthModifier = 0.3;
-        experienceModifier = 2;
+        attributes = new Attributes(
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        );
     }
 }
