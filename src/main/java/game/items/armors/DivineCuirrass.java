@@ -9,6 +9,8 @@ public class DivineCuirrass extends Armor {
 
     public DivineCuirrass() {
         this.name = "Divine Cuirrass";
+        description = "";
+        itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
                 0,
@@ -28,9 +30,8 @@ public class DivineCuirrass extends Armor {
                 0.05
         );
 
-        this.itemType = ItemType.ARMOR;
-        this.armorPoints = 55;
-        this.speedModifier = 0.9;
+        armorPoints = 55;
+        speedModifier = 0.9;
     }
 
     @Override

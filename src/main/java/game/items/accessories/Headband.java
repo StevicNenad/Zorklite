@@ -4,9 +4,12 @@ import game.Attributes;
 import game.items.Accessories;
 
 public class Headband extends Accessories {
-    private int     bonusAgility;
 
     public Headband() {
+        this.name = "White Headband";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 20,
                 0,

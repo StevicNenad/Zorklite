@@ -10,19 +10,19 @@ public class Underlord extends Boss {
         shortName = "Ret";
 
         attributes = new Attributes(
-                20,
+                50,
                 1,
                 0,
-                12,
+                15,
                 5,
-                6,
-                8,
+                10,
+                10,
                 10,
                 0,
                 1,
                 1,
                 0.10,
-                1.80,
+                2.0,
                 0,
                 0
         );

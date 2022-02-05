@@ -7,6 +7,8 @@ public class ScaleArmor extends Armor {
 
     public ScaleArmor() {
         this.name = "Scale Armor";
+        description = "";
+        itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
                 0,
@@ -26,9 +28,8 @@ public class ScaleArmor extends Armor {
                 0.05
         );
 
-        this.itemType = ItemType.ARMOR;
-        this.armorPoints = 45;
-        this.speedModifier = 0.9;
+        armorPoints = 45;
+        speedModifier = 0.9;
     }
 
     @Override

@@ -1,9 +1,15 @@
 package game;
 
 import game.characters.Player;
+import game.items.Accessories;
+import game.items.Gems;
+import game.items.Tokens;
+import game.items.Weapon;
 import game.rooms.StartRoom;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatConversionException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
@@ -74,21 +80,43 @@ public class Game {
                 break;
 
             case "explore":
+                Random rn = new Random();
+                double surpriseEncounter = rn.nextDouble();
+
+                if(surpriseEncounter <= 0.10) {
+                    Battle battle = new Battle();
+                    System.out.println("While exploring the room, you made a loud noise and attracted all the enemies in this room. Prepare to fight.");
+                    gameover = battle.startEncounter(player, currentRoom.getMonsters(), currentRoom.getLoot());
+                    currentRoom.printDescription();
+                    currentRoom.setExplored(true);
+                    return;
+                }
+
                 if (currentRoom.isExplored()) {
                     System.out.println("You have already explored this room... type \"map\"");
                     return;
                 }
+
                 currentRoom.printDescription();
                 currentRoom.setExplored(true);
                 break;
 
             case "attack":
+                if (!currentRoom.isExplored()) {
+                    System.out.println("You need to explore this room first... type \"explore\"");
+                    return;
+                }
+
                 Battle battle = new Battle();
-                gameover = battle.startEncounter(player, currentRoom.getMonsters());
+                gameover = battle.startEncounter(player, currentRoom.getMonsters(), currentRoom.getLoot());
                 break;
 
             case "take":
                 takeItem();
+                break;
+
+            case "info":
+                showCharacterInfo();
                 break;
 
             case "map":
@@ -159,29 +187,42 @@ public class Game {
                                     "ambushing you and starting a battle encounter (even when the room has been cleared). Exploring a room also has a rare\n" +
                                     "chance for finding secret loot every time you use the command.");
                 break;
+            case "help":
+                System.out.println( "Using this command will occasionally give you small hints on what to do or where to go.");
+                break;
+            case "info":
+                System.out.println( "With this command you can see your inventory as well as all attributes and stats of your character.");
+                break;
+            case "take":
+                System.out.println( "To pick up items that have dropped by enemies or that you found in rooms, type \"take\". With it, you will open the\n" +
+                                    "loot menu, where you can pick and choose which items to take with you, and which to leave behind. Attention: Once\n" +
+                                    "you replace an accessory for another one, the old one gets destroyed and cannot be picked up again. Choose wisely.");
+                break;
             case "quit":
                 System.out.println("This command ends your current Run and you can start over again.");
                 break;
             case "game":
                 System.out.println( "The goal of the game is to make it as far east as you can until you reach the final boss. The weapons, Monsters, Loot and\n" +
                                     "Environments are all randomly generated. Every playthrough is different and some are unlucky from the start,\n" +
-                                    "so feel free to restart a run whenever. With every Monster slain, you increase your experience and attributes\n" +
+                                    "so feel free to restart a run whenever. With every Monster slain, you increase your Death Tokens and attributes\n" +
                                     "which are permanent and stay with every new run. So the game gets easier the longer you stick with it.");
                 break;
             default:
                 System.out.println( "Tutorial of what? You can view tutorials for any of these:\n" +
                                     "\"attack\"\n" +
-                                    "\"go\"\n" +
-                                    "\"sneak\"\n" +
                                     "\"explore\"\n" +
+                                    "\"go\"\n" +
+                                    "\"info\"\n" +
+                                    "\"game\"\n" +
                                     "\"map\"\n" +
-                                    "\"quit\"\n" +
-                                    "\"game\"\n\n" +
+                                    "\"sneak\"\n" +
+                                    "\"take\"\n" +
+                                    "\"quit\"\n\n" +
                                     "To view type \"tutorial\" + any of the words above");
         }
 
         if (command.hasSecondWord()) {
-            System.out.print("\nNext command:\n");
+            System.out.print("\nWhat do you wanna do next? (type \"help\" if you're stuck)\n");
         }
     }
 
@@ -215,7 +256,89 @@ public class Game {
     }
 
     private void takeItem() {
+        String userChoice;
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("Items in this room:");
+        int index = 0;
+        for(Item item : currentRoom.getLoot()) {
+            System.out.println(index + " - " + item.getName());
+            index++;
+        }
+        System.out.print("Pick an item or type \"q\" to exit\n>");
+        do{
+            userChoice = sc.nextLine();
+
+            if(userChoice.toLowerCase().equals("q")) {
+                return;
+            }
+
+            try{
+                index = Integer.parseInt(userChoice);
+
+                if(index > currentRoom.getLoot().size() && index < currentRoom.getLoot().size()){
+                    System.out.println("No such item exists...");
+                }
+                else {
+                    Item item = currentRoom.getLoot().get(index);
+                    switch(item.getitemType()) {
+                        case GEM:
+                            String gemName = currentRoom.getLoot().get(index).getName();
+
+                            if(gemName.equals("Lightning Sparks Gem")) {
+                                player.getWeapon().setDamageType(DamageType.UNIVERSAL);
+                            }
+                            else if(gemName.equals("Blind Rage Gem")) {
+                                player.getAttributes().setDamage(player.getAttributes().getDamage() * 2);
+                                player.getAttributes().setAccuracy(0.50);
+                            }
+                            else if(gemName.equals("Blitz Gem")) {
+                                if(player.getWeapon().getWeaponType() == Weapon.WeaponType.MELEE) {
+                                    player.getAttributes().setAoeDamage(player.getAttributes().getAoeDamage() + 0.35);
+                                } else {
+                                    player.getAttributes().setProjectiles(player.getAttributes().getProjectiles() + 2);
+                                    player.getAttributes().setDamage((int) (player.getAttributes().getDamage() * 0.70));
+                                }
+                            }
+                            else if(gemName.equals("Ember Gem")){
+                                if(player.getWeapon().getDamageType() == DamageType.MAGICAL) {
+                                    player.getAttributes().setDamage(player.getAttributes().getDamage() + 50);
+                                } else if (player.getWeapon().getDamageType() == DamageType.UNIVERSAL) {
+                                    player.getAttributes().setDamage(player.getAttributes().getDamage() + 10);
+                                } else {
+                                    player.getWeapon().setDamageType(DamageType.MAGICAL);
+                                    player.getAttributes().setDamage(player.getAttributes().getDamage() + 20);
+                                }
+                            }
+
+                            if(((Gems)item).getAbility().getAbilityType() == Ability.AbilityType.ACTIVE) {
+                                player.getActives().add(((Gems)item).getAbility());
+                            } else {
+                                player.getPassives().add(((Gems)item).getAbility());
+                            }
+
+                            break;
+                        case ACCESSORY:
+                            player.setAccessory((Accessories) item);
+                            break;
+                        case POTION:
+                            player.updatePotions(1);
+                            break;
+                        case ESSENCE:
+                            player.updateDemonicEssence(1);
+                            break;
+                        case TOKENS:
+                            player.updateTokens(((Tokens)item).getValue());
+                            break;
+                    }
+                    currentRoom.getLoot().remove(item);
+                }
+            }
+            catch (NumberFormatException ex) {
+                System.out.println("Please only use numbers or \"q\"...");
+            }
+
+        }while(!currentRoom.getLoot().isEmpty() && !userChoice.toLowerCase().equals("q"));
     }
 
     private void sneak(Command command) {
@@ -230,57 +353,150 @@ public class Game {
             System.out.println("Do what while sneaking?");
         } else {
 
-            switch(secondWord) {
-                case "attack":
-                    if(currentRoom.getMonsters().isEmpty()) {
-                        System.out.println("There is nothing to ambush in this room...");
-                        break;
+            if(secondWord.equals("attack")) {
+                if (currentRoom.getMonsters().isEmpty()) {
+                    System.out.println("There is nothing to ambush in this room...");
+                    return;
+                }
+
+                Battle battle = new Battle();
+
+                for (Character enemy : currentRoom.getMonsters()) {
+                    if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                        battle.preemptiveStrikeFail(player);
                     }
+                }
 
-                    Battle battle = new Battle();
-
-                    for(Character enemy : currentRoom.getMonsters()) {
-                        if(enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
-                            battle.preemptiveStrikeFail(player);
-                        }
-                    }
-
-                    battle.preemptiveStrikeSuccess(player, currentRoom.getMonsters());
-                    battle.startEncounter(player, currentRoom.getMonsters());
-                    break;
-
-                case "east":
-                    if(!currentRoom.getMonsters().isEmpty()) {
-                        for(Character enemy : currentRoom.getMonsters()) {
-                            if(enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
-                                battle = new Battle();
-                                battle.preemptiveStrikeFail(player);
-                                battle.startEncounter(player, currentRoom.getMonsters());
-                                break;
-                            }
-                        }
-                        Room nextRoom = currentRoom.getExit(secondWord);
-
-                        if(nextRoom != null) {
-                            currentRoom = nextRoom;
-
-                            if(currentRoom.isExplored()) {
-                                currentRoom.printDescription();
-                            } else {
-                                System.out.println( "You managed to sneak past the enemy and find yourself in a new room in the east. You feel the gate" +
-                                                    "behind you slam shut. It's locked tight...");
-                            }
-                        } else {
-                            System.out.println(     "You snuck all the way to a dead end, there is no way through here...");
-                        }
-                    }
-                    else {
-                        System.out.println(         "Slowly you crouch-walked your way to the east in a completely empty room. Unsurprisingly, you manage " +
-                                                    "to sneak by the air undetected and open the gate. As you enter the new room, you can hear the gate bang shut." +
-                                                    "No way back...");
-                    }
+                battle.preemptiveStrikeSuccess(player, currentRoom.getMonsters());
+                battle.startEncounter(player, currentRoom.getMonsters(), currentRoom.getLoot());
             }
+            else {
+                if (!currentRoom.getMonsters().isEmpty()) {
+                    for (Character enemy : currentRoom.getMonsters()) {
+                        if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                            Battle battle = new Battle();
+                            battle.preemptiveStrikeFail(player);
+                            battle.startEncounter(player, currentRoom.getMonsters(), currentRoom.getLoot());
+                            break;
+                        }
+                    }
+                    Room nextRoom = currentRoom.getExit(secondWord);
 
+                    if (nextRoom != null) {
+                        currentRoom = nextRoom;
+
+                        if (currentRoom.isExplored()) {
+                            currentRoom.printDescription();
+                        } else {
+                            System.out.println("You managed to sneak past the enemy and find yourself in a new room in the east. You feel the gate" +
+                                    "behind you slam shut. It's locked tight...");
+                        }
+                    } else {
+                        System.out.println("You snuck all the way to a dead end, there is no way through here...");
+                    }
+                } else {
+                    System.out.println("Slowly you crouch-walked your way to the east in a completely empty room. Unsurprisingly, you manage " +
+                            "to sneak by the air undetected and open the gate. As you enter the new room, you can hear the gate bang shut." +
+                            "No way back...");
+                }
+            }
         }
+    }
+
+    private void showCharacterInfo(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("\nYOU, lvl " + player.getAttributes().getLevel() + ":");
+
+        System.out.printf("%-17s", player.getCurrenthealth() + "/" + player.getMaxHealth() + " HP");
+        System.out.printf("%-17s", player.getCurrentMana() + "/" + player.getMaxMana() + " MP");
+        System.out.printf("%-17s", player.getCurrentArmor() + "/" + player.getArmorPoints() + " Armor");
+        System.out.printf("%-17s", player.getCurrentShield() + "/" + player.getShieldPoints() + " Shield");
+
+
+        System.out.println("\n\nAttributes:");
+
+        System.out.printf("%-13s", "Strength");
+        System.out.printf("%7s", player.getAttributes().getStrength());
+        System.out.printf("%-13s", "\tIntelligence");
+        System.out.printf("%7s", player.getAttributes().getIntelligence());
+        System.out.printf("%-13s", "\tAgility");
+        System.out.printf("%7s", player.getAttributes().getAgility());
+
+        System.out.printf("\n%-13s", "Perception");
+        System.out.printf("%7s", player.getAttributes().getPerception());
+        System.out.printf("%-13s", "\tStealth");
+        System.out.printf("%7s", player.getAttributes().getStealth());
+        System.out.printf("%-13s", "\tSpeed");
+        System.out.printf("%7s", player.getAttributes().getSpeed());
+
+        System.out.println("\n\nCombat:");
+
+        System.out.printf("%-13s", "Damage");
+        System.out.printf("%7s", player.getAttributes().getDamage());
+        System.out.printf("%-13s", "\tAccuracy");
+        System.out.printf("%7s", (player.getAttributes().getAccuracy() * 100) + "%");
+        System.out.printf("%-13s", "\tCleave");
+        System.out.printf("%7s", (player.getAttributes().getAoeDamage() * 100) + "%");
+
+        System.out.printf("\n%-13s", "Crit chance");
+        System.out.printf("%7s", (player.getAttributes().getCritChance() * 100) + "%");
+        System.out.printf("%-13s", "\tCritical");
+        System.out.printf("%7s", (player.getAttributes().getCritPercentage() * 100) + "%");
+        System.out.printf("%-13s", "\tEvasion");
+        System.out.printf("%7s", (player.getAttributes().getEvasion() * 100) + "%");
+
+        System.out.printf("\n%-13s", "Dmg Redux");
+        System.out.printf("%7s", (player.getAttributes().getDamageReduction() * 100) + "%");
+        System.out.printf("%-13s", "\tMagic Res");
+        System.out.printf("%7s", (player.getAttributes().getMagicResistance() * 100) + "%");
+        System.out.printf("%-13s", "\tAttacks");
+        System.out.printf("%7s", player.getAttributes().getAttacks());
+
+        if(player.getWeapon().getWeaponType() == Weapon.WeaponType.PROJECTILE) {
+            System.out.printf("\n%-13s", "Projectiles");
+            System.out.printf("%7s", player.getAttributes().getProjectiles());
+        }
+
+        System.out.println("\n\nMisc:");
+        System.out.printf("%-13s", "Potions");
+        System.out.printf("%7s", player.getPotions());
+        System.out.printf("%-13s", "\tDeath Tokens");
+        System.out.printf("%7s", player.getDeathTokens());
+        System.out.printf("%-13s", "\tEssences");
+        System.out.printf("%7s", player.getDemonicEssence());
+
+        System.out.printf("\n%-14s", "Attrib. Points");
+        System.out.printf("%6s", player.getAttributePoints());
+
+        System.out.println("\n\nAbilities:");
+        if(player.getActives().isEmpty() && player.getPassives().isEmpty()) {
+            System.out.print("NONE");
+        } else {
+            for(Ability active : player.getActives()) {
+                System.out.println(active.getAbilityName() + ", " + active.getDescription());
+            }
+            for(Ability passive : player.getPassives()) {
+                System.out.println(passive.getAbilityName() + ", " + passive.getDescription());
+            }
+        }
+
+        System.out.println("\n\nEquipment:");
+        System.out.printf("%-15s", "Weapon: ");
+        System.out.printf("%-15s", player.getWeapon().getName());
+        System.out.printf("%-15s", "Armor: ");
+        System.out.printf("%-15s", player.getArmor().getName());
+        if(player.getFirstAcc() != null) {
+            System.out.printf("\n%-15s", "Accessory 1: ");
+            System.out.printf("%-15s", player.getFirstAcc().getName());
+        }
+        if(player.getSecondAcc() != null) {
+            System.out.printf("\n%-15s", "Accessory 2: ");
+            System.out.printf("%-15s", player.getSecondAcc().getName());
+        }
+        System.out.print("\n\nPress any key to continue...");
+        sc.nextLine();
+
+        printHelp();
     }
 }

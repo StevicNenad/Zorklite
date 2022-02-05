@@ -12,6 +12,7 @@ public class Bat extends Monster {
         name = "Hellbat";
         shortName = "Bat";
         damageType = DamageType.PHYSICAL;
+        flying = true;
 
         attributes = new Attributes(
                 3,

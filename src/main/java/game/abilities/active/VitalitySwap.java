@@ -6,9 +6,11 @@ import game.Ability;
 public class VitalitySwap extends Ability {
 
     public VitalitySwap() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Vitality Swap";
-        this.targetedAbility = true;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Vitality Swap";
+        description = "Swap the health of a target with yours. (Percentages)";
+        targetedAbility = true;
+        manaReq = 100;
     }
 
     public void ExtraAttack() {

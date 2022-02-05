@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class ChaosShard extends Accessories {
 
     public ChaosShard() {
+        this.name = "Chaos Shard";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 10,
                 0,

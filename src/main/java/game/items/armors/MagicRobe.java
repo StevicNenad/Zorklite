@@ -7,6 +7,8 @@ public class MagicRobe extends Armor {
 
     public MagicRobe() {
         this.name = "Magic Robe";
+        description = "";
+        itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
                 0,
@@ -25,11 +27,10 @@ public class MagicRobe extends Armor {
                 0,
                 0
         );
-        
-        this.itemType = ItemType.ARMOR;
-        this.armorPoints = 5;
-        this.shieldPoints = 50;
-        this.speedModifier = 1.3;
+
+        armorPoints = 5;
+        shieldPoints = 50;
+        speedModifier = 1.3;
     }
 
     @Override

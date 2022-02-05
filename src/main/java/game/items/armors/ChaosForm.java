@@ -8,7 +8,9 @@ import java.util.Random;
 public class ChaosForm extends Armor {
 
     public ChaosForm() {
-        this.name = "Chaos Form";
+        name = "Chaos Form";
+        description = "";
+        itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
                 0,
@@ -28,9 +30,8 @@ public class ChaosForm extends Armor {
                 -0.1
         );
 
-        this.itemType = ItemType.ARMOR;
-        this.armorPoints = 35;
-        this.speedModifier = 1.5;
+        armorPoints = 35;
+        speedModifier = 1.5;
     }
 
     @Override

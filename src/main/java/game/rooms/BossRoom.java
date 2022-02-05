@@ -19,11 +19,11 @@ public class BossRoom extends Room {
         FALSEGOD
     }
 
-    private TreasureRoom treasureRoom;
+    private BossType bossType;
 
     public BossRoom(){
         explored = true;
-        this.roomType = RoomType.BOSS;
+        roomType = RoomType.BOSS;
         exits = new HashMap<String, Room>();
         loot = new ArrayList<Item>();
     }
@@ -66,5 +66,13 @@ public class BossRoom extends Room {
     @Override
     public void setExit(String direction, Room room) {
         super.setExit(direction, room);
+    }
+
+    public void setBossType(BossType bossType) {
+        this.bossType = bossType;
+    }
+
+    public BossType getBossType() {
+        return bossType;
     }
 }

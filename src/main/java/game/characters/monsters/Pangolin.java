@@ -14,6 +14,7 @@ public class Pangolin extends Monster {
         name = "Pangolin Warrior";
         shortName = "Pan";
         damageType = DamageType.PHYSICAL;
+        flying = false;
 
         attributes = new Attributes(
                 5,

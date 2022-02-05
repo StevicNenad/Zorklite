@@ -1,26 +1,43 @@
-import game.Battle;
+import game.*;
 import game.Character;
-import game.Game;
 import game.abilities.active.BladeJump;
 import game.abilities.active.RussianRoulette;
 import game.abilities.passive.*;
 import game.characters.Monster;
 import game.characters.MonsterGenerator;
 import game.characters.Player;
+import game.items.Accessories;
+import game.items.Gems;
+import game.items.Tokens;
+import game.items.Weapon;
+import game.items.accessories.BlackCape;
+import game.items.accessories.DarkCloak;
+import game.items.accessories.IronChains;
+import game.items.gems.BladeJumpGem;
+import game.items.gems.RussianRouletteGem;
 import game.items.weapons.Greatsword;
 import game.items.weapons.Repeater;
 import game.items.weapons.Shuriken;
+import game.rooms.BonusRoom;
+import game.rooms.MonsterRoom;
 import game.rooms.StartRoom;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TestApplication {
 
+    public static Player player;
+    public static Room currentRoom;
+
     public static void main(String[] args) {
+
 
         Game game = new Game();
 
         game.mainGame();
+
+
 
         /*
         Player player = new Player();
@@ -44,20 +61,18 @@ public class TestApplication {
         player.getPassives().add(lifesteal);
         player.getPassives().add(hydroTouch);
         player.setDemonicEssence(10);
-        player.setWeapon(shuriken);
+        player.setWeapon(greatsword);
         player.getAttributes().setEvasion(1);
+        MonsterRoom monsterRoom = new MonsterRoom();
 
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 5; i++) {
             MonsterGenerator mongen = new MonsterGenerator();
             Monster monster = mongen.getRandomMonster();
             monsterList.add(monster);
         }
 
         Battle battle = new Battle();
-        battle.startEncounter(player, monsterList);
-
-         */
-
+        battle.startEncounter(player, monsterList, monsterRoom.getLoot());
+        */
     }
-
 }

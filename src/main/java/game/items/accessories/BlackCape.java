@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class BlackCape extends Accessories {
 
     public BlackCape() {
+        name = "Black Cape";
+        description = "";
+        itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,

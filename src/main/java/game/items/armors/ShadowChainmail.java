@@ -7,6 +7,8 @@ public class ShadowChainmail extends Armor {
 
     public ShadowChainmail() {
         this.name = "Shadow Chainmail";
+        description = "";
+        itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
                 0,
@@ -26,9 +28,8 @@ public class ShadowChainmail extends Armor {
                 -0.2
         );
 
-        this.itemType = ItemType.ARMOR;
-        this.armorPoints = 75;
-        this.speedModifier = 0.7;
+        armorPoints = 75;
+        speedModifier = 1.4;
     }
 
     @Override

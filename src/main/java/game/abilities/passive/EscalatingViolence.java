@@ -10,16 +10,19 @@ public class EscalatingViolence extends Ability {
     private int bonusDamage;
 
     public EscalatingViolence() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Escalating Violence";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Escalating Violence";
+        description = "Every consecutive hit on the same target deals 20 bonus damage. The moment you switch targets the bonus drops to 0.";
         target = null;
         bonusDamage = 0;
+        targetedAbility = false;
+        manaReq = 0;
     }
 
     @Override
     public boolean calculateBonusDamage(Character target) {
         if(this.target == target) {
-            bonusDamage += 15;
+            bonusDamage += 20;
             return true;
         }
         else {

@@ -6,11 +6,15 @@ import game.items.Accessories;
 public class UnholyHood extends Accessories {
 
     public UnholyHood() {
+        this.name = "Unholy Hood";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 200,
                 0,
                 0,
-                -10,
+                -50,
                 0,
                 0,
                 0,

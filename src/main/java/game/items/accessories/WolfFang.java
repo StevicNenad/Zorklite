@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class WolfFang extends Accessories {
 
     public WolfFang() {
+        this.name = "Wolf Fang";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 20,
                 0,

@@ -6,7 +6,10 @@ import game.Ability;
 public class BlindRage extends Ability {
 
     public BlindRage() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Split shot";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Blind Rage";
+        description = "Double your damage, accuracy reduced to 50%";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

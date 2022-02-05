@@ -37,4 +37,8 @@ public class Weapon extends Item {
     public void upgradeStats(int essences) {
         super.upgradeStats(essences);
     }
+
+    public void setDamageType(DamageType damageType) {
+        this.damageType = damageType;
+    }
 }

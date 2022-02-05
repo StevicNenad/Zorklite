@@ -10,4 +10,8 @@ public class Gems extends Item {
     public String getName() {
         return super.getName();
     }
+
+    public Ability getAbility() {
+        return ability;
+    }
 }

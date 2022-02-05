@@ -7,6 +7,8 @@ public class HeavyArmor extends Armor {
 
     public HeavyArmor() {
         this.name = "Heavy Armor";
+        description = "";
+        itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
                 0,
@@ -26,9 +28,8 @@ public class HeavyArmor extends Armor {
                 0
         );
 
-        this.itemType = ItemType.ARMOR;
-        this.armorPoints = 25;
-        this.speedModifier = 1;
+        armorPoints = 25;
+        speedModifier = 1;
     }
 
     @Override

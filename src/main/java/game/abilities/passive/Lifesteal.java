@@ -6,7 +6,10 @@ import game.Ability;
 public class Lifesteal extends Ability {
 
     public Lifesteal() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Lifesteal";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Lifesteal";
+        description = "You restore health for a portion of damage dealt with your weapon";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

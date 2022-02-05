@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class SorcerersHat extends Accessories {
 
     public SorcerersHat() {
+        this.name = "Sorcerers Hat";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,

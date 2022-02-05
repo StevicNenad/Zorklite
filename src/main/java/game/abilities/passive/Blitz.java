@@ -6,7 +6,10 @@ import game.Ability;
 public class Blitz extends Ability {
 
     public Blitz() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Blitz";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Blitz";
+        description = "For ranged: Double amount of projectiles, but damage reduced to 70%. For melee: add 35% cleave damage";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

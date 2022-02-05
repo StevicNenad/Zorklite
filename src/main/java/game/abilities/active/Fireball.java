@@ -6,9 +6,11 @@ import game.Ability;
     public class Fireball extends Ability {
 
     public Fireball() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Fireball";
-        this.targetedAbility = false;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Fireball";
+        description = "Hurl a huge fireball at the enemy, causing massive AoE damage. Scales with intelligence.";
+        targetedAbility = false;
+        manaReq = 100;
     }
 
     public void ExtraAttack() {

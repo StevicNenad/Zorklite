@@ -14,6 +14,7 @@ public class Sentry extends Monster {
         name = "Sentry";
         shortName = "Sen";
         damageType = DamageType.PHYSICAL;
+        flying = true;
 
         attributes = new Attributes(
                 15,

@@ -6,7 +6,10 @@ import game.Ability;
 public class ExtraAttack extends Ability {
 
     public ExtraAttack() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Extra Attack";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Extra Attack";
+        description = "Attack an additional time every 2nd turn.";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

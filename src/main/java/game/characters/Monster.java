@@ -11,6 +11,7 @@ public class Monster extends Character {
     protected DamageType        damageType;
     protected AttackRange       attackRange;
     protected ArrayList<Item>   loot;
+    protected boolean           flying;
 
     public Monster() {
         characterType = CharacterType.MONSTER;
@@ -22,5 +23,13 @@ public class Monster extends Character {
 
     public AttackRange getAttackRange() {
         return attackRange;
+    }
+
+    public ArrayList<Item> getLoot() {
+        return loot;
+    }
+
+    public boolean isFlying() {
+        return flying;
     }
 }

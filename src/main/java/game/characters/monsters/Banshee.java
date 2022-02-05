@@ -14,6 +14,7 @@ public class Banshee extends Monster {
         name = "Banshee";
         shortName = "Ban";
         damageType = DamageType.MAGICAL;
+        flying = true;
 
         attributes = new Attributes(
                 8,

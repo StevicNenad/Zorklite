@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class Necklace extends Accessories {
 
     public Necklace() {
+        this.name = "Gold Necklace";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,

@@ -14,6 +14,7 @@ public class FireLizard extends Monster {
         name = "Fire Lizard";
         shortName = "Liz";
         damageType = DamageType.PHYSICAL;
+        flying = false;
 
         attributes = new Attributes(
                 7,

@@ -4,6 +4,9 @@ import game.characters.Boss;
 import game.characters.Monster;
 import game.characters.MonsterGenerator;
 import game.characters.bosses.*;
+import game.items.DemonEssences;
+import game.items.ItemFactory;
+import game.items.Tokens;
 import game.rooms.*;
 
 import java.util.ArrayList;
@@ -54,10 +57,16 @@ public class RoomGenerator {
                     if(spawnChance <= 0.05) {
                         numberEnemies = 0;
                     }
+                    else if(spawnChance <= 0.12) {
+                        numberEnemies = 5;
+                    }
                     else if(spawnChance <= 0.25){
+                        numberEnemies = 4;
+                    }
+                    else if (spawnChance <= 45) {
                         numberEnemies = 3;
                     }
-                    else if (spawnChance <= 0.60) {
+                    else if (spawnChance <= 0.70) {
                         numberEnemies = 2;
                     }
                     else {
@@ -70,6 +79,7 @@ public class RoomGenerator {
                         Monster monster = mgen.getRandomMonster();
                         monster.getAttributes().levelScaleMonsters(monsterLevel);
                         monster.updateAllStatsAfterLevelup();
+                        mgen.generateLoot(monster);
 
                         room.addMonster(monster);
                     }
@@ -90,21 +100,25 @@ public class RoomGenerator {
                         room.setExit("east", rooms.get(index));
                     }
 
-                    Room treasury = generateTreasury(room);
-                    room.setExit("north", treasury);
-
                     switch(index) {
                         case 11:
                             boss = new Nephilim();
+                            ((BossRoom)room).setBossType(BossRoom.BossType.NEPHILIM);
                             break;
                         case 21:
                             boss = new Underlord();
+                            ((BossRoom)room).setBossType(BossRoom.BossType.UNDERLORD);
                             break;
                         case 31:
                             boss = new FalseGod();
+                            ((BossRoom)room).setBossType(BossRoom.BossType.FALSEGOD);
                             break;
                     }
                     room.setBoss(boss);
+
+                    Room treasury = generateTreasury(room, index);
+                    room.setExit("north", treasury);
+
                     room.generateDescription();
                     break;
             }
@@ -114,14 +128,38 @@ public class RoomGenerator {
 
     private Room generateBonusRoom(Room mainRoom) {
         BonusRoom bonusRoom = new BonusRoom();
+        ItemFactory iF = new ItemFactory();
+        Random rn = new Random();
+        double roll = rn.nextDouble();
+
+        if(roll <= 0.40) {
+            bonusRoom.getLoot().add(iF.getRandomGem());
+        } else {
+            bonusRoom.getLoot().add(iF.getRandomAccessory());
+        }
+
+        bonusRoom.getLoot().add(iF.getPotion());
         bonusRoom.setExit("south", mainRoom);
 
         return bonusRoom;
     }
 
-    private Room generateTreasury(Room mainRoom) {
+    private Room generateTreasury(Room mainRoom, int index) {
         TreasureRoom treasureRoom = new TreasureRoom();
+        DemonEssences demonEssences = new DemonEssences();
+        Tokens tokens = new Tokens();
+
+        if(index == 11) {
+            tokens.setValue(1000);
+        } else if (index == 21) {
+            tokens.setValue(3000);
+        } else {
+            tokens.setValue(5000);
+        }
         treasureRoom.setExit("south", mainRoom);
+        treasureRoom.getLoot().add(demonEssences);
+        treasureRoom.getLoot().add(tokens);
+        treasureRoom.generateDescription();
 
         return treasureRoom;
     }

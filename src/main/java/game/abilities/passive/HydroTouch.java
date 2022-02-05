@@ -6,7 +6,10 @@ import game.Ability;
 public class HydroTouch extends Ability {
 
     public HydroTouch() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Hydro Touch";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Hydro Touch";
+        description = "If enemy has no Armor, steal one random attribute with every hit.";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class ScorcherRing extends Accessories {
 
     public ScorcherRing() {
+        this.name = "Scorcher's Ring";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,

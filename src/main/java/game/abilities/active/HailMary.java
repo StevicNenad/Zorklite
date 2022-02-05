@@ -6,9 +6,11 @@ import game.Ability;
 public class HailMary extends Ability {
 
     public HailMary() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Hail Mary";
-        this.targetedAbility = true;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Hail Mary";
+        description = "A last ditch effort, the more HP you miss the harder you hit.";
+        targetedAbility = true;
+        manaReq = 15;
     }
 
     public void ExtraAttack() {

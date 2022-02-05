@@ -96,6 +96,9 @@ public class ItemFactory {
         DivineCombustGem divineCombustGem = new DivineCombustGem();
         gemList.add(divineCombustGem);
 
+        DivineLightGem divineLightGem = new DivineLightGem();
+        gemList.add(divineLightGem);
+
         EmberGem emberGem = new EmberGem();
         gemList.add(emberGem);
 

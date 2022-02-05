@@ -6,8 +6,10 @@ public class Ability {
         PASSIVE
     }
     protected boolean       targetedAbility;
-    protected String        abilityName;
+    protected String        abilityName,
+                            description;
     protected AbilityType   abilityType;
+    protected int           manaReq;
 
     public String getAbilityName() {
         return abilityName;
@@ -23,5 +25,17 @@ public class Ability {
 
     public int getBonusDamage(){
         return 0;
+    }
+
+    public int getManaReq() {
+        return manaReq;
+    }
+
+    public AbilityType getAbilityType() {
+        return abilityType;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

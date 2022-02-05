@@ -6,9 +6,11 @@ import game.Ability;
 public class BostonShell extends Ability {
 
     public BostonShell() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Boston Shell";
-        this.targetedAbility = false;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Boston Shell";
+        description = "Restore Armor (scales with agility) and Shield (scales with intelligence).";
+        targetedAbility = false;
+        manaReq = 15;
     }
 
     public void ExtraAttack() {

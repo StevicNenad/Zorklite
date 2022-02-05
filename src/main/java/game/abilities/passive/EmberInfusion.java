@@ -6,7 +6,10 @@ import game.Ability;
 public class EmberInfusion extends Ability {
 
     public EmberInfusion() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Split shot";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Ember Infusion";
+        description = "Physical weapon deals magic damage now. If weapon already magical or universal, adds bonus damage instead.";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

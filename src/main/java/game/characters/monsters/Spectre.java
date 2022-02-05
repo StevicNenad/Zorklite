@@ -14,6 +14,7 @@ public class Spectre extends Monster {
         name = "Spectre";
         shortName = "Spc";
         damageType = DamageType.MAGICAL;
+        flying = false;
 
         attributes = new Attributes(
                 5,

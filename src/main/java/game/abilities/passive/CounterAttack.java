@@ -6,7 +6,10 @@ import game.Ability;
 public class CounterAttack extends Ability {
 
     public CounterAttack() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Counter Attack";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Counter Attack";
+        description = "When you evade an attack, you respond with an immediate counter attack";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

@@ -6,9 +6,11 @@ import game.Ability;
 public class BladeJump extends Ability {
 
     public BladeJump() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Blade Jump";
-        this.targetedAbility = false;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Blade Jump";
+        description = "Jump between enemies while critically hitting them. Jumps scale with agility.";
+        targetedAbility = false;
+        manaReq = 75;
     }
 
     public void ExtraAttack() {

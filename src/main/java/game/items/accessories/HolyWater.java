@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class HolyWater extends Accessories {
 
     public HolyWater() {
+        this.name = "Bottle of Holy Water";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 1,

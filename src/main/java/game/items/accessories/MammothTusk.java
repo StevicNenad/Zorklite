@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class MammothTusk extends Accessories {
 
     public MammothTusk() {
+        this.name = "Mammoth Tusk";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,

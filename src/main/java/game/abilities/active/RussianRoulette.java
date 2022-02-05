@@ -6,9 +6,11 @@ import game.Ability;
 public class RussianRoulette extends Ability {
 
     public RussianRoulette() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Russian Roulette";
-        this.targetedAbility = false;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Russian Roulette";
+        description = "10% chance to execute a random character in battle instantly. Including yourself.";
+        targetedAbility = false;
+        manaReq = 100;
     }
 
     public void ExtraAttack() {

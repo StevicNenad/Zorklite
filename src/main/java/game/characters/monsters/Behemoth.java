@@ -14,6 +14,7 @@ public class Behemoth extends Monster {
         name = "Behemoth";
         shortName = "Beh";
         damageType = DamageType.PHYSICAL;
+        flying = false;
 
         attributes = new Attributes(
                 25,

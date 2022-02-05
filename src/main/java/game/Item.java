@@ -7,10 +7,14 @@ public class Item {
         ACCESSORY,
         ARMOR,
         GEM,
+        TOKENS,
+        ESSENCE,
+        POTION,
         WEAPON
     }
 
-    protected String        name;
+    protected String        name,
+                            description;
 
     protected double        speedModifier,
                             experienceModifier;
@@ -31,7 +35,10 @@ public class Item {
     }
 
     public void upgradeStats(int essences) {
-
+        return;
     }
 
+    public double getSpeedModifier() {
+        return speedModifier;
+    }
 }

@@ -6,10 +6,14 @@ import game.items.Accessories;
 public class SeraphicVisor extends Accessories {
 
     public SeraphicVisor() {
+        this.name = "Seraphic Visor";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
+                1,
                 0,
-                3,
                 0,
                 10,
                 0,

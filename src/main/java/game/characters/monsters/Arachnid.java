@@ -14,6 +14,7 @@ public class Arachnid extends Monster {
         name = "Cursed Spider";
         shortName = "Spr";
         damageType = DamageType.PHYSICAL;
+        flying = false;
 
         attributes = new Attributes(
                 5,

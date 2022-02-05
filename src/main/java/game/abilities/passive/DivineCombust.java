@@ -6,7 +6,10 @@ import game.Ability;
 public class DivineCombust extends Ability {
 
     public DivineCombust() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Divine Combustion";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Divine Combustion";
+        description = "Adds a 35 damage AoE explosion to every attack and projectile. Deals magic damage";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

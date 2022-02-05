@@ -6,7 +6,10 @@ import game.Ability;
 public class LightningSparks extends Ability {
 
     public LightningSparks() {
-        this.abilityType = AbilityType.PASSIVE;
-        this.abilityName = "Lightning Sparks";
+        abilityType = AbilityType.PASSIVE;
+        abilityName = "Lightning Sparks";
+        description = "Weapon damage becomes universal";
+        targetedAbility = false;
+        manaReq = 0;
     }
 }

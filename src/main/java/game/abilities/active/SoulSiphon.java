@@ -6,9 +6,11 @@ import game.Ability;
 public class SoulSiphon extends Ability {
 
     public SoulSiphon() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Soul Siphon";
-        this.targetedAbility = true;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Soul Siphon";
+        description = "Drain the HP of the target and add them to yourself";
+        targetedAbility = true;
+        manaReq = 55;
     }
 
     public void ExtraAttack() {

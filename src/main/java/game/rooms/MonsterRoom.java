@@ -142,4 +142,9 @@ public class MonsterRoom extends Room {
     public void setExit(String direction, Room room) {
         super.setExit(direction, room);
     }
+
+    @Override
+    public ArrayList<Item> getLoot() {
+        return super.getLoot();
+    }
 }

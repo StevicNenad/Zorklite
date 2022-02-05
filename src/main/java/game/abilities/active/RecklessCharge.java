@@ -6,9 +6,11 @@ import game.Ability;
 public class RecklessCharge extends Ability {
 
     public RecklessCharge() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Reckless Charge";
-        this.targetedAbility = true;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Reckless Charge";
+        description = "A reckless attack that causes severe damage to the target as well as the attacker.";
+        targetedAbility = true;
+        manaReq = 0;
     }
 
     public void ExtraAttack() {

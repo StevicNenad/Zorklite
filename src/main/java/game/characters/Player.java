@@ -75,8 +75,14 @@ public class Player extends Character {
     public void setArmor(Armor armor) {
         this.armor = armor;
         attributes.addStats(armor.getAttributes());
+
         this.armorPoints = armor.getArmorPoints();
+        currentArmor = armorPoints;
+
         this.shieldPoints = armor.getShieldPoints();
+        currentShield = shieldPoints;
+
+        attributes.setSpeed((int)(attributes.getSpeed() * armor.getSpeedModifier()));
     }
 
     public void resetCharacter() {
@@ -123,11 +129,13 @@ public class Player extends Character {
 
             switch(user_choice) {
                 case "1":
+                    System.out.println("You have swapped out " + firstAcc.getName() + " for " + accessory.getName());
                     attributes.removeStats(firstAcc.getAttributes());
                     firstAcc = accessory;
                     attributes.addStats(firstAcc.getAttributes());
                     break;
                 case "2":
+                    System.out.println("You have swapped out " + secondAcc.getName() + " for " + accessory.getName());
                     attributes.removeStats(secondAcc.getAttributes());
                     secondAcc = accessory;
                     attributes.addStats(secondAcc.getAttributes());
@@ -140,6 +148,18 @@ public class Player extends Character {
         return weapon;
     }
 
+    public Armor getArmor() {
+        return armor;
+    }
+
+    public Accessories getFirstAcc() {
+        return firstAcc;
+    }
+
+    public Accessories getSecondAcc() {
+        return secondAcc;
+    }
+
     public int getDemonicEssence() {
         return demonicEssence;
     }
@@ -149,7 +169,7 @@ public class Player extends Character {
         return super.getType();
     }
 
-    public void setDemonicEssence(int demonicEssence) {
-        this.demonicEssence = demonicEssence;
+    public void updateDemonicEssence(int demonicEssence) {
+        this.demonicEssence += demonicEssence;
     }
 }

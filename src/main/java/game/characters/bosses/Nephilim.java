@@ -10,17 +10,17 @@ public class Nephilim extends Boss {
         shortName = "Iri";
 
         attributes = new Attributes(
-                20,
-                1,
+                25,
+                2,
                 0,
-                12,
+                15,
                 5,
-                6,
-                8,
+                23,
+                20,
                 10,
                 0,
                 1,
-                1,
+                0.8,
                 0.10,
                 1.80,
                 0,

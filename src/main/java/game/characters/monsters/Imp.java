@@ -14,10 +14,11 @@ public class Imp extends Monster {
         name = "Fiendish Imp";
         shortName = "Imp";
         damageType = DamageType.PHYSICAL;
+        flying = false;
 
         attributes = new Attributes(
-                3,
                 4,
+                3,
                 0,
                 4,
                 5,

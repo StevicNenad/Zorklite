@@ -14,6 +14,7 @@ public class Slime extends Monster {
         name = "Slime Monster";
         shortName = "Sli";
         damageType = DamageType.PHYSICAL;
+        flying = false;
 
         attributes = new Attributes(
                 11,

@@ -16,11 +16,18 @@ public class BonusRoom extends Room {
         this.roomType = RoomType.BONUS;
         loot = new ArrayList<Item>();
         exits = new HashMap<String, Room>();
+
+        generateDescription();
     }
 
     @Override
     public void generateDescription() {
-        String description = "In this room there is ";
+        description = "There are items in this room:";
+
+        for(Item item : loot) {
+            description += "\n" + item.getName();
+        }
+        description += "\n";
     }
 
     public void generateLoot() {

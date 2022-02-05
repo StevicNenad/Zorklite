@@ -1,5 +1,7 @@
 package game;
 
+import game.items.DemonEssences;
+
 import java.util.ArrayList;
 
 public class Character {
@@ -118,6 +120,14 @@ public class Character {
         }
     }
 
+    public void updateMana(int manaPoints) {
+        if(currentMana + manaPoints <= maxMana) {
+            currentMana = currentMana + manaPoints;
+        } else {
+            currentMana = maxMana;
+        }
+    }
+
     public void updateArmor(int armor) {
         if(currentArmor + armor <= armorPoints) {
             currentArmor = currentArmor + armor;
@@ -166,5 +176,29 @@ public class Character {
 
     public int getPotions() {
         return potions;
+    }
+
+    public int getCurrentMana() {
+        return currentMana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void updatePotions(int potion) {
+        this.potions += potion;
+    }
+
+    public int getDeathTokens() {
+        return deathTokens;
+    }
+
+    public void updateTokens(int tokens) {
+        deathTokens += tokens;
+    }
+
+    public int getAttributePoints() {
+        return attributePoints;
     }
 }

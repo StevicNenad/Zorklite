@@ -6,6 +6,10 @@ import game.items.Accessories;
 public class ObsidianRing extends Accessories {
 
     public ObsidianRing() {
+        this.name = "Obsidian Ring";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 5,
                 0,

@@ -6,9 +6,11 @@ import game.Ability;
 public class DivineLight extends Ability {
 
     public DivineLight() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Divine Light";
-        this.targetedAbility = true;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Divine Light";
+        description = "Heal yourself with a divine power. Scales with intelligence.";
+        targetedAbility = true;
+        manaReq = 35;
     }
 
     public void ExtraAttack() {

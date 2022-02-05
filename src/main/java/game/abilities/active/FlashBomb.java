@@ -6,9 +6,11 @@ import game.Ability;
 public class FlashBomb extends Ability {
 
     public FlashBomb() {
-        this.abilityType = AbilityType.ACTIVE;
-        this.abilityName = "Flash Bomb";
-        this.targetedAbility = false;
+        abilityType = AbilityType.ACTIVE;
+        abilityName = "Flash Bomb";
+        description = "Throw a flash bomb at the ground, blinding and weakening attributes of the enemy.";
+        targetedAbility = false;
+        manaReq = 40;
     }
 
     public void ExtraAttack() {

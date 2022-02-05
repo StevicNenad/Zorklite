@@ -4,9 +4,12 @@ import game.Attributes;
 import game.items.Accessories;
 
 public class DemonicTalisman extends Accessories {
-    private int     bonusIntelligence;
 
     public DemonicTalisman() {
+        this.name = "Demonic Talisman";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,

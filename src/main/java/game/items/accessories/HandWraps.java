@@ -4,9 +4,12 @@ import game.Attributes;
 import game.items.Accessories;
 
 public class HandWraps extends Accessories {
-    private int     bonusAgility;
 
     public HandWraps() {
+        this.name = "Red Hand Wraps";
+        description = "";
+        this.itemType = ItemType.ACCESSORY;
+
         attributes = new Attributes(
                 0,
                 0,
