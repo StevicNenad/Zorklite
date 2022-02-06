@@ -11,14 +11,14 @@ public class ShadowChainmail extends Armor {
         itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
+                10,
                 0,
                 0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
+                3,
+                5,
+                2,
+                5,
+                7,
                 15,
                 1,
                 0,

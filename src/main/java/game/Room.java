@@ -22,7 +22,6 @@ public class Room {
     protected ArrayList<Character> monsters;
     protected ArrayList<Item> loot;
     protected HashMap<String, Room> exits;
-    //private Effect enviromental_effect;
     protected RoomType roomType;
     protected boolean bonus, treasury;
     protected boolean explored;

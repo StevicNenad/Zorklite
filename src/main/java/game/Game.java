@@ -5,8 +5,14 @@ import game.items.Accessories;
 import game.items.Gems;
 import game.items.Tokens;
 import game.items.Weapon;
+import game.rooms.BonusRoom;
+import game.rooms.BossRoom;
 import game.rooms.StartRoom;
+import game.rooms.TreasureRoom;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.IllegalFormatConversionException;
 import java.util.Random;
@@ -30,6 +36,7 @@ public class Game {
     }
 
     public void mainGame() {
+        Scanner sc = new Scanner(System.in);
         while (true) {
             welcome();
             RoomGenerator roomGen = new RoomGenerator();
@@ -40,11 +47,21 @@ public class Game {
             while (!gameover) {
                 Command command = parser.getCommand();
                 processCommand(command);
+                player.saveToFile();
+            }
+            //Print stats, progress and goodbye message HERE
+            if(player.getDeaths() == 1) {
+                cls();
+                System.out.println( "You have fallen for the first time. Don't worry, the game is incredibly hard at the beginning. For each monster\n" +
+                                    "slain, you gain death tokens. These stay with you even when you perish. Use them in the main menu to improve\n" +
+                                    "the attributes of your character and make them stronger. With each run, with each monster slain, the game becomes\n" +
+                                    "easier. So just keep at it, and find out if you can defeat the final boss in the game.");
+                sc.nextLine();
+                cls();
+
             }
 
-            //Print stats, progress and goodbye message HERE
-            System.out.println("Pussy");
-            player.resetCharacter();
+                player.resetCharacter();
             gameover = false;
         }
 
@@ -52,17 +69,64 @@ public class Game {
 
     public void welcome() {
         Scanner sc = new Scanner(System.in);
-        System.out.print(   "************************************\n" +
-                            "************* Zorklite *************\n" +
-                            "************************************\n\n" +
-                            "Press enter to begin or \"q\" to exit\n");
+        boolean continueGame = false;
+        String userInput;
 
-        String userInput = sc.nextLine();
+        File saveData = new File("saves/save.dat");
 
-        if (userInput.equals("q")) System.exit(0);
+        while(true) {
+            System.out.print(   "************************************\n" +
+                                "************* Zorklite *************\n" +
+                                "************************************\n\n" +
+                                "Press enter to begin...\n");
+
+            userInput = sc.nextLine();
+
+            if(saveData.exists()) {
+                player.loadSaveFile();
+                System.out.println("0 - Continue");
+                continueGame = true;
+            }
+            System.out.println("1 - New Game");
+            if(player.getDeaths() > 0) System.out.println("2 - Improve Character");
+            System.out.println("Q - Quit Game");
+            System.out.print(">");
+
+            userInput = sc.nextLine();
+
+            cls();
+
+            switch(userInput.toLowerCase()) {
+                case "0":
+                    if(continueGame) {
+                        player.loadSaveFile();
+                        return;
+                    } else {
+                        System.out.println("Invalid input!");
+                    }
+                    break;
+                case "1":
+                    player = new Player();
+                    return;
+                case "2":
+                    AttributeShop as = new AttributeShop();
+                    if(player.getDeaths() > 0) {
+                        as.startInterface(player);
+                    } else {
+                        System.out.println("Invalid input!");
+                    }
+                    break;
+                case "q":
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid input!");
+            }
+        }
     }
 
     public void processCommand(Command command) {
+        Scanner sc = new Scanner(System.in);
+        cls();
         if (command.isUnknown()) {
             System.out.println("I don't know what you mean...");
             return;
@@ -86,6 +150,7 @@ public class Game {
                 if(surpriseEncounter <= 0.10) {
                     Battle battle = new Battle();
                     System.out.println("While exploring the room, you made a loud noise and attracted all the enemies in this room. Prepare to fight.");
+                    sc.nextLine();
                     gameover = battle.startEncounter(player, currentRoom.getMonsters(), currentRoom.getLoot());
                     currentRoom.printDescription();
                     currentRoom.setExplored(true);
@@ -147,8 +212,10 @@ public class Game {
         } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty() == false) {
             System.out.println( "There is no way back it seems... Even though you hear terrible screams ahead, the only option you have left is\n" +
                                 "to push east, but you need to find a way around these monsters... Hmm... maybe \"attack\" or \"sneak\"");
-        } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty()) {
-            System.out.println( "There seem to be no more threats in this area... it's time to \"go east\"");
+        } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty() && currentRoom.getLoot().isEmpty()) {
+            System.out.println( "There seem to be no more threats in this area, neither any items... it's time to \"go east\"");
+        } else if (currentRoom.getRoomType() == Room.RoomType.MONSTER && currentRoom.getMonsters().isEmpty() && !currentRoom.getLoot().isEmpty()){
+            System.out.println( "You can't spot any threats, but there still seem to be items left in this room. You could \"take\" them with you.");
         }
         System.out.println(     "You can use the following command words: ");
         System.out.println(parser.showCommands());
@@ -168,6 +235,13 @@ public class Game {
                                     "time. The battle ends when all the monsters are slain or you lose all HP. Fighting multiple monsters at once\n" +
                                     "gives you a big experience bonus.");
                 break;
+            case "attributes":
+                System.out.println( "Strength - Increases your maximum HP as well as damage of some weapons\n" +
+                                    "Intelligence - Increases your maximum Mana as well as damage of some weapons and spells\n" +
+                                    "Agility - Increases your natural Armor as well as damage of some weapons\n" +
+                                    "Stealth - Determines how likely \"sneak\" commands will work\n" +
+                                    "Speed - Determines queue order in battle encounters\n" +
+                                    "Perception - Determines if you can enter Bonus Rooms\n");
             case "go":
                 System.out.println( "With \"go\" you can enter doors and progress further through the game. If there are Monsters nearby\n" +
                                     "you will not be able to use the command.");
@@ -210,6 +284,7 @@ public class Game {
             default:
                 System.out.println( "Tutorial of what? You can view tutorials for any of these:\n" +
                                     "\"attack\"\n" +
+                                    "\"attributes\"\n" +
                                     "\"explore\"\n" +
                                     "\"go\"\n" +
                                     "\"info\"\n" +
@@ -234,7 +309,17 @@ public class Game {
             String direction = command.getSecondWord().toLowerCase();
 
             if (currentRoom.isExplored() && currentRoom.getMonsters().isEmpty()) {
+                if(direction.toLowerCase().equals("north")) {
+                    if(player.getAttributes().getPerception() + player.getBonusPerception() < ((BonusRoom)currentRoom.getExit("north")).getPerceptionRequirement()) {
+                        System.out.println("You just don't see a way to get in...");
+                        return;
+                    }
+                }
                 Room nextRoom = currentRoom.getExit(direction);
+
+                if(currentRoom.getRoomType() == Room.RoomType.TREASURY && ((TreasureRoom)currentRoom).getBossType() == BossRoom.BossType.FALSEGOD) {
+                    endGame();
+                }
 
                 if (nextRoom != null) {
                     currentRoom = nextRoom;
@@ -319,15 +404,20 @@ public class Game {
 
                             break;
                         case ACCESSORY:
+                            System.out.println("You have picked up the artifact.");
                             player.setAccessory((Accessories) item);
                             break;
                         case POTION:
+                            System.out.println("You have picked up this strange potion. It might be of use in battle.");
                             player.updatePotions(1);
                             break;
                         case ESSENCE:
+                            System.out.println( "You can feel a strange power radiating from this relic. It seems as if it's pure evil that is radiating," +
+                                                "from this object. As you pick it up, you feel your weapons and armor becoming more powerful.");
                             player.updateDemonicEssence(1);
                             break;
                         case TOKENS:
+                            System.out.println("You have picked up " + ((Tokens)item).getValue() + " death tokens!");
                             player.updateTokens(((Tokens)item).getValue());
                             break;
                     }
@@ -362,7 +452,7 @@ public class Game {
                 Battle battle = new Battle();
 
                 for (Character enemy : currentRoom.getMonsters()) {
-                    if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                    if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth() + player.getBonusStealth()) {
                         battle.preemptiveStrikeFail(player);
                     }
                 }
@@ -373,7 +463,7 @@ public class Game {
             else {
                 if (!currentRoom.getMonsters().isEmpty()) {
                     for (Character enemy : currentRoom.getMonsters()) {
-                        if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth()) {
+                        if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth() + player.getBonusStealth()) {
                             Battle battle = new Battle();
                             battle.preemptiveStrikeFail(player);
                             battle.startEncounter(player, currentRoom.getMonsters(), currentRoom.getLoot());
@@ -417,18 +507,18 @@ public class Game {
         System.out.println("\n\nAttributes:");
 
         System.out.printf("%-13s", "Strength");
-        System.out.printf("%7s", player.getAttributes().getStrength());
+        System.out.printf("%7s", player.getAttributes().getStrength() + " +" + player.getBonusStrength());
         System.out.printf("%-13s", "\tIntelligence");
-        System.out.printf("%7s", player.getAttributes().getIntelligence());
+        System.out.printf("%7s", player.getAttributes().getIntelligence() + " +" + player.getBonusIntelligence());
         System.out.printf("%-13s", "\tAgility");
-        System.out.printf("%7s", player.getAttributes().getAgility());
+        System.out.printf("%7s", player.getAttributes().getAgility() + " +" + player.getBonusAgility());
 
         System.out.printf("\n%-13s", "Perception");
-        System.out.printf("%7s", player.getAttributes().getPerception());
+        System.out.printf("%7s", player.getAttributes().getPerception() + " +" + player.getBonusPerception());
         System.out.printf("%-13s", "\tStealth");
-        System.out.printf("%7s", player.getAttributes().getStealth());
+        System.out.printf("%7s", player.getAttributes().getStealth() + " +" + player.getBonusStealth());
         System.out.printf("%-13s", "\tSpeed");
-        System.out.printf("%7s", player.getAttributes().getSpeed());
+        System.out.printf("%7s", player.getAttributes().getSpeed() + " +" + player.getBonusSpeed());
 
         System.out.println("\n\nCombat:");
 
@@ -498,5 +588,37 @@ public class Game {
         sc.nextLine();
 
         printHelp();
+    }
+
+    private void endGame() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println( "It is done... After you have slain the unborn monstrosity, you now find yourself in a completely white room.\n" +
+                            "In front of you there is a strange Monolith, so dark no light can escape it. It draws you to it, with each step\n" +
+                            "you are less able to resist it's draw.");
+        pause(2000);
+        System.out.println( "As you stand right before it, you can feel a warmth radiating through your body. You slowly raise your hand, your fingertips\n" +
+                            "mere inches away from the strange artifact. The moment you touch it, everything fades to black. As you slowly open your eyes, you\n" +
+                            "are blinded by a bright light. You lie next to a riverbank, in a place you've never seen before. How did you get here? How did you\n" +
+                            "get out of the dungeon? Far in the distance, you see what appears to be a settlement. With the terrors and nightmares behind you,\n" +
+                            "you slowly make your way to a new destination. Your journey will continue...but not now. To be continued...");
+        pause(3000);
+        System.out.println("Thank you for playing Zorklite! With the Unborn defeated, you have proven to be an expert Warrior! Press any key to exit the game...");
+        sc.nextLine();
+
+        System.exit(0);
+    }
+
+    private void pause(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        }
+        catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void cls() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

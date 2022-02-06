@@ -13,7 +13,7 @@ public class FireLizard extends Monster {
     public FireLizard() {
         name = "Fire Lizard";
         shortName = "Liz";
-        damageType = DamageType.PHYSICAL;
+        damageType = DamageType.MAGICAL;
         flying = false;
 
         attributes = new Attributes(

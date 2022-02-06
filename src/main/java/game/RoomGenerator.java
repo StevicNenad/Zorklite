@@ -52,26 +52,9 @@ public class RoomGenerator {
                 case MONSTER:
                     Random rn = new Random();
                     int numberEnemies = 0;
-                    double spawnChance = rn.nextDouble();
+                    double  spawnChance = rn.nextDouble();
 
-                    if(spawnChance <= 0.05) {
-                        numberEnemies = 0;
-                    }
-                    else if(spawnChance <= 0.12) {
-                        numberEnemies = 5;
-                    }
-                    else if(spawnChance <= 0.25){
-                        numberEnemies = 4;
-                    }
-                    else if (spawnChance <= 45) {
-                        numberEnemies = 3;
-                    }
-                    else if (spawnChance <= 0.70) {
-                        numberEnemies = 2;
-                    }
-                    else {
-                        numberEnemies = 1;
-                    }
+                    numberEnemies = calculateNumberofMonsters(spawnChance, index);//Number of enemies chance increases the further you get into the game
 
                     for(int i = 0;  i < numberEnemies; i++) {
                         MonsterGenerator mgen = new MonsterGenerator();
@@ -87,7 +70,7 @@ public class RoomGenerator {
                     room.setExit("east", rooms.get(index));
 
                     if(room.hasBonus()){
-                        Room bonus = generateBonusRoom(room);
+                        Room bonus = generateBonusRoom(room, index);
                         room.setExit("north", bonus);
                     }
 
@@ -126,7 +109,64 @@ public class RoomGenerator {
         }
     }
 
-    private Room generateBonusRoom(Room mainRoom) {
+    private int calculateNumberofMonsters(double spawnChance, int index) {
+        if(index < 10) {
+            if(spawnChance <= 0.05) {
+                return 0;
+            }
+            else if(spawnChance <= 0.10) {
+                return 4;
+            }
+            else if(spawnChance <= 0.30) {
+                return 3;
+            }
+            else if (spawnChance <= 0.60) {
+                return 2;
+            }
+            else {
+                return 1;
+            }
+        }
+        else if(index < 20) {
+            if(spawnChance <= 0.01) {
+                return 0;
+            }
+            else if(spawnChance <= 0.05) {
+                return 5;
+            }
+            else if(spawnChance <= 0.20) {
+                return 4;
+            }
+            else if(spawnChance <= 0.45) {
+                return 3;
+            }
+            else if(spawnChance <= 0.85) {
+                return 2;
+            }
+            else {
+                return 1;
+            }
+        }
+        else {
+            if(spawnChance <= 0.05) {
+                return 1;
+            }
+            else if(spawnChance <= 0.15) {
+                return 2;
+            }
+            else if(spawnChance <= 0.35) {
+                return 3;
+            }
+            else if(spawnChance <= 0.75) {
+                return 4;
+            }
+            else {
+                return 5;
+            }
+        }
+    }
+
+    private Room generateBonusRoom(Room mainRoom, int index) {
         BonusRoom bonusRoom = new BonusRoom();
         ItemFactory iF = new ItemFactory();
         Random rn = new Random();
@@ -137,6 +177,10 @@ public class RoomGenerator {
         } else {
             bonusRoom.getLoot().add(iF.getRandomAccessory());
         }
+
+        //calculate perception requirement
+        int pReq = 5 + index;
+        bonusRoom.setPerceptionRequirement(pReq);
 
         bonusRoom.getLoot().add(iF.getPotion());
         bonusRoom.setExit("south", mainRoom);
@@ -157,6 +201,7 @@ public class RoomGenerator {
             tokens.setValue(5000);
         }
         treasureRoom.setExit("south", mainRoom);
+        treasureRoom.setBossType(((BossRoom)mainRoom).getBossType());
         treasureRoom.getLoot().add(demonEssences);
         treasureRoom.getLoot().add(tokens);
         treasureRoom.generateDescription();

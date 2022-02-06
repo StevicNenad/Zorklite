@@ -109,7 +109,7 @@ public class MonsterRoom extends Room {
         Random rn = new Random();
         double chance = rn.nextDouble();
 
-        if(chance < 0.05) {
+        if(chance < 0.08) {
             this.bonus = true;
         }
         else{

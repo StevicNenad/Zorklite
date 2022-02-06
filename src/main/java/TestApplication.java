@@ -31,13 +31,18 @@ public class TestApplication {
     public static Room currentRoom;
 
     public static void main(String[] args) {
-
-
+/*
         Game game = new Game();
 
         game.mainGame();
+*/
 
-
+        /*
+        Player player = new Player();
+        AttributeShop as = new AttributeShop();
+        player.updateTokens(9000);
+        as.startInterface(player);
+        */
 
         /*
         Player player = new Player();

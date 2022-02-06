@@ -74,6 +74,7 @@ public class StartRoom extends Room {
 
 
         do{
+            cls();
             printDescription();
             user_pick = sc.nextLine();
 
@@ -130,6 +131,7 @@ public class StartRoom extends Room {
 
         if (user_confirm.toLowerCase().equals("y")) {
             generateDescription();
+            cls();
             printDescription();
             return true;
         }
@@ -181,5 +183,10 @@ public class StartRoom extends Room {
 
     public ArrayList<Item> getSetThree() {
         return setThree;
+    }
+
+    private void cls() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

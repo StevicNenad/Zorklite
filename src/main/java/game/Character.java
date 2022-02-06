@@ -76,6 +76,29 @@ public class Character {
         }
     }
 
+    public void recalculatePlayerStats(int bonusStr, int bonusAgi, int bonusInt) {
+        maxHealth = attributes.calculatePlayerHealth(bonusStr);
+        maxMana = attributes.calculatePlayerMana(bonusInt);
+        armorPoints = attributes.calculatePlayerArmor(bonusAgi);
+        shieldPoints = attributes.calculatePlayerShield(bonusInt);
+
+        if(currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+
+        if(currentMana > maxMana) {
+            currentMana = maxMana;
+        }
+
+        if(currentArmor > armorPoints) {
+            currentArmor = armorPoints;
+        }
+
+        if(currentShield > shieldPoints) {
+            currentShield = shieldPoints;
+        }
+    }
+
     public int getMaxHealth() {
         return maxHealth;
     }
@@ -200,5 +223,9 @@ public class Character {
 
     public int getAttributePoints() {
         return attributePoints;
+    }
+
+    public void addAP(int pointsToAdd) {
+        attributePoints += pointsToAdd;
     }
 }

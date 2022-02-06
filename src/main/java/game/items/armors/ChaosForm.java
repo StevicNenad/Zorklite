@@ -13,14 +13,14 @@ public class ChaosForm extends Armor {
         itemType = ItemType.ARMOR;
 
         attributes = new Attributes(
+                12,
                 0,
                 0,
+                4,
+                1,
                 0,
-                0,
-                0,
-                0,
-                0,
-                0,
+                4,
+                2,
                 -5,
                 1,
                 0,

@@ -1,5 +1,6 @@
 package game.rooms;
 
+import game.Character;
 import game.Item;
 import game.Room;
 import game.characters.Boss;
@@ -8,11 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TreasureRoom extends Room {
+    private BossRoom.BossType bossType;
 
     public TreasureRoom() {
+        monsters = new ArrayList<Character>();
         explored = true;
         loot = new ArrayList<Item>();
-        this.roomType = RoomType.TREASURY;
+        roomType = RoomType.TREASURY;
         exits = new HashMap<String, Room>();
     }
 
@@ -23,8 +26,6 @@ public class TreasureRoom extends Room {
 
     @Override
     public void generateDescription() {
-        BossRoom.BossType bossType = ((BossRoom)exits.get("south")).getBossType();
-
         switch(bossType) {
             case NEPHILIM:
                 description =   "You have defeated the Nephilim and are now in his chambers. There must be valueable things within.";
@@ -33,10 +34,14 @@ public class TreasureRoom extends Room {
                 description =   "You have entered what must be the Underlords torture chambers. The stench is disgusting,\n" +
                                 "but behind the huge pile of corpses you can make out a treasure chest...";
                 break;
-            case FALSEGOD:
-                description =   "With the unborn defeated, you find yourself in a strange white room. It's completely empty,\n" +
-                                "besides a golden chest right in the middle of it...";
-                break;
         }
+    }
+
+    public BossRoom.BossType getBossType() {
+        return bossType;
+    }
+
+    public void setBossType(BossRoom.BossType bossType) {
+        this.bossType = bossType;
     }
 }

@@ -46,19 +46,35 @@ public class Attributes {
     }
 
     public int calculateHealth() {
-        return 100 + (10 * strength);//25 HP per strength point
+        return 100 + (20 * strength);//20 HP per strength point
+    }
+
+    public int calculatePlayerHealth(int bonusStrength) {
+        return 100 + (10 * (strength + bonusStrength));
     }
 
     public int calculateArmor() {
-        return 5 * agility;//5 Armor per agility point
+        return 10 * agility;//5 Armor per agility point
+    }
+
+    public int calculatePlayerArmor(int bonusAgility) {
+        return 5 * (agility + bonusAgility);
     }
 
     public int calculateMana() {
-        return 100 + (5 * intelligence);//10 Mana per intelligence point
+        return 100 + (5 * intelligence);//5 Mana per intelligence point
+    }
+
+    public int calculatePlayerMana(int bonusIntelligence) {
+        return 100 + (2 * (intelligence + bonusIntelligence));
     }
 
     public int calculateShield() {
-        return 5 * intelligence;//5 Magic Shield per intelligence point
+        return 10 * intelligence;//10 Magic Shield per intelligence point
+    }
+
+    public int calculatePlayerShield(int bonusIntelligence) {
+        return 5 * (bonusIntelligence + intelligence);
     }
 
     public void addStats(Attributes attributes) {
@@ -252,5 +268,9 @@ public class Attributes {
 
     public void setProjectiles(int projectiles) {
         this.projectiles = projectiles;
+    }
+
+    public void addLevel(int level) {
+        this.level += level;
     }
 }

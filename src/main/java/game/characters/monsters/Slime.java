@@ -13,7 +13,7 @@ public class Slime extends Monster {
     public Slime() {
         name = "Slime Monster";
         shortName = "Sli";
-        damageType = DamageType.PHYSICAL;
+        damageType = DamageType.MAGICAL;
         flying = false;
 
         attributes = new Attributes(

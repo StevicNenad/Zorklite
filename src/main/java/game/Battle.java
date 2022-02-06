@@ -27,6 +27,7 @@ public class Battle {
 
     public boolean startEncounter(Player pc, ArrayList<Character> foes, ArrayList<Item> roomLoot) {
         battleIntro();
+        pc.saveToFile();
 
         while(pc.getCurrenthealth() != 0 && !foes.isEmpty()) {
             ArrayList<Character> queue = generateAttackOrder(pc, foes);
@@ -37,6 +38,7 @@ public class Battle {
                 if (attacker.getCurrenthealth() > 0) {
                     displayBattle(queue, index);
                     processTurn(attacker, foes, pc, roomLoot);
+                    cls();
                 }
                 if (battle_over) {break;}
 
@@ -56,10 +58,12 @@ public class Battle {
         else {
             if(surrender) {
                 System.out.println( "You drop your weapons and bend the knee, pleading for your life. Without mercy, the creatures start dragging\n" +
-                                    "you into the darkest pits of the dungeon, while the echp of your screams fill the rooms. Game over...");
+                                    "you into the darkest pits of the dungeon, while the echo of your screams is the only thing filling these halls. Game over...");
             }else {
                 System.out.println("You fall into a pool of your own blood, your eyes slowly closing. Game over...");
             }
+
+            pc.updateDeaths(1);
 
             pause(2000);
 
@@ -102,7 +106,15 @@ public class Battle {
         Collections.sort(participants, new Comparator<Character>() {
             @Override
             public int compare(Character o1, Character o2) {
-                return o2.getAttributes().getSpeed() - o1.getAttributes().getSpeed();
+                if(o1.getType() == Character.CharacterType.PLAYER) {
+                    return o2.getAttributes().getSpeed() - (o1.getAttributes().getSpeed() + ((Player)o1).getBonusSpeed());
+                }
+                else if(o2.getType() == Character.CharacterType.PLAYER) {
+                    return (o2.getAttributes().getSpeed()  + ((Player)o2).getBonusSpeed()) - o1.getAttributes().getSpeed();
+                }
+                else {
+                    return o2.getAttributes().getSpeed() - o1.getAttributes().getSpeed();
+                }
             }
         });
 
@@ -332,9 +344,16 @@ public class Battle {
     }
 
     private boolean executeAbility(Character attacker, ArrayList<Character> targets, Ability ability, ArrayList<Item> roomLoot) {
+
+        int intelligence = attacker.getAttributes().getIntelligence();
+        if (attacker.getType() == Character.CharacterType.PLAYER) intelligence += ((Player)attacker).getBonusIntelligence();
+
+        int agility = attacker.getAttributes().getAgility();
+        if(attacker.getType() == Character.CharacterType.PLAYER) agility += ((Player)attacker).getBonusAgility();
+
         switch(ability.getAbilityName()) {
             case "Blade Jump":
-                int     jumps = 5 + (attacker.getAttributes().getAgility() / 5),
+                int     jumps = 5 + (agility / 5),
                         jumpDamage;
 
                 if(attacker.getType() == Character.CharacterType.PLAYER) {
@@ -396,7 +415,7 @@ public class Battle {
                 return true;
 
             case "Fireball":
-                int fireDamage = 400 + (attacker.getAttributes().getIntelligence() * 40);
+                int fireDamage = 400 + (intelligence * 40);
 
                 System.out.println("You channel and hurl a huge fireball towards the enemy");
 
@@ -406,7 +425,7 @@ public class Battle {
                 return true;
 
             case "Divine Light":
-                int heal = 100 + (attacker.getAttributes().getIntelligence() * 10);
+                int heal = 100 + (intelligence * 10);
 
                 System.out.println("A holy light shines and reinvigorates you! You restore " + heal + " hp.");
 
@@ -414,8 +433,8 @@ public class Battle {
                 return true;
 
             case "Boston Shell":
-                int armorRestore = 50 + (attacker.getAttributes().getAgility() * 2),
-                    shieldRestore = 50 + (attacker.getAttributes().getIntelligence() * 2);
+                int armorRestore = 50 + (agility * 2),
+                    shieldRestore = 50 + (intelligence * 2);
 
                 System.out.println("You take a step back and strengthen your defenses! +" + armorRestore + " armor, +" + shieldRestore + " shield");
 
@@ -427,6 +446,13 @@ public class Battle {
     }
 
     private void executeTargetedAbility(Character attacker, Character target, ArrayList<Character> targets, Ability ability, ArrayList<Item> roomLoot) {
+
+        int intelligence = attacker.getAttributes().getIntelligence();
+        if (attacker.getType() == Character.CharacterType.PLAYER) intelligence += ((Player)attacker).getBonusIntelligence();
+
+        int strength = attacker.getAttributes().getStrength();
+        if (attacker.getType() == Character.CharacterType.PLAYER) strength += ((Player)attacker).getBonusStrength();
+
         switch(ability.getAbilityName()) {
             case "Vitality Swap":
                 double  attackerHealthPercentage = attacker.currentHealth / attacker.maxHealth,
@@ -437,12 +463,12 @@ public class Battle {
 
                 break;
             case "Soul Siphon":
-                int siphonDamage = 100 + (10 * attacker.getAttributes().getIntelligence());
+                int siphonDamage = 100 + (10 * intelligence);
                 inflictMagicDamage(attacker, target, targets, roomLoot, siphonDamage, true);
 
                 break;
             case "Reckless Charge":
-                int     chargeDamage = 150 + (20 * attacker.getAttributes().getStrength()),
+                int     chargeDamage = 150 + (20 * strength),
                         chargeSelfDamage = (int) (chargeDamage * 0.25);
 
                 inflictMagicDamage(attacker, target, targets, roomLoot, chargeDamage, false);
@@ -492,6 +518,7 @@ public class Battle {
 
     private void processAttack(Character attacker, ArrayList<Character> foes, Player pc, int index, ArrayList<Item> roomLoot) {
 
+        cls();
         //Processes passive "Extra Attack
         if(searchPassive(attacker, "Extra Attack") && playerTurns != 1) {
             if(playerTurns % 2 == 0) {
@@ -941,6 +968,12 @@ public class Battle {
             }
         }
         enemies.clear();
+        System.out.println("Enemies have dropped items.");
         battle_over = true;
+    }
+
+    private void cls() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
