@@ -21,14 +21,12 @@ import java.util.Scanner;
 public class Game {
     private Parser parser;
     private Player player;
-    private int roomNumber;
     private boolean gameover;
     private Room currentRoom;
     private ArrayList<Room> rooms;
 
     public Game() {
         parser = new Parser(System.in);
-        roomNumber = 0;
         rooms = new ArrayList<Room>();
         currentRoom = new StartRoom();
         player = new Player();

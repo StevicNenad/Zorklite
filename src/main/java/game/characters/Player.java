@@ -355,4 +355,8 @@ public class Player extends Character {
     public int getBonusStrength() {
         return bonusStrength;
     }
+
+    public void setDemonicEssence(int demonicEssence) {
+        this.demonicEssence = demonicEssence;
+    }
 }

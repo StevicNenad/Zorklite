@@ -25,8 +25,6 @@ public class AttributeShop {
             requirement = (int) (100 * (1.33 * player.getAttributes().getLevel()));
         }
 
-
-
         int percent = (int) ((double)player.getDeathTokens() / requirement * 35);
         String progressBar = "";
 

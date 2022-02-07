@@ -60,7 +60,7 @@ public class Battle {
                 System.out.println( "You drop your weapons and bend the knee, pleading for your life. Without mercy, the creatures start dragging\n" +
                                     "you into the darkest pits of the dungeon, while the echo of your screams is the only thing filling these halls. Game over...");
             }else {
-                System.out.println("You fall into a pool of your own blood, your eyes slowly closing. Game over...");
+                System.out.println( "You fall into a pool of your own blood, your eyes slowly closing. Game over...");
             }
 
             pc.updateDeaths(1);
@@ -238,6 +238,7 @@ public class Battle {
                             System.out.println("Please use only valid inputs (numbers).");
                         }
                         break;
+
                     case "2":
                         if(attacker.getActives().isEmpty()) {
                             System.out.println("No Abilities...");
@@ -275,6 +276,7 @@ public class Battle {
                             }
                         }
                         break;
+
                     case "3":
                         if(attacker.getPotions() == 0) {
                             System.out.println("No Potions...");
@@ -282,10 +284,13 @@ public class Battle {
                         } else {
                             int healAmount = (int) (attacker.getMaxHealth() * 0.33);
                             attacker.updateHealth(healAmount);
-                            System.out.print("You have used a potion and restored " + healAmount + " hp!");
+                            System.out.println("You have used a potion and restored " + healAmount + " HP!");
                             attacker.updatePotions(-1);
                         }
+                        pause(1500);
+                        turnSuccessful = true;
                         break;
+
                     case "4":
                         System.out.print("Do you really want to surrender? y/n\n>");
                         menuChoice = sc.nextLine();
@@ -363,15 +368,20 @@ public class Battle {
                     }
                 }
 
+                System.out.println("With one fast leap you start slashing your foes!");
+
                 for(int i = 0; i < jumps; i++) {
                     jumpDamage = (int) (attacker.getAttributes().getDamage() * attacker.getAttributes().getCritPercentage());
                     Random rn = new Random();
                     int index = rn.nextInt(targets.size()),
                         netDamage = calculateNetDamage(attacker, targets.get(index), jumpDamage);
-                    System.out.println("With one fast leap you start slashing your foes!");
-                    System.out.print("(" + (i+1) + "/" + jumps + ") Critical hit! ");
+
+                    System.out.print("(" + (i+1) + "/" + jumps + ")");
                     if(targets.get(index).getCurrenthealth() > 0) {
+                        System.out.print(" Critical hit! ");
                         inflictDamage(attacker, targets.get(index), targets, netDamage, roomLoot, false);
+                    } else {
+                        System.out.println(" Missed!");
                     }
                     pause(1000);
                 }
@@ -491,7 +501,8 @@ public class Battle {
     }
 
     private void inflictMagicDamage(Character attacker, Character target, ArrayList<Character> targets, ArrayList<Item> roomLoot, int damage, boolean succ) {
-        int netDamage = damage;
+        int netDamage = damage,
+            totalDMG = damage;
 
         if(target.getCurrentShield() > 0) {
             if(target.getCurrentShield() > netDamage) {
@@ -502,16 +513,37 @@ public class Battle {
                 netDamage -= target.getCurrentShield();
                 target.updateShield(-target.getCurrentShield());
             }
-        } else {
-            if(target.getCurrenthealth() > netDamage) {
+        }
+
+        if (netDamage > 0) {
+            if (target.getCurrenthealth() <= netDamage) {
+
+                System.out.println(attacker.getName() + " has slain " + target.getName() + "!");
+
+                attacker.updateTokens(target.getDeathTokens());
+                totalTokens += target.getDeathTokens();
+
+                if(target.getType() == Character.CharacterType.PLAYER) {
+                    battle_over = true;
+                    target.updateHealth(-target.getCurrenthealth());
+                }
+                else {
+                    target.updateHealth(-target.getCurrenthealth());
+                    if(succ) attacker.updateHealth(target.getCurrenthealth());
+                    checkEnemiesCleared(targets, roomLoot);
+                }
+            } else if(target.getCurrenthealth() > 0){
                 target.updateHealth(-netDamage);
                 if(succ) attacker.updateHealth(netDamage);
-            }
-            else {
-                if(succ) attacker.updateHealth(target.getCurrenthealth());
-                target.setCurrentHealth(0);
+                System.out.println(attacker.getName() + " has hit " + target.getName() + " for " + totalDMG + " damage!");
+
             }
         }
+        else {
+            System.out.println(attacker.getName() + " has hit " + target.getName() + " for " + totalDMG + " damage!");
+        }
+
+        pause(1000);
 
         checkEnemiesCleared(targets, roomLoot);
     }

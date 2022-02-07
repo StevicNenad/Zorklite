@@ -1,6 +1,7 @@
 import game.*;
 import game.Character;
 import game.abilities.active.BladeJump;
+import game.abilities.active.Fireball;
 import game.abilities.active.RussianRoulette;
 import game.abilities.passive.*;
 import game.characters.Monster;
@@ -13,6 +14,7 @@ import game.items.Weapon;
 import game.items.accessories.BlackCape;
 import game.items.accessories.DarkCloak;
 import game.items.accessories.IronChains;
+import game.items.armors.TigerHide;
 import game.items.gems.BladeJumpGem;
 import game.items.gems.RussianRouletteGem;
 import game.items.weapons.Greatsword;
@@ -37,6 +39,7 @@ public class TestApplication {
         game.mainGame();
 */
 
+
         /*
         Player player = new Player();
         AttributeShop as = new AttributeShop();
@@ -44,10 +47,12 @@ public class TestApplication {
         as.startInterface(player);
         */
 
+
         /*
         Player player = new Player();
         ArrayList<Character> monsterList = new ArrayList<Character>();
         Greatsword greatsword = new Greatsword();
+        TigerHide tigerHide = new TigerHide();
         Shuriken shuriken = new Shuriken();
         Repeater repeater = new Repeater();
         Lifesteal lifesteal = new Lifesteal();
@@ -57,16 +62,20 @@ public class TestApplication {
         ExtraAttack extraAttack = new ExtraAttack();
         RussianRoulette russianRoulette = new RussianRoulette();
         BladeJump bladeJump = new BladeJump();
+        Fireball fireball = new Fireball();
         EscalatingViolence escalatingViolence = new EscalatingViolence();
         player.getActives().add(bladeJump);
         player.getActives().add(russianRoulette);
+        player.getActives().add(fireball);
         player.getPassives().add(divineCombust);
         player.getPassives().add(escalatingViolence);
         player.getPassives().add(extraAttack);
         player.getPassives().add(lifesteal);
         player.getPassives().add(hydroTouch);
+        player.updatePotions(500);
         player.setDemonicEssence(10);
         player.setWeapon(greatsword);
+        player.setArmor(tigerHide);
         player.getAttributes().setEvasion(1);
         MonsterRoom monsterRoom = new MonsterRoom();
 
@@ -79,5 +88,6 @@ public class TestApplication {
         Battle battle = new Battle();
         battle.startEncounter(player, monsterList, monsterRoom.getLoot());
         */
+
     }
 }

@@ -32,9 +32,6 @@ public class Room {
     public void rollBonusRoom(){
     }
 
-    public void generateExits(int roomNumber, Room currentRoom){
-    }
-
     public void addMonster(Monster monster){
         monsters.add(monster);
     }
