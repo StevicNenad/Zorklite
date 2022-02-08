@@ -27,5 +27,7 @@ public class DarkCloak extends Accessories {
                 0,
                 0
         );
+
+        value = 500;
     }
 }

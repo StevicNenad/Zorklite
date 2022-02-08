@@ -31,6 +31,7 @@ public class Character {
     protected Attributes            attributes;
     protected ArrayList<Ability>    actives;
     protected ArrayList<Ability>    passives;
+    protected ArrayList<Item>       loot;
 
     public void calculateResistances() {
         attributes.setDamageReduction(currentArmor / 200);
@@ -74,6 +75,10 @@ public class Character {
         if(currentShield > shieldPoints) {
             currentShield = shieldPoints;
         }
+
+        attributes.setDamageReduction((double) armorPoints / 300);
+        attributes.setMagicResistance((double) shieldPoints / 300);
+
     }
 
     public void recalculatePlayerStats(int bonusStr, int bonusAgi, int bonusInt) {
@@ -97,6 +102,9 @@ public class Character {
         if(currentShield > shieldPoints) {
             currentShield = shieldPoints;
         }
+
+        attributes.setDamageReduction((double) armorPoints / 300);
+        attributes.setMagicResistance((double) shieldPoints / 300);
     }
 
     public int getMaxHealth() {
@@ -227,5 +235,9 @@ public class Character {
 
     public void addAP(int pointsToAdd) {
         attributePoints += pointsToAdd;
+    }
+
+    public ArrayList<Item> getLoot() {
+        return loot;
     }
 }

@@ -27,5 +27,7 @@ public class ObsidianRing extends Accessories {
                 0,
                 0.1
         );
+
+        value = 500;
     }
 }

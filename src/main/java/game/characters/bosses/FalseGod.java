@@ -2,7 +2,10 @@ package game.characters.bosses;
 
 import game.Ability;
 import game.Attributes;
+import game.DamageType;
 import game.Item;
+import game.abilities.active.Fireball;
+import game.abilities.active.SoulSiphon;
 import game.characters.Boss;
 
 import java.util.ArrayList;
@@ -12,15 +15,17 @@ public class FalseGod extends Boss {
     public FalseGod() {
         name = "The Unborn";
         shortName = "God";
+        damageType = DamageType.UNIVERSAL;
+        flying = true;
 
         attributes = new Attributes(
                 100,
                 1,
                 0,
-                25,
-                25,
-                25,
-                25,
+                40,
+                40,
+                40,
+                40,
                 25,
                 0,
                 1,
@@ -45,6 +50,10 @@ public class FalseGod extends Boss {
         loot = new ArrayList<Item>();
 
         calculateResistances();
+        SoulSiphon soulSiphon = new SoulSiphon();
+        Fireball fireball = new Fireball();
+        actives.add(fireball);
+        actives.add(soulSiphon);
     }
 
     @Override

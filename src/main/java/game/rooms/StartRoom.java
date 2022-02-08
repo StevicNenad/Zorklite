@@ -26,9 +26,7 @@ public class StartRoom extends Room {
 
         this.exits = new HashMap<String, Room>();
         this.loot = new ArrayList<Item>();
-        this.monsters = new ArrayList<Character>();
-
-        this.boss = null;
+        this.enemies = new ArrayList<Character>();
 
         setOne = new ArrayList<Item>();
         setTwo = new ArrayList<Item>();
@@ -106,13 +104,13 @@ public class StartRoom extends Room {
 
                         break;
                     default:
-                        System.out.println("Please use only numbers between 1 and 3. Press enter to continue...");
-                        sc.nextLine();
+                        System.out.println("Please use only numbers between 1 and 3");
+                        pause(1000);
                 }
             }
             catch (NumberFormatException ex){
-                System.out.println("Please use only valid inputs (numbers). Press enter to continue...");
-                sc.nextLine();
+                System.out.println("Please use only valid inputs (numbers).");
+                pause(1000);
             }
         }while(true);
     }
@@ -168,11 +166,6 @@ public class StartRoom extends Room {
         this.description = description;
     }
 
-    @Override
-    public void printMap() {
-        super.printMap();
-    }
-
     public ArrayList<Item> getSetOne() {
         return setOne;
     }
@@ -188,5 +181,15 @@ public class StartRoom extends Room {
     private void cls() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    //Function that pauses the output screen so the user can read or whatever
+    private void pause(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        }
+        catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

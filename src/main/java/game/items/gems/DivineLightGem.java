@@ -29,5 +29,8 @@ public class DivineLightGem extends Gems {
                 0,
                 0
         );
+
+        value = 1500;
+
     }
 }

@@ -26,6 +26,7 @@ public class BossRoom extends Room {
         roomType = RoomType.BOSS;
         exits = new HashMap<String, Room>();
         loot = new ArrayList<Item>();
+        enemies = new ArrayList<Character>();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class BossRoom extends Room {
         StringBuilder stringBuilder = new StringBuilder();
         String description;
 
-        if(boss == null) {
+        if(enemies.isEmpty()) {
             stringBuilder.append("By some miracle, the abomination has been slain... ");
 
             stringBuilder.append("You can see " + exits.size() + " exit(s):\n");
@@ -45,7 +46,7 @@ public class BossRoom extends Room {
         }
         else {
             stringBuilder.append("You step into a big hall, you sense you are not alone. On closer inspection you can see ");
-            stringBuilder.append(boss.getName() + ". The sight of it disgusts you, but there is no way back now...\n");
+            stringBuilder.append(enemies.get(0).getName() + ". The sight of it disgusts you, but there is no way back now...\n");
         }
 
         description = stringBuilder.toString();
@@ -53,10 +54,6 @@ public class BossRoom extends Room {
         this.description = description;
     }
 
-    @Override
-    public void setBoss(Boss boss) {
-        super.setBoss(boss);
-    }
 
     @Override
     public Room getExit(String direction) {

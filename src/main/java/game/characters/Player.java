@@ -85,6 +85,7 @@ public class Player extends Character {
         secondAcc = null;
         passives = new ArrayList<Ability>();
         actives = new ArrayList<Ability>();
+        loot = null;
     }
 
     private void addStats(Item item) {

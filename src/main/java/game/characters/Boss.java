@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class Boss extends Character {
     protected DamageType damageType;
-    protected AttackRange attackRange;
-    protected ArrayList<Item> loot;
+    protected boolean   flying;
 
     public Boss() {
         characterType = CharacterType.BOSS;
@@ -20,11 +19,5 @@ public class Boss extends Character {
         return damageType;
     }
 
-    public AttackRange getAttackRange() {
-        return attackRange;
-    }
 
-    public ArrayList<Item> getLoot() {
-        return loot;
-    }
 }

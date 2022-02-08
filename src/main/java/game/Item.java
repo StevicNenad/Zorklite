@@ -13,6 +13,8 @@ public class Item {
         WEAPON
     }
 
+    protected int           value;
+
     protected String        name,
                             description;
 
@@ -21,6 +23,10 @@ public class Item {
 
     protected ItemType      itemType;
     protected Attributes    attributes;
+
+    public void upgradeStats(int essences) {
+        return;
+    }
 
     public String getName() {
         return name;
@@ -34,11 +40,11 @@ public class Item {
         return itemType;
     }
 
-    public void upgradeStats(int essences) {
-        return;
-    }
-
     public double getSpeedModifier() {
         return speedModifier;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -41,4 +41,8 @@ public class Weapon extends Item {
     public void setDamageType(DamageType damageType) {
         this.damageType = damageType;
     }
+
+    public AttackRange getAttackRange() {
+        return attackRange;
+    }
 }

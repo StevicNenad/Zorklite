@@ -27,5 +27,7 @@ public class ChaosShard extends Accessories {
                 0,
                 0.25
         );
+
+        value = 500;
     }
 }

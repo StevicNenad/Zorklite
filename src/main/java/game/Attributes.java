@@ -77,42 +77,6 @@ public class Attributes {
         return 5 * (bonusIntelligence + intelligence);
     }
 
-    public void addStats(Attributes attributes) {
-        damage += attributes.getDamage();
-        attacks += attributes.getAttacks();
-        projectiles += attributes.getProjectiles();
-        strength += attributes.getStrength();
-        intelligence += attributes.getIntelligence();
-        agility += attributes.getAgility();
-        speed += attributes.getSpeed();
-        stealth += attributes.getStealth();
-        perception += attributes.getPerception();
-
-        accuracy += attributes.getAccuracy();
-        critChance += attributes.getCritChance();
-        critPercentage += attributes.getCritPercentage();
-        aoeDamage += attributes.getAoeDamage();
-        evasion += attributes.getEvasion();
-    }
-
-    public void removeStats(Attributes attributes) {
-        damage -= attributes.getDamage();
-        attacks -= attributes.getAttacks();
-        projectiles -= attributes.getProjectiles();
-        strength -= attributes.getStrength();
-        intelligence -= attributes.getIntelligence();
-        agility -= attributes.getAgility();
-        speed -= attributes.getSpeed();
-        stealth -= attributes.getStealth();
-        perception -= attributes.getPerception();
-
-        accuracy -= attributes.getAccuracy();
-        critChance -= attributes.getCritChance();
-        critPercentage -= attributes.getCritPercentage();
-        aoeDamage -= attributes.getAoeDamage();
-        evasion -= attributes.getEvasion();
-    }
-
     public void levelScaleMonsters(int level) {
 
         if(level == 1) {
@@ -130,8 +94,8 @@ public class Attributes {
         stealth += (stealth * scale);
         perception += (perception * scale);
 
-        damageReduction = calculateArmor() / 200;
-        magicResistance = calculateShield() / 200;
+        damageReduction = (double) calculateArmor() / 300;
+        magicResistance = (double) calculateShield() / 300;
     }
 
     public void setStrength(int strength) {

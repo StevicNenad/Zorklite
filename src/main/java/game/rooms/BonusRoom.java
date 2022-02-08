@@ -35,10 +35,6 @@ public class BonusRoom extends Room {
         return super.getDescription();
     }
 
-    @Override
-    public void printMap() {
-        super.printMap();
-    }
 
     @Override
     public void setExit(String direction, Room room) {

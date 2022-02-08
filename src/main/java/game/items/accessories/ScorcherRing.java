@@ -27,5 +27,7 @@ public class ScorcherRing extends Accessories {
                 0.25,
                 0
         );
+
+        value = 500;
     }
 }

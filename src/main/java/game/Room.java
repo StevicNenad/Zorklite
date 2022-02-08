@@ -18,8 +18,7 @@ public class Room {
     }
 
     protected String description;
-    protected Boss boss;
-    protected ArrayList<Character> monsters;
+    protected ArrayList<Character> enemies;
     protected ArrayList<Item> loot;
     protected HashMap<String, Room> exits;
     protected RoomType roomType;
@@ -33,14 +32,14 @@ public class Room {
     }
 
     public void addMonster(Monster monster){
-        monsters.add(monster);
+        enemies.add(monster);
     }
 
     public void printDescription() {
         System.out.print(description);
     }
 
-    public void printMap() {
+    public void printMap(Player player) {
 
         if(!explored) {
             System.out.println("You haven't \"explored\" this room yet...");
@@ -48,11 +47,11 @@ public class Room {
         }
 
         System.out.println("Monsters:");
-        if(monsters.isEmpty()) {
+        if(enemies.isEmpty()) {
             System.out.println("none");
         }
         else {
-            for(Character monster : monsters) {
+            for(Character monster : enemies) {
                 System.out.println(monster.getName() + ", lvl " + monster.getAttributes().getLevel());
             }
         }
@@ -67,6 +66,11 @@ public class Room {
         }
         System.out.println("\nExits:");
         for(String exit : exits.keySet()) {
+            if(exits.get(exit).getRoomType() == RoomType.BONUS) {
+                if(player.getAttributes().getPerception() + player.getBonusPerception() < ((BonusRoom)exits.get(exit)).getPerceptionRequirement()) {
+                    continue;
+                }
+            }
             RoomType type = exits.get(exit).getRoomType();
             System.out.println(exit + ", " + type.toString().toLowerCase() + " room door");
         }
@@ -76,8 +80,8 @@ public class Room {
         return description;
     }
 
-    public ArrayList<Character> getMonsters() {
-        return monsters;
+    public ArrayList<Character> getEnemies() {
+        return enemies;
     }
 
     public ArrayList<Item> getLoot() {
@@ -104,12 +108,12 @@ public class Room {
         this.loot = loot;
     }
 
-    public void setExits(HashMap<String, Room> exits) {
-        this.exits = exits;
+    public HashMap<String, Room> getExits() {
+        return exits;
     }
 
-    public void setBoss(Boss boss) {
-        this.boss = boss;
+    public void setExits(HashMap<String, Room> exits) {
+        this.exits = exits;
     }
 
     public boolean isExplored() {

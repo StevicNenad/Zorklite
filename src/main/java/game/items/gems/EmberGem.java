@@ -29,5 +29,8 @@ public class EmberGem extends Gems {
                 0,
                 0
         );
+
+        value = 1500;
+
     }
 }

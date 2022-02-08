@@ -7,6 +7,7 @@ import game.abilities.passive.*;
 import game.characters.Monster;
 import game.characters.MonsterGenerator;
 import game.characters.Player;
+import game.characters.bosses.Nephilim;
 import game.items.Accessories;
 import game.items.Gems;
 import game.items.Tokens;
@@ -21,6 +22,7 @@ import game.items.weapons.Greatsword;
 import game.items.weapons.Repeater;
 import game.items.weapons.Shuriken;
 import game.rooms.BonusRoom;
+import game.rooms.BossRoom;
 import game.rooms.MonsterRoom;
 import game.rooms.StartRoom;
 
@@ -33,11 +35,11 @@ public class TestApplication {
     public static Room currentRoom;
 
     public static void main(String[] args) {
-/*
+        /*
         Game game = new Game();
 
         game.mainGame();
-*/
+        */
 
 
         /*
@@ -48,7 +50,7 @@ public class TestApplication {
         */
 
 
-        /*
+
         Player player = new Player();
         ArrayList<Character> monsterList = new ArrayList<Character>();
         Greatsword greatsword = new Greatsword();
@@ -77,6 +79,11 @@ public class TestApplication {
         player.setWeapon(greatsword);
         player.setArmor(tigerHide);
         player.getAttributes().setEvasion(1);
+        BossRoom bossRoom = new BossRoom();
+        bossRoom.setBossType(BossRoom.BossType.NEPHILIM);
+        Nephilim nephilim = new Nephilim();
+        bossRoom.getEnemies().add(nephilim);
+        /*
         MonsterRoom monsterRoom = new MonsterRoom();
 
         for(int i = 0; i < 5; i++) {
@@ -84,10 +91,10 @@ public class TestApplication {
             Monster monster = mongen.getRandomMonster();
             monsterList.add(monster);
         }
-
+*/
         Battle battle = new Battle();
-        battle.startEncounter(player, monsterList, monsterRoom.getLoot());
-        */
+        battle.startEncounter(player, bossRoom.getEnemies(), bossRoom);
+
 
     }
 }

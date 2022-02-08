@@ -27,5 +27,7 @@ public class HolyWater extends Accessories {
                 0,
                 0
         );
+
+        value = 500;
     }
 }

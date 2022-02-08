@@ -3,7 +3,6 @@ package game.rooms;
 import game.Character;
 import game.Item;
 import game.Room;
-import game.RoomGenerator;
 import game.characters.Boss;
 import game.characters.Monster;
 
@@ -17,7 +16,7 @@ public class MonsterRoom extends Room {
         explored = false;
         roomType = RoomType.MONSTER;
         loot = new ArrayList<Item>();
-        monsters = new ArrayList<Character>();
+        enemies = new ArrayList<Character>();
         exits = new HashMap<String, Room>();
         rollBonusRoom();
     }
@@ -28,8 +27,8 @@ public class MonsterRoom extends Room {
     }
 
     @Override
-    public ArrayList<Character> getMonsters() {
-        return super.getMonsters();
+    public ArrayList<Character> getEnemies() {
+        return super.getEnemies();
     }
 
     @Override
@@ -48,22 +47,17 @@ public class MonsterRoom extends Room {
     }
 
     @Override
-    public void setBoss(Boss boss) {
-        super.setBoss(boss);
-    }
-
-    @Override
     public void generateDescription() {
         StringBuilder stringBuilder = new StringBuilder();
         String description;
 
-        if(monsters.isEmpty()) {
+        if(enemies.isEmpty()) {
             stringBuilder.append("There seem to be no monsters left in this room... ");
         }
         else {
             stringBuilder.append("You feel a threatening presence in this room. You are able to spot enemies:\n");
 
-            for(Character monster: monsters) {
+            for(Character monster: enemies) {
                 stringBuilder.append("a " + monster.getName() + ", lvl. " + monster.getAttributes().getLevel() + "\n");
             }
         }
@@ -81,9 +75,6 @@ public class MonsterRoom extends Room {
                 case BOSS:
                     doorDescription = "a huge obsidian black gate";
                     break;
-                case BONUS:
-                    doorDescription = "an antique wooden door";
-                    break;
                 case TREASURY:
                     doorDescription = "a shiny golden door";
                     break;
@@ -97,11 +88,6 @@ public class MonsterRoom extends Room {
         description = stringBuilder.toString();
 
         this.description = description;
-    }
-
-    @Override
-    public void printMap() {
-        super.printMap();
     }
 
     @Override

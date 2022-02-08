@@ -97,7 +97,7 @@ public class RoomGenerator {
                             ((BossRoom)room).setBossType(BossRoom.BossType.FALSEGOD);
                             break;
                     }
-                    room.setBoss(boss);
+                    room.getEnemies().add(boss);
 
                     Room treasury = generateTreasury(room, index);
                     room.setExit("north", treasury);

@@ -3,7 +3,6 @@ package game.rooms;
 import game.Character;
 import game.Item;
 import game.Room;
-import game.characters.Boss;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,16 +11,11 @@ public class TreasureRoom extends Room {
     private BossRoom.BossType bossType;
 
     public TreasureRoom() {
-        monsters = new ArrayList<Character>();
+        enemies = new ArrayList<Character>();
         explored = true;
         loot = new ArrayList<Item>();
         roomType = RoomType.TREASURY;
         exits = new HashMap<String, Room>();
-    }
-
-    @Override
-    public void printMap() {
-        super.printMap();
     }
 
     @Override
