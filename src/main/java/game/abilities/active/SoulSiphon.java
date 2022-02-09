@@ -12,8 +12,4 @@ public class SoulSiphon extends Ability {
         targetedAbility = true;
         manaReq = 55;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

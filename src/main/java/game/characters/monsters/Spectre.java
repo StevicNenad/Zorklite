@@ -20,7 +20,7 @@ public class Spectre extends Monster {
                 5,
                 1,
                 0,
-                9,
+                3,
                 7,
                 10,
                 10,

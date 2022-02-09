@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+
+//Main class that handles all the out of battle logic
 public class Game {
     private Parser parser;
     private Player player;
@@ -30,6 +32,7 @@ public class Game {
         gameover = false;
     }
 
+    //The main game loop. Checks if game over etc.
     public void mainGame() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -40,9 +43,9 @@ public class Game {
             currentRoom.chooseLoadout(player);
 
             while (!gameover) {
+                player.saveToFile();
                 Command command = parser.getCommand();
                 processCommand(command);
-                player.saveToFile();
             }
             //Print stats, progress and goodbye message HERE
             if(player.getDeaths() == 1) {
@@ -62,6 +65,7 @@ public class Game {
 
     }
 
+    //Welcome message and show main menu. Level up menu is possible from here
     public void welcome() {
         Scanner sc = new Scanner(System.in);
         boolean continueGame = false;
@@ -77,6 +81,7 @@ public class Game {
 
             userInput = sc.nextLine();
 
+            //Checks if Savedata is available
             if(saveData.exists()) {
                 player.loadSaveFile();
                 System.out.println("0 - Continue");
@@ -119,6 +124,7 @@ public class Game {
         }
     }
 
+    //Function that processes the command (does it have second word or not, is the first word a valid command etc.)
     public void processCommand(Command command) {
         Scanner sc = new Scanner(System.in);
         cls();
@@ -146,6 +152,7 @@ public class Game {
                     Battle battle = new Battle();
                     System.out.println("While exploring the room, you made a loud noise and attracted all the enemies in this room. Prepare to fight.");
                     sc.nextLine();
+                    cls();
                     gameover = battle.startEncounter(player, currentRoom.getEnemies(), currentRoom);
                     currentRoom.printDescription();
                     currentRoom.setExplored(true);
@@ -164,6 +171,10 @@ public class Game {
             case "attack":
                 if (!currentRoom.isExplored()) {
                     System.out.println("You need to explore this room first... type \"explore\"");
+                    return;
+                }
+                else if (currentRoom.getEnemies().isEmpty()) {
+                    System.out.println("There are no enemies left in this room...");
                     return;
                 }
 
@@ -197,6 +208,7 @@ public class Game {
         }
     }
 
+    //Function that prints help
     public void printHelp() {
         if (currentRoom.getRoomType() == Room.RoomType.START) {
             System.out.println( "You picked up your equipment, there is nothing left here to do. With only the red door in the \"east\" remaining,\n" +
@@ -216,6 +228,7 @@ public class Game {
         System.out.println(parser.showCommands());
     }
 
+    //Function that print tutorial
     public void printTutorial(Command command) {
         String tutorialSubject = "null";
 
@@ -296,6 +309,7 @@ public class Game {
         }
     }
 
+    //Function that makes player move through rooms
     private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("Go where?");
@@ -310,6 +324,12 @@ public class Game {
                         return;
                     }
                 }
+
+                if(direction.toLowerCase().equals("west")) {
+                    System.out.println( "There is no way to go back. The door is shut firm, no matter how much you pull or push on it, it doesn't budge.\n" +
+                                        "The only way to go now is deeper into the dungeon, east.");
+                }
+
                 Room nextRoom = currentRoom.getExit(direction);
 
                 if(currentRoom.getRoomType() == Room.RoomType.TREASURY && ((TreasureRoom)currentRoom).getBossType() == BossRoom.BossType.FALSEGOD) {
@@ -338,6 +358,7 @@ public class Game {
         }
     }
 
+    //function that opens the loot menu and enables player to interact with objects
     private void takeItem() {
         String userChoice;
         Scanner sc = new Scanner(System.in);
@@ -429,6 +450,7 @@ public class Game {
         }while(!currentRoom.getLoot().isEmpty() && !userChoice.toLowerCase().equals("q"));
     }
 
+    //Function that processes sneak attacks or sneaking by enemies
     private void sneak(Command command) {
         if(!currentRoom.isExplored()) {
             System.out.println("You need to explore this room first...");
@@ -491,6 +513,7 @@ public class Game {
         }
     }
 
+    //Function that shows attributes and current stats of th eplayer
     private void showCharacterInfo(){
         Scanner sc = new Scanner(System.in);
 
@@ -585,9 +608,11 @@ public class Game {
         System.out.print("\n\nPress any key to continue...");
         sc.nextLine();
 
+        cls();
         printHelp();
     }
 
+    //Function that checks if the Player has reached the last room. If so, initializes ending.
     private void endGame() {
         Scanner sc = new Scanner(System.in);
         System.out.println( "It is done... After you have slain the unborn monstrosity, you now find yourself in a completely white room.\n" +
@@ -606,6 +631,7 @@ public class Game {
         System.exit(0);
     }
 
+    //Function that prints map. Either full map or just a small list of things player can interact with in current room
     private void printMap(Command command) {
 
         if(command.hasSecondWord()) {
@@ -667,6 +693,7 @@ public class Game {
         }
     }
 
+    //Function that adds a small pause
     private void pause(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
@@ -676,6 +703,7 @@ public class Game {
         }
     }
 
+    //Function that clears the console
     private void cls() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

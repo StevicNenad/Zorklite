@@ -12,8 +12,4 @@ public class BostonShell extends Ability {
         targetedAbility = false;
         manaReq = 15;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

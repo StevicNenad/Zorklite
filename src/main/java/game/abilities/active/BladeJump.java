@@ -12,8 +12,4 @@ public class BladeJump extends Ability {
         targetedAbility = false;
         manaReq = 75;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

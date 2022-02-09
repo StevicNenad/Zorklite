@@ -6,6 +6,8 @@ import game.items.ItemFactory;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+//Class that initializes all Monsters and adds them to ArrayList. Can generate a Random monster and create loot.
 public class MonsterGenerator {
     ArrayList<Monster> monsterList;
 
@@ -44,6 +46,7 @@ public class MonsterGenerator {
         monsterList.add(spectre);
     }
 
+    //Gets a random Monster from ArrayList
     public Monster getRandomMonster(){
         Random rn = new Random();
         int index = rn.nextInt(monsterList.size());
@@ -51,6 +54,7 @@ public class MonsterGenerator {
         return monsterList.get(index);
     }
 
+    //Generates loot based on monster type. Every Monster has own drop chance for items
     public void generateLoot(Monster monster) {
         ItemFactory iF = new ItemFactory();
         Random rn = new Random();

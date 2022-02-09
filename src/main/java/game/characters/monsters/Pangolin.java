@@ -20,7 +20,7 @@ public class Pangolin extends Monster {
                 5,
                 1,
                 0,
-                20,
+                15,
                 5,
                 15,
                 3,

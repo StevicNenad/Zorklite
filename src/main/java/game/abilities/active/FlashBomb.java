@@ -12,8 +12,4 @@ public class FlashBomb extends Ability {
         targetedAbility = false;
         manaReq = 40;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

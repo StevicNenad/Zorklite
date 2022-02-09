@@ -20,7 +20,7 @@ public class Slime extends Monster {
                 11,
                 1,
                 0,
-                15,
+                13,
                 1,
                 1,
                 1,

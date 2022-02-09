@@ -20,7 +20,7 @@ public class Arachnid extends Monster {
                 5,
                 1,
                 0,
-                7,
+                2,
                 5,
                 6,
                 6,

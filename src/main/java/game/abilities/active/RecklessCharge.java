@@ -12,8 +12,4 @@ public class RecklessCharge extends Ability {
         targetedAbility = true;
         manaReq = 0;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

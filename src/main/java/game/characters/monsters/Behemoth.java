@@ -20,7 +20,7 @@ public class Behemoth extends Monster {
                 25,
                 1,
                 0,
-                20,
+                12,
                 3,
                 2,
                 2,

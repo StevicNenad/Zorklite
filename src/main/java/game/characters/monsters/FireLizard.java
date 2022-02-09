@@ -20,7 +20,7 @@ public class FireLizard extends Monster {
                 7,
                 1,
                 0,
-                8,
+                7,
                 8,
                 8,
                 8,

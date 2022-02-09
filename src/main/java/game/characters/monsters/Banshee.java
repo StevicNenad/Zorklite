@@ -20,7 +20,7 @@ public class Banshee extends Monster {
                 8,
                 1,
                 0,
-                10,
+                4,
                 5,
                 6,
                 4,

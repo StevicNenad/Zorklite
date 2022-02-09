@@ -12,8 +12,4 @@ import game.Ability;
         targetedAbility = false;
         manaReq = 100;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

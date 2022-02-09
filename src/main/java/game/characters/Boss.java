@@ -18,6 +18,4 @@ public class Boss extends Character {
     public DamageType getDamageType() {
         return damageType;
     }
-
-
 }

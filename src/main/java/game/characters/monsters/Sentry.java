@@ -20,7 +20,7 @@ public class Sentry extends Monster {
                 15,
                 1,
                 0,
-                9,
+                7,
                 12,
                 1,
                 1,

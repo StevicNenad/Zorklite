@@ -12,8 +12,4 @@ public class VitalitySwap extends Ability {
         targetedAbility = true;
         manaReq = 100;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

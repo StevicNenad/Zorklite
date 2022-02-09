@@ -13,7 +13,4 @@ public class RussianRoulette extends Ability {
         manaReq = 100;
     }
 
-    public void ExtraAttack() {
-
-    }
 }

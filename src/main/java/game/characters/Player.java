@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+//Class of the human player
 public class Player extends Character {
     private Weapon weapon;
     private Armor armor;
@@ -88,6 +90,7 @@ public class Player extends Character {
         loot = null;
     }
 
+    //Function used when equipping items. Upgrades stats of user
     private void addStats(Item item) {
         int damage = attributes.getDamage() + item.getAttributes().getDamage(),
             attacks = attributes.getAttacks() + item.getAttributes().getAttacks(),
@@ -120,6 +123,7 @@ public class Player extends Character {
         bonusStealth += item.getAttributes().getStealth();
     }
 
+    //function used when unequiping items. Removes attributes of user
     private void removeStats(Item item) {
         int     damage = attributes.getDamage() - item.getAttributes().getDamage(),
                 attacks = attributes.getAttacks() - item.getAttributes().getAttacks(),
@@ -152,12 +156,14 @@ public class Player extends Character {
         bonusStealth -= item.getAttributes().getStealth();
     }
 
+    //Equip Weapon
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
         addStats(weapon);
         recalculatePlayerStats(bonusStrength, bonusAgility, bonusIntelligence);
     }
 
+    //Equip Armor
     public void setArmor(Armor armor) {
         this.armor = armor;
         addStats(armor);
@@ -175,6 +181,7 @@ public class Player extends Character {
         }
     }
 
+    //When starting a new run, heals Character and restores armor and shield
     public void resetCharacter() {
         removeStats(weapon);
         weapon = null;
@@ -200,6 +207,8 @@ public class Player extends Character {
         currentShield = shieldPoints;
     }
 
+
+    //Equips accessory. Checks if slot is free, if not, prompts user input
     public void setAccessory(Accessories accessory) {
         if(firstAcc == null) {
             firstAcc = accessory;
@@ -237,6 +246,7 @@ public class Player extends Character {
         }
     }
 
+    //Save function that saves user attributes to file
     public void saveToFile() {
         try {
             File dir = new File("saves");
@@ -267,6 +277,7 @@ public class Player extends Character {
         }
     }
 
+    //Function that loads user attributes from file
     public void loadSaveFile() {
         try {
             File saveData = new File("saves", "save.dat");
@@ -312,23 +323,6 @@ public class Player extends Character {
         return demonicEssence;
     }
 
-    @Override
-    public CharacterType getType() {
-        return super.getType();
-    }
-
-    public void updateDemonicEssence(int demonicEssence) {
-        this.demonicEssence += demonicEssence;
-    }
-
-    public void updateAttributePoints(int attPoints) {
-        attributePoints += attPoints;
-    }
-
-    public void updateDeaths(int deaths) {
-        this.deaths += deaths;
-    }
-
     public int getDeaths() {
         return deaths;
     }
@@ -359,5 +353,20 @@ public class Player extends Character {
 
     public void setDemonicEssence(int demonicEssence) {
         this.demonicEssence = demonicEssence;
+    }
+
+    //Function to add or subtract from essences
+    public void updateDemonicEssence(int demonicEssence) {
+        this.demonicEssence += demonicEssence;
+    }
+
+    //Function to add or subtract from attribute points
+    public void updateAttributePoints(int attPoints) {
+        attributePoints += attPoints;
+    }
+
+    //Function to add or subtract from total Death count
+    public void updateDeaths(int deaths) {
+        this.deaths += deaths;
     }
 }

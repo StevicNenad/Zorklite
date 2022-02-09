@@ -8,6 +8,8 @@ import game.rooms.BossRoom;
 
 import java.util.*;
 
+
+//Main battle class
 public class Battle {
 
     private int     turns,          //tracks total number of turns in the battle. Not used but useful for future expansions.
@@ -28,6 +30,7 @@ public class Battle {
         monsterPreemptiveStrike = false;
     }
 
+    //Function that is called when user sneak attacks and is successful
     public void preemptiveStrikeSuccess(Player player, ArrayList<Character> enemies) {
         int critDamage = (int) (player.getAttributes().getDamage() * player.getAttributes().getCritPercentage());
         DamageType damageType = attackerDamageType(player);
@@ -43,6 +46,7 @@ public class Battle {
         playerPreemptiveStrike = true;
     }
 
+    //Function that is called when user tries to sneak and is not successful
     public void preemptiveStrikeFail(Player player) {
         System.out.println("Sneak failed! The enemy has spotted and attacked you before you could react.\n");
         player.updateHealth(-(player.getMaxHealth() / 4));
@@ -50,6 +54,7 @@ public class Battle {
         monsterPreemptiveStrike = true;
     }
 
+    //Function that starts the battle encounter
     public boolean startEncounter(Player player, ArrayList<Character> enemies, Room currentRoom) {
         battleIntro(currentRoom);
         ArrayList<Character> battleQueue = generateBattleQueue(player, enemies, currentRoom);
@@ -111,6 +116,7 @@ public class Battle {
         }
     }
 
+    //Function that prints intro based on who player is fighting
     public void battleIntro(Room currentRoom) {
         Scanner sc = new Scanner(System.in);
 
@@ -196,6 +202,7 @@ public class Battle {
         return participants;
     }
 
+    //Function that shows the current battle, all monsters, their HP, mana, shield etc. as well as all relevant player information
     private void displayBattleInformation(ArrayList<Character> queue, int index) {
         int timeDelay;
         if(turns == 0) {
@@ -203,6 +210,8 @@ public class Battle {
         } else {
             timeDelay = 25;
         }
+
+        cls();
 
         //For loop that prints the players HP, Armor and Shield values to the terminal
         for (Character findPlayer : queue) {
@@ -293,6 +302,7 @@ public class Battle {
         System.out.print("\n\n");
     }
 
+    //Processes turn for each combat participant. If player, one block is executed, for monster another, for bosses another
     private void processTurn(Character attacker, Player player, ArrayList<Character> enemies, Room currentRoom) {
 
         if(attacker.getType() == Character.CharacterType.PLAYER) {
@@ -446,6 +456,8 @@ public class Battle {
         }
     }
 
+
+    //Function that processes the Attack command in battle
     private void processAttack(Character attacker, Character target, ArrayList<Character> enemies) {
 
         //cls();
@@ -574,6 +586,7 @@ public class Battle {
     }
 
 
+    //Function that processes damage to be inflicted to a target, either by spell or by attack
     private void inflictDamage(Character attacker, Character target, int damage, boolean spell, boolean cleave, DamageType damageType) {
         if (cleave) damage = (int) (damage * attacker.getAttributes().getAoeDamage());
         int totalDMG = damage;
@@ -621,6 +634,8 @@ public class Battle {
         }
     }
 
+
+    //Function that returns Damage type of an attacker
     private DamageType attackerDamageType(Character attacker) {
         if(attacker.getType() == Character.CharacterType.PLAYER) {
             return ((Player)attacker).getWeapon().getDamageType();
@@ -677,6 +692,8 @@ public class Battle {
         return netDamage;
     }
 
+
+    //Function that checks if an attack misses or the target evades. Also handles the counter attack passive
     private boolean didAttackMiss(Character attacker, Character target, ArrayList<Character> enemies) {
         Random rn = new Random();
         double  hitChance = rn.nextDouble(),
@@ -716,6 +733,7 @@ public class Battle {
         return false;
     }
 
+    //Returns amount of projectiles attacker has (if ranged)
     private int returnProjectiles(Character attacker) {
         if(attacker.getType() == Character.CharacterType.PLAYER) {
             if(((Player)attacker).getWeapon().getWeaponType() == Weapon.WeaponType.PROJECTILE) {
@@ -732,6 +750,8 @@ public class Battle {
         return 0;
     }
 
+
+    //Processes attack on armor, returns damage after it has been subtracted by armor
     private int attackArmor(Character attacker, Character target, int damage) {
         DamageType damageType;
         if(attacker.getType() == Character.CharacterType.PLAYER) {
@@ -753,6 +773,7 @@ public class Battle {
         return damage;
     }
 
+    //Processes attack on shield, returns damage after it has been subtracted by shield
     private int attackShield(Character attacker, Character target, int damage) {
         DamageType damageType;
         if(attacker.getType() == Character.CharacterType.PLAYER) {
@@ -774,6 +795,7 @@ public class Battle {
         return damage;
     }
 
+    //Processes attack on health, checks if target is dead
     private void attackHealth(Character attacker, Character target, int damage, boolean spell, boolean cleave) {
 
         if(target.getCurrenthealth() <= damage) {
@@ -804,7 +826,11 @@ public class Battle {
         }
     }
 
+    //Checks if any enemies are still remaining. If not, battle is over
     private void checkEnemiesCleared(ArrayList<Character> enemies) {
+        if(enemies.isEmpty()) {
+            battle_over = true;
+        }
         for(Character enemy: enemies) {
             if(enemy.getCurrenthealth() > 0) {
                 return;
@@ -813,6 +839,7 @@ public class Battle {
         battle_over = true;
     }
 
+    //Processes the passive "Hydro Touch". Every attack steals a random attribute from the target
     private void stealAttribute(Character attacker, Character target, String keyword, boolean cleave) {
 
         if(searchPassive(attacker, keyword) && !cleave) {
@@ -863,6 +890,7 @@ public class Battle {
             attacker.recalculateStats();
         }
     }
+
 
     private boolean processAbility(Character attacker, Player player, ArrayList<Character> enemies, Ability ability) {
 

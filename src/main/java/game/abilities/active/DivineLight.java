@@ -12,8 +12,4 @@ public class DivineLight extends Ability {
         targetedAbility = true;
         manaReq = 35;
     }
-
-    public void ExtraAttack() {
-
-    }
 }

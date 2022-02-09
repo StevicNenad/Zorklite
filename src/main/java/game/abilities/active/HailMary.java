@@ -12,8 +12,4 @@ public class HailMary extends Ability {
         targetedAbility = true;
         manaReq = 15;
     }
-
-    public void ExtraAttack() {
-
-    }
 }
