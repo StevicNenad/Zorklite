@@ -58,11 +58,10 @@ public class Game {
                 cls();
 
             }
-
-                player.resetCharacter();
+            player.saveToFile();
+            player.resetCharacter();
             gameover = false;
         }
-
     }
 
     //Welcome message and show main menu. Level up menu is possible from here
@@ -112,6 +111,7 @@ public class Game {
                     AttributeShop as = new AttributeShop();
                     if(player.getDeaths() > 0) {
                         as.startInterface(player);
+                        player.saveToFile();
                     } else {
                         System.out.println("Invalid input!");
                     }
@@ -154,8 +154,9 @@ public class Game {
                     sc.nextLine();
                     cls();
                     gameover = battle.startEncounter(player, currentRoom.getEnemies(), currentRoom);
-                    currentRoom.printDescription();
                     currentRoom.setExplored(true);
+                    currentRoom.generateDescription();
+                    currentRoom.printDescription();
                     return;
                 }
 
@@ -249,14 +250,17 @@ public class Game {
                                     "Agility - Increases your natural Armor as well as damage of some weapons\n" +
                                     "Stealth - Determines how likely \"sneak\" commands will work\n" +
                                     "Speed - Determines queue order in battle encounters\n" +
-                                    "Perception - Determines if you can enter Bonus Rooms\n");
+                                    "Perception - Determines if you can enter Bonus Rooms\n" +
+                                    "Attacks - Determins how many consecutive attacks you can perform on a target in one turn\n" +
+                                    "AoE/Cleave - Hits all enemies in battle for a percentage of the damage done to primary target\n" +
+                                    "Projectiles - Every projectile can trigger a passive effect. Projectiles can't hit the same target in one turn\n");
             case "go":
-                System.out.println( "With \"go\" you can enter doors and progress further through the game. If there are Monsters nearby\n" +
-                                    "you will not be able to use the command.");
+                System.out.println( "With \"go\" you can enter doors and progress further through the game. It's how you navigate the world.\n" +
+                                    "If there are Monsters nearby you will not be able to use the command.");
                 break;
             case "map":
                 System.out.println( "With \"map\" you can view the currently explored room, and what's inside it. It's shorter than the \"explore\" command\n" +
-                                    "and you can't get into surprise encounters when using it.");
+                                    "and you can't get into surprise encounters when using it. If you type \"map full\", you can see the world map.");
             case "sneak":
                 System.out.println( "With the command \"sneak\" you are able to do two things: 1 - You can try to sneak past monsters and exit\n" +
                                     "a room without clearing it or 2 - you can sneak attack a target, which allows you to cause damage to it before\n" +
@@ -264,13 +268,13 @@ public class Game {
                                     "fail a sneak action, you are immediately thrown into battle with 25% of your MAX hp removed. (You can die from this)");
                 break;
             case "explore":
-                System.out.println( "Every Room except Boss Rooms need to be explored first before you know what lies within them. Depending on your\n" +
+                System.out.println( "Every Monster room needs to be explored first before you know what lies within it. Depending on your\n" +
                                     "\"perception\" attribute, you are able to spot additional secrets. Exploring a room has a chance of monsters\n" +
-                                    "ambushing you and starting a battle encounter (even when the room has been cleared). Exploring a room also has a rare\n" +
-                                    "chance for finding secret loot every time you use the command.");
+                                    "ambushing you and starting a battle encounter. Exploring a room also has a rare chance for finding secret\n" +
+                                    "loot every time you use the command.");
                 break;
             case "help":
-                System.out.println( "Using this command will occasionally give you small hints on what to do or where to go.");
+                System.out.println( "Using this command will occasionally give you small hints on what to do or where to go. It also displays all command words.");
                 break;
             case "info":
                 System.out.println( "With this command you can see your inventory as well as all attributes and stats of your character.");
@@ -281,11 +285,11 @@ public class Game {
                                     "you replace an accessory for another one, the old one gets destroyed and cannot be picked up again. Choose wisely.");
                 break;
             case "quit":
-                System.out.println("This command ends your current Run and you can start over again.");
+                System.out.println("This command ends your current run and you can start over again.");
                 break;
             case "game":
                 System.out.println( "The goal of the game is to make it as far east as you can until you reach the final boss. The weapons, Monsters, Loot and\n" +
-                                    "Environments are all randomly generated. Every playthrough is different and some are unlucky from the start,\n" +
+                                    "Environments are all randomly generated. Every play through is different and some are unlucky from the start,\n" +
                                     "so feel free to restart a run whenever. With every Monster slain, you increase your Death Tokens and attributes\n" +
                                     "which are permanent and stay with every new run. So the game gets easier the longer you stick with it.");
                 break;
@@ -341,9 +345,17 @@ public class Game {
 
                 if (nextRoom != null) {
                     currentRoom = nextRoom;
+
                     if (currentRoom.isExplored()) {
                         currentRoom.printDescription();
                     } else {
+
+                        //When entering a new Monster Room, restore 10% of hp, mana, armor and shield.
+                        player.updateHealth((int) (player.getMaxHealth() * 0.10));
+                        player.updateMana((int) (player.getMaxMana() * 0.10));
+                        player.updateArmor((int) (player.getArmorPoints() * 0.10));
+                        player.updateShield((int) (player.getShieldPoints() * 0.10));
+
                         System.out.println( "You walk through the door and find yourself in a Room you haven't been in before... As you enter, the\n" +
                                             "door behind you slams shut. It's locked tight, there is no way back...");
                     }
@@ -421,6 +433,9 @@ public class Game {
                                 player.getPassives().add(((Gems)item).getAbility());
                             }
 
+                            System.out.println( "As you touch the gem, it immediately breaks in your hands. You feel a burst of ancient knowledge run\n" +
+                                                "run through your mind. You have learned a new technique...");
+
                             break;
                         case ACCESSORY:
                             System.out.println("You have picked up the artifact.");
@@ -436,8 +451,8 @@ public class Game {
                             player.updateDemonicEssence(1);
                             break;
                         case TOKENS:
-                            System.out.println("You have picked up " + ((Tokens)item).getValue() + " death tokens!");
-                            player.updateTokens(((Tokens)item).getValue());
+                            System.out.println("You have picked up " + (item.getValue()) + " death tokens!");
+                            player.updateTokens(item.getValue());
                             break;
                     }
                     currentRoom.getLoot().remove(item);
@@ -474,11 +489,13 @@ public class Game {
                 for (Character enemy : currentRoom.getEnemies()) {
                     if (enemy.getAttributes().getPerception() >= player.getAttributes().getStealth() + player.getBonusStealth()) {
                         battle.preemptiveStrikeFail(player);
+                        gameover = battle.startEncounter(player, currentRoom.getEnemies(), currentRoom);
+                        return;
                     }
                 }
 
                 battle.preemptiveStrikeSuccess(player, currentRoom.getEnemies());
-                battle.startEncounter(player, currentRoom.getEnemies(), currentRoom);
+                gameover = battle.startEncounter(player, currentRoom.getEnemies(), currentRoom);
             }
             else {
                 if (!currentRoom.getEnemies().isEmpty()) {

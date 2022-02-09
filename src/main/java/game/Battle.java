@@ -63,6 +63,7 @@ public class Battle {
         do {
             int index = 0;
             for (Character attacker : battleQueue) {
+                checkEnemiesCleared(enemies);
                 if(attacker.getCurrenthealth() > 0) {
                     displayBattleInformation(battleQueue, index);
                     processTurn(attacker, player, enemies, currentRoom);
@@ -95,10 +96,19 @@ public class Battle {
             pause(2000);
 
             return true;
-        } else {
+
+        }
+        else {
             boolean loot = false;
 
+            double tokenBonus;// More Deathtokens when fighting multiple enemies at once
+            if(enemies.size() > 1) {
+                tokenBonus = Math.pow(1.33, enemies.size() - 1);
+                totalTokens = (int) (totalTokens * tokenBonus);
+            }
+
             System.out.print("Threat eliminated! You gained " + totalTokens + " Death Tokens! ");
+            player.updateTokens(totalTokens);
 
             for (Character enemy : enemies) {
                 if(!enemy.getLoot().isEmpty()) loot = true;
@@ -208,7 +218,7 @@ public class Battle {
         if(turns == 0) {
             timeDelay = 350;
         } else {
-            timeDelay = 25;
+            timeDelay = 0;
         }
 
         cls();
@@ -330,9 +340,10 @@ public class Battle {
                                 }
                                 index++;
                             }
-
+                            System.out.println("Q - Back");
                             System.out.print(">");
                             String chooseTarget = sc.nextLine();
+                            if(chooseTarget.toLowerCase().equals("q")) break;
 
                             try {
                                 int targetIndex = Integer.parseInt(chooseTarget);
@@ -404,6 +415,7 @@ public class Battle {
                         if(attacker.getPotions() == 0) {
                             System.out.println("No Potions...");
                             pause(1000);
+                            break;
                         }
 
                         else {
@@ -493,49 +505,49 @@ public class Battle {
                 System.out.println(attackText[attacks] + " attack: ");
             }
 
-            //For-loop that iterates through every projectile. If weapon is Melee, just performs loop once
-            int projectiles = returnProjectiles(attacker);   //calculates how many projectiles to shoot
-            int enemyIndex = 0,
-                    attackIndex = 0;
+            //For-loop that iterates through every projectile.
+            int     projectiles = returnProjectiles(attacker);   //calculates how many projectiles to shoot
+            int     enemyIndex = 0,
+                    attackTextIndex = 0,
+                    damage;
 
             if(projectiles > 0) {
 
                 //Additional text that appears when attacker shoots multiple projectiles
                 if(projectiles > 1 && attacker.getType() == Character.CharacterType.PLAYER) {
-                    System.out.print(attackText[attackIndex] + " projectile: ");
+                    System.out.print(attackText[attackTextIndex] + " projectile: ");
                     pause(1000);
-                    attackIndex++;
+                    attackTextIndex++;
                 }
 
-                if(didAttackMiss(attacker, target, enemies)) {
-                    continue;
+                if(!didAttackMiss(attacker, target, enemies)) {
+                    damage = calculateDamage(attacker, target);
+
+                    inflictDamage(attacker, target, damage, false, false, damageType);
+                    processDivineCombustion(attacker, enemies);
                 }
 
-                int damage = calculateDamage(attacker, target);
-
-                inflictDamage(attacker, target, damage, false, false, damageType);
-
-                if(attacker.getType() != Character.CharacterType.PLAYER) break;
+                if(attacker.getType() != Character.CharacterType.PLAYER) continue;
 
                 for (Character enemy : enemies) {
                     if(enemyIndex == projectiles) {
-                        return;
+                        continue;
                     }
                     if(enemy == target) {
                         enemyIndex++;
                         continue;
                     }
-
-                    System.out.print(attackText[attackIndex] + " projectile: ");
-                    pause(1000);
-                    attackIndex++;
-
-                    damage = calculateDamage(attacker, target);
-                    inflictDamage(attacker, target, damage, false, false, damageType);
-
-                    if(battle_over) {
-                        return;
+                    if(enemy.getCurrenthealth() <= 0) {
+                        continue;
                     }
+
+                    System.out.print(attackText[attackTextIndex] + " projectile: ");
+                    pause(1000);
+                    attackTextIndex++;
+
+                    damage = calculateDamage(attacker, enemy);
+                    inflictDamage(attacker, enemy, damage, false, false, damageType);
+                    processDivineCombustion(attacker, enemies);
 
                     enemyIndex++;
 
@@ -546,9 +558,10 @@ public class Battle {
                     continue;
                 }
 
-                int damage = calculateDamage(attacker, target);
+                damage = calculateDamage(attacker, target);
 
                 inflictDamage(attacker, target, damage, false, false, damageType);
+                processDivineCombustion(attacker, enemies);
 
                 if(attacker.getAttributes().getAoeDamage() > 0 && attacker.getType() == Character.CharacterType.PLAYER) {
                     for (Character enemy : enemies) {
@@ -561,28 +574,8 @@ public class Battle {
                     }
                 }
             }
-
             pause(1000);
-
-            //Processes the passive ability "Divine Combustion"
-            if(searchPassive(attacker, "Divine Combustion")) {
-                System.out.println("Your strike explodes and causes 35 magical damage around the target!");
-                for (Character enemy : enemies) {
-                    int netDamage = 35;
-                    if(enemy.getCurrentShield() > 0 && enemy.getCurrenthealth() > 0) {
-                        netDamage = attackShield(attacker, enemy, netDamage);
-                        if(netDamage > 0) {
-                            attackHealth(attacker, enemy, netDamage, true, false);
-                        }
-                    } else if(enemy.getCurrenthealth() > 0) {
-                        attackHealth(attacker, enemy, netDamage, true, false);
-                    }
-                }
-            }
-
-            checkEnemiesCleared(enemies);
         }
-        pause(500);
     }
 
 
@@ -810,7 +803,6 @@ public class Battle {
                 target.updateHealth(-target.getCurrenthealth());
             }
             else {
-                attacker.updateTokens(target.getDeathTokens());
                 totalTokens += target.getDeathTokens();
                 target.updateHealth(-target.getCurrenthealth());
             }
@@ -827,12 +819,9 @@ public class Battle {
     }
 
     //Checks if any enemies are still remaining. If not, battle is over
-    private void checkEnemiesCleared(ArrayList<Character> enemies) {
-        if(enemies.isEmpty()) {
-            battle_over = true;
-        }
-        for(Character enemy: enemies) {
-            if(enemy.getCurrenthealth() > 0) {
+    private void checkEnemiesCleared(ArrayList<Character> queue) {
+        for(Character enemy: queue) {
+            if(enemy.getType() == Character.CharacterType.MONSTER && enemy.getCurrenthealth() > 0) {
                 return;
             }
         }
@@ -906,9 +895,10 @@ public class Battle {
                     }
                     index++;
                 }
-
+                System.out.println("Q - Back");
                 System.out.print(">");
                 String chooseTarget = sc.nextLine();
+                if(chooseTarget.toLowerCase().equals("q")) return false;
 
                 try {
                     int targetIndex = Integer.parseInt(chooseTarget);
@@ -1112,11 +1102,11 @@ public class Battle {
 
         switch(ability.getAbilityName()) {
             case "Vitality Swap":
-                double  attackerHealthPercentage = attacker.currentHealth / attacker.maxHealth,
-                        targetHealthPercentage = target.currentHealth / attacker.maxHealth;
+                double  attackerHealthPercentage = (double) attacker.currentHealth / attacker.maxHealth,
+                        targetHealthPercentage = (double) target.currentHealth / target.maxHealth;
 
-                attacker.setCurrentHealth((int)(attacker.getMaxHealth() * attackerHealthPercentage));
-                target.setCurrentHealth((int)(attacker.getMaxHealth() * targetHealthPercentage));
+                attacker.setCurrentHealth((int)(attacker.getMaxHealth() * targetHealthPercentage));
+                target.setCurrentHealth((int)(target.getMaxHealth() * attackerHealthPercentage));
 
                 break;
 
@@ -1254,6 +1244,25 @@ public class Battle {
             }
         }
         return 0;
+    }
+
+    private void processDivineCombustion(Character attacker, ArrayList<Character> enemies) {
+
+        //Processes the passive ability "Divine Combustion"
+        if(searchPassive(attacker, "Divine Combustion")) {
+            System.out.println("Your strike explodes and causes 35 magical damage around the target!");
+            for (Character enemy : enemies) {
+                int netDamage = 35;
+                if(enemy.getCurrentShield() > 0 && enemy.getCurrenthealth() > 0) {
+                    netDamage = attackShield(attacker, enemy, netDamage);
+                    if(netDamage > 0) {
+                        attackHealth(attacker, enemy, netDamage, true, false);
+                    }
+                } else if(enemy.getCurrenthealth() > 0) {
+                    attackHealth(attacker, enemy, netDamage, true, false);
+                }
+            }
+        }
     }
 
     //Function that pauses the output screen so the user can read or whatever

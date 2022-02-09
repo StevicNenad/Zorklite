@@ -3,6 +3,7 @@ import game.Character;
 import game.abilities.active.BladeJump;
 import game.abilities.active.Fireball;
 import game.abilities.active.RussianRoulette;
+import game.abilities.active.VitalitySwap;
 import game.abilities.passive.*;
 import game.characters.Monster;
 import game.characters.MonsterGenerator;
@@ -42,15 +43,16 @@ public class TestApplication {
         */
 
 
-        /*
+
         Player player = new Player();
         AttributeShop as = new AttributeShop();
         player.updateTokens(9000);
         as.startInterface(player);
-        */
 
 
 
+
+/*
         Player player = new Player();
         ArrayList<Character> monsterList = new ArrayList<Character>();
         Greatsword greatsword = new Greatsword();
@@ -66,6 +68,8 @@ public class TestApplication {
         BladeJump bladeJump = new BladeJump();
         Fireball fireball = new Fireball();
         EscalatingViolence escalatingViolence = new EscalatingViolence();
+        VitalitySwap vitalitySwap = new VitalitySwap();
+        player.getActives().add(vitalitySwap);
         player.getActives().add(bladeJump);
         player.getActives().add(russianRoulette);
         player.getActives().add(fireball);
@@ -83,7 +87,7 @@ public class TestApplication {
         bossRoom.setBossType(BossRoom.BossType.NEPHILIM);
         Nephilim nephilim = new Nephilim();
         bossRoom.getEnemies().add(nephilim);
-        /*
+
         MonsterRoom monsterRoom = new MonsterRoom();
 
         for(int i = 0; i < 5; i++) {
@@ -91,10 +95,11 @@ public class TestApplication {
             Monster monster = mongen.getRandomMonster();
             monsterList.add(monster);
         }
-*/
-        Battle battle = new Battle();
-        battle.startEncounter(player, bossRoom.getEnemies(), bossRoom);
 
+
+        Battle battle = new Battle();
+        battle.startEncounter(player, monsterList, monsterRoom);
+*/
 
     }
 }

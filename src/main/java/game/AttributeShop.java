@@ -16,39 +16,51 @@ public class AttributeShop {
         String userInput;
         requirement = requirement * player.getAttributes().getLevel();
 
-        while(requirement < player.getDeathTokens()) {
-            player.addAP(1);
-            player.getAttributes().addLevel(1);
-            player.updateAttributePoints(3);
-            player.updateTokens(-requirement);
-            System.out.println("Level up! You have gained 3 attribute points!");
-            requirement = (int) (100 * (1.33 * player.getAttributes().getLevel()));
-        }
+        while(true) {
+            int percent = (int) ((double)player.getDeathTokens() / requirement * 35);
+            if(percent > 35) percent = 35;
+            String progressBar = "";
 
-        int percent = (int) ((double)player.getDeathTokens() / requirement * 35);
-        String progressBar = "";
+            for(int i = 0; i < percent; i++){
+                progressBar += "▓";
+            }
 
-        for(int i = 0; i < percent; i++){
-            progressBar += "▓";
-        }
+            System.out.printf("\n▓%-35s", progressBar);
+            System.out.println("\n" + player.getDeathTokens() + "/" + requirement + " Death Tokens for next level\n");
 
 
-        System.out.printf("\n▓%-35s", progressBar);
-        System.out.println("\n" + player.getDeathTokens() + "/" + requirement + " Death Tokens for next level\n");
+            System.out.println("What do you want to do?\n1 - Level up\n2 - Improve Attributes\nQ - Go back to Main Menu");
+            System.out.print(">");
 
-        System.out.println("What do you want to do?\n1 - Improve Attributes\nQ - Go back to Main Menu");
-        System.out.print(">");
+            userInput = sc.nextLine();
 
-        userInput = sc.nextLine();
+            switch(userInput.toLowerCase()) {
+                case "1":
 
-        switch(userInput.toLowerCase()) {
-            case "1":
-                upgradeAttributes(player);
-                return;
-            case "q":
-                return;
-            default:
-                System.out.println("Invalid Input");
+                    if(requirement < player.getDeathTokens()) {
+                        player.addAP(1);
+                        player.getAttributes().addLevel(1);
+                        player.updateAttributePoints(3);
+                        player.updateTokens(-requirement);
+                        System.out.println("Level up! You have gained 3 attribute points!");
+                        requirement = (int) (100 * (1.33 * player.getAttributes().getLevel()));
+                    }
+                    else {
+                        System.out.println("You don't have enough death tokens...");
+                    }
+                    pause(1000);
+                    break;
+
+                case "2":
+                    upgradeAttributes(player);
+                    break;
+
+                case "q":
+                    return;
+
+                default:
+                    System.out.println("Invalid Input");
+            }
         }
     }
 
@@ -118,6 +130,16 @@ public class AttributeShop {
             else {
                 System.out.println("Not enough attribute points!");
             }
+        }
+    }
+
+    //Function that adds a small pause
+    private void pause(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        }
+        catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
     }
 }
